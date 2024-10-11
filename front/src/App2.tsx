@@ -1,26 +1,40 @@
 import React, { useEffect, useState, useRef } from "react";
 import subtitle from "./data/ejaudio.json";
 import AudioFile from "./assets/audio/1728618786940.wav";
+import { debounce } from "lodash"; // Asegúrate de tener lodash instalado
 
 const App: React.FC = () => {
   const [currentTime, setCurrentTime] = useState<number>(0);
   const audioRef = useRef<HTMLAudioElement>(null);
   const words: WordTiming[] = processSubtitles(subtitle.subtitles.segments);
 
+  // Usamos requestAnimationFrame para sincronización más precisa
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
 
-    const handleTimeUpdate = () => {
-      const playbackRate = audio.playbackRate || 1;
-      // Ajuste del tiempo actual en función de la tasa de reproducción
-      setCurrentTime(audio.currentTime / playbackRate);
+    let animationFrameId: number;
+
+    const updateTime = () => {
+      setCurrentTime(audio.currentTime);
+      animationFrameId = requestAnimationFrame(updateTime);
     };
 
-    audio.addEventListener("timeupdate", handleTimeUpdate);
+    const handlePlay = () => {
+      animationFrameId = requestAnimationFrame(updateTime);
+    };
+
+    const handlePause = () => {
+      cancelAnimationFrame(animationFrameId);
+    };
+
+    audio.addEventListener("play", handlePlay);
+    audio.addEventListener("pause", handlePause);
 
     return () => {
-      audio.removeEventListener("timeupdate", handleTimeUpdate);
+      cancelAnimationFrame(animationFrameId);
+      audio.removeEventListener("play", handlePlay);
+      audio.removeEventListener("pause", handlePause);
     };
   }, []);
 
@@ -35,7 +49,9 @@ const App: React.FC = () => {
         />
         <div className="text-lg leading-relaxed">
           {words.map((w, idx) => {
-            const isActive = currentTime >= w.start && currentTime < w.end;
+            const offset = 0.1; // Ajuste fino manual de 100ms para sincronización
+            const isActive =
+              currentTime >= w.start + offset && currentTime < w.end + offset;
             return (
               <span
                 key={idx}
@@ -55,6 +71,7 @@ const App: React.FC = () => {
 
 export default App;
 
+// Interfaces para manejo de tiempos de palabras
 export interface WordTiming {
   word: string;
   start: number;
@@ -67,6 +84,7 @@ export interface Segment {
   text: string;
 }
 
+// Función para procesar los subtítulos y dividir palabras con tiempos
 export const processSubtitles = (segments: Segment[]): WordTiming[] => {
   const wordsWithTimings: WordTiming[] = [];
 
