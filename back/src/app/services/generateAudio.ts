@@ -1,6 +1,5 @@
 import * as path from "path";
 import * as fs from "fs";
-
 import OpenAI from "openai";
 
 interface Options {
@@ -22,22 +21,39 @@ export const textToAudioUseCase = async ({ prompt, voice }: Options) => {
     shimmer: "shimmer",
   };
 
-  const selectedVoice = voices[voice as keyof typeof voices] ?? "nova";
+  const selectedVoice = "nova";
 
   const folderPath = path.resolve(__dirname, "../../../generated/audios/");
   const speechFile = path.resolve(`${folderPath}/${new Date().getTime()}.mp3`);
+  const subtitlesFile = path.resolve(
+    `${folderPath}/${new Date().getTime()}.srt`
+  );
 
   fs.mkdirSync(folderPath, { recursive: true });
 
+  // Generar el audio
   const mp3 = await openai.audio.speech.create({
     model: "tts-1-hd",
-    voice: "nova",
+    voice: selectedVoice,
     input: prompt,
     response_format: "mp3",
   });
 
+  // Guardar el archivo de audio
   const buffer = Buffer.from(await mp3.arrayBuffer());
   fs.writeFileSync(speechFile, buffer);
 
-  return speechFile;
+  // Generar transcripción para subtítulos
+  const subtitles = await openai.audio.transcriptions.create({
+    file: fs.createReadStream(speechFile),
+    model: "whisper-1",
+    response_format: "verbose_json",
+    language: "en",
+  });
+
+
+  return {
+    audio: speechFile,
+    subtitles,
+  };
 };

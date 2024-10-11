@@ -38,10 +38,10 @@ app.post(
 
     try {
       // Call the textToAudioUseCase to generate the audio file
-      const speechFile = await textToAudioUseCase({ prompt, voice });
+      const { audio, subtitles } = await textToAudioUseCase({ prompt, voice });
 
       // Send back the file path or stream the file to the user
-      res.status(200).json({ filePath: speechFile });
+      res.status(200).json({ audio, subtitles });
     } catch (error) {
       next(error); // Forward the error to error-handling middleware
     }
