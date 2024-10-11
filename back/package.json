@@ -6,7 +6,7 @@
     "build": "tsc",
     "start": "node dist/index.js",
     "devts": "ts-node src/main.ts",
-    "dev": "nodemon ts-node src/main.ts"
+    "dev": "nodemon --exec ts-node src/main.ts"
   },
   "keywords": [],
   "author": "",
