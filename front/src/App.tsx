@@ -39,8 +39,8 @@ const App: React.FC = () => {
             return (
               <span
                 key={idx}
-                className={`transition-all ${
-                  isActive ? "bg-blue-600 rounded-xl px-1" : ""
+                className={`transition-all duration-200 ease-in-out transform ${
+                  isActive ? "bg-blue-600 rounded-xl px-1 scale-110" : ""
                 }`}
               >
                 {w.word}{" "}
