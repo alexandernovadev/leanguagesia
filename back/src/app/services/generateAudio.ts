@@ -24,7 +24,7 @@ export const textToAudioUseCase = async ({ prompt, voice }: Options) => {
   const selectedVoice = "nova";
 
   const folderPath = path.resolve(__dirname, "../../../generated/audios/");
-  const speechFile = path.resolve(`${folderPath}/${new Date().getTime()}.mp3`);
+  const speechFile = path.resolve(`${folderPath}/${new Date().getTime()}.wav`);
   const subtitlesFile = path.resolve(
     `${folderPath}/${new Date().getTime()}.srt`
   );
@@ -32,15 +32,15 @@ export const textToAudioUseCase = async ({ prompt, voice }: Options) => {
   fs.mkdirSync(folderPath, { recursive: true });
 
   // Generar el audio
-  const mp3 = await openai.audio.speech.create({
+  const wav = await openai.audio.speech.create({
     model: "tts-1-hd",
     voice: selectedVoice,
     input: prompt,
-    response_format: "mp3",
+    response_format: "wav",
   });
 
   // Guardar el archivo de audio
-  const buffer = Buffer.from(await mp3.arrayBuffer());
+  const buffer = Buffer.from(await wav.arrayBuffer());
   fs.writeFileSync(speechFile, buffer);
 
   // Generar transcripción para subtítulos
@@ -50,7 +50,6 @@ export const textToAudioUseCase = async ({ prompt, voice }: Options) => {
     response_format: "verbose_json",
     language: "en",
   });
-
 
   return {
     audio: speechFile,
