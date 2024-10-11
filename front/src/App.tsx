@@ -1,4 +1,3 @@
-// src/App.tsx
 import React, { useEffect, useState, useRef } from "react";
 import subtitle from "./data/ejaudio.json";
 import AudioFile from "./assets/audio/1728618786940.wav";
@@ -14,7 +13,9 @@ const App: React.FC = () => {
     if (!audio) return;
 
     const handleTimeUpdate = () => {
-      setCurrentTime(audio.currentTime);
+      const playbackRate = audio.playbackRate || 1;
+      // Ajuste del tiempo actual en función de la tasa de reproducción
+      setCurrentTime(audio.currentTime / playbackRate);
     };
 
     audio.addEventListener("timeupdate", handleTimeUpdate);
@@ -39,7 +40,9 @@ const App: React.FC = () => {
             return (
               <span
                 key={idx}
-                className={isActive ? "bg-blue-600 rounded-xl px-1" : ""}
+                className={`transition-all ${
+                  isActive ? "bg-blue-600 rounded-xl px-1" : ""
+                }`}
               >
                 {w.word}{" "}
               </span>
