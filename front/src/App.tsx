@@ -39,7 +39,7 @@ const App: React.FC = () => {
             return (
               <span
                 key={idx}
-                className={isActive ? "text-yellow-300 font-bold" : ""}
+                className={isActive ? "bg-blue-600 rounded rounded-xl px-1" : ""}
               >
                 {w.word}{" "}
               </span>
