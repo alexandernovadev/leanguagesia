@@ -3,6 +3,12 @@
 @tailwind utilities;
 
 
+html {
+
+  background: #1A1A1A;
+  -webkit-font-smoothing: antialiased;
+}
+
 span {
   transition: background-color 0.2s ease;
 }

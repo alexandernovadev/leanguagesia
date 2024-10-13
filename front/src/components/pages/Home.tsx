@@ -83,7 +83,7 @@ const demoCards: Card[] = [
   },
 ];
 
-export default function App() {
+export default function HomePage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [filters, setFilters] = useState<Filters>({
     languages: [],
@@ -110,8 +110,9 @@ export default function App() {
   };
 
   return (
-    <div className="bg-[#1A1A1A] text-[#E0E0E0] min-h-screen flex flex-col">
-      <div className="sticky top-0 z-10 bg-[#1A1A1A] p-4">
+    <div className="bg-gradient-to-b from-[#1A1A1A] via-[#003a353a] to-[#1a1a1a55] text-[#E0E0E0] min-h-screen flex flex-col">
+      <div className="sticky top-0 z-10 bg-gradient-to-b from-[#1A1A1A] to-transparent p-4">
+        {" "}
         <div className="flex items-center space-x-2">
           <div className="relative flex-grow">
             <input
@@ -212,7 +213,7 @@ export default function App() {
             </div>
             <button
               onClick={applyFilters}
-              className="w-full bg-[#00C853] text-white py-2 rounded-lg hover:bg-[#00E676] transition-colors"
+              className="w-full bg-[#00e677b7] text-white py-2 rounded-lg hover:bg-[#00e677bd] transition-colors"
             >
               Apply
             </button>
