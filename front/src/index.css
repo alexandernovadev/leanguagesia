@@ -4,11 +4,23 @@
 
 
 html {
-
   background: #1A1A1A;
   -webkit-font-smoothing: antialiased;
+  overflow-y: hidden;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow-y: auto;
 }
 
 span {
   transition: background-color 0.2s ease;
+}
+
+input,
+textarea {
+  @apply w-full bg-customBlack-200 border border-gray-500 rounded-lg py-2 pl-10 pr-4 text-white placeholder-gray-300 focus:border-green-950 focus:outline-none;
 }

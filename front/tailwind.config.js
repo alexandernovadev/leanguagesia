@@ -4,6 +4,9 @@ export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ["Poppins", "sans-serif"],
+      },
       colors: {
         customGreen: {
           50: "#004D40",
@@ -30,6 +33,7 @@ export default {
           700: "#00C853",
           800: "#00e677bd",
           900: "#00e677b7",
+          950: "#00b364b7",
         },
         gray: {
           100: "#F5F5F5",

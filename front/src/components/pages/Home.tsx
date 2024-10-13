@@ -7,6 +7,7 @@ import {
   BookOpen,
   User,
 } from "lucide-react";
+import { NabvarMain } from "../ui/NabvarMain";
 
 type Language = "English" | "Portugues";
 type Level = "A1" | "A2" | "B1" | "B2" | "C1" | "C2";
@@ -122,7 +123,10 @@ export default function HomePage() {
             />
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-green-700 w-5 h-5" />
           </div>
-          <button onClick={toggleModal} className="bg-customBlack-200 p-2 rounded-lg">
+          <button
+            onClick={toggleModal}
+            className="bg-customBlack-200 p-2 rounded-lg"
+          >
             <SlidersHorizontal className="text-green-700 w-5 h-5" />
           </button>
         </div>
@@ -130,11 +134,12 @@ export default function HomePage() {
       <main className="flex-1 p-4 pb-20">
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
           {demoCards.map((card, index) => (
-            <div key={card.id} className="flex flex-col">
+            <div
+              key={card.id}
+              className="flex flex-col border border-gray-600 rounded-lg"
+            >
               <div
-                className={`bg-customBlack-200 rounded-lg p-4 aspect-square relative ${
-                  index === 0 ? "ring-2 ring-blue-500" : ""
-                }`}
+                className={`bg-customBlack-200 rounded-lg p-4 aspect-square relative`}
               >
                 <div className="absolute top-2 left-2 text-2xl">
                   {card.flag}
@@ -162,20 +167,17 @@ export default function HomePage() {
                   </span>
                 </div>
               </div>
-              <p className="mt-2 text-sm line-clamp-2">{card.title}</p>
+              <p className="mt-2 text-base font-medium py-2 line-clamp-2 px-2">
+                {card.title}
+              </p>
             </div>
           ))}
         </div>
       </main>
-      <nav className="fixed bottom-0 left-0 right-0 flex justify-around py-4 bg-customBlack-200">
-        <Home className="text-green-700 w-6 h-6" />
-        <Zap className="w-6 h-6" />
-        <BookOpen className="w-6 h-6" />
-        <User className="w-6 h-6" />
-      </nav>
+      <NabvarMain />
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-customBlack-200 rounded-lg p-6 w-5/6 max-w-md">
+          <div className="bg-customBlack-200 rounded-lg p-6 w-5/6 max-w-md border border-gray-600">
             <h2 className="text-xl font-bold mb-4">Filters</h2>
             <div className="mb-4">
               <h3 className="font-semibold mb-2">Languages</h3>
