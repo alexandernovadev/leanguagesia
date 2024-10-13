@@ -5,6 +5,14 @@ export default {
   theme: {
     extend: {
       colors: {
+        customGreen: {
+          50: "#004D40",
+          100: "#003a353a", // Verde translúcido
+        },
+        customBlack: {
+          100: "#1a1a1a55", // Negro translúcido
+          200: "#2C2C2C", // Color de fondo negro personalizado
+        },
         black: {
           100: "#F5F5F5",
           200: "#E0E0E0",
@@ -20,6 +28,8 @@ export default {
           100: "#B9F6CA",
           500: "#00E676",
           700: "#00C853",
+          800: "#00e677bd",
+          900: "#00e677b7",
         },
         gray: {
           100: "#F5F5F5",

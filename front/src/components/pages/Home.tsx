@@ -110,20 +110,20 @@ export default function HomePage() {
   };
 
   return (
-    <div className="bg-gradient-to-b from-[#1A1A1A] via-[#003a353a] to-[#1a1a1a55] text-[#E0E0E0] min-h-screen flex flex-col">
-      <div className="sticky top-0 z-10 bg-gradient-to-b from-[#1A1A1A] to-transparent p-4">
+    <div className="bg-gradient-to-b from-black-800 via-customGreen-100 to-customBlack-100 text-black-200 min-h-screen flex flex-col">
+      <div className="sticky top-0 z-10 bg-gradient-to-b from-black-800 to-transparent p-4">
         {" "}
         <div className="flex items-center space-x-2">
           <div className="relative flex-grow">
             <input
               type="text"
               placeholder="Search"
-              className="w-full bg-[#2C2C2C] rounded-lg py-2 pl-10 pr-4"
+              className="w-full bg-customBlack-200 rounded-lg py-2 pl-10 pr-4"
             />
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#00C853] w-5 h-5" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-green-700 w-5 h-5" />
           </div>
-          <button onClick={toggleModal} className="bg-[#2C2C2C] p-2 rounded-lg">
-            <SlidersHorizontal className="text-[#00C853] w-5 h-5" />
+          <button onClick={toggleModal} className="bg-customBlack-200 p-2 rounded-lg">
+            <SlidersHorizontal className="text-green-700 w-5 h-5" />
           </button>
         </div>
       </div>
@@ -132,7 +132,7 @@ export default function HomePage() {
           {demoCards.map((card, index) => (
             <div key={card.id} className="flex flex-col">
               <div
-                className={`bg-[#2C2C2C] rounded-lg p-4 aspect-square relative ${
+                className={`bg-customBlack-200 rounded-lg p-4 aspect-square relative ${
                   index === 0 ? "ring-2 ring-blue-500" : ""
                 }`}
               >
@@ -140,10 +140,10 @@ export default function HomePage() {
                   {card.flag}
                 </div>
                 <div className="absolute bottom-2 right-2 flex flex-col space-y-1">
-                  <span className="text-xs bg-[#004D40] text-[#00E676] px-2 py-1 rounded-full">
+                  <span className="text-xs bg-customGreen-50 text-green-700 px-2 py-1 rounded-full">
                     {card.level}
                   </span>
-                  <span className="text-xs bg-[#004D40] text-[#00E676] px-2 py-1 rounded-full flex items-center">
+                  <span className="text-xs bg-customGreen-50 text-green-700 px-2 py-1 rounded-full flex items-center">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       className="h-3 w-3 mr-1"
@@ -167,15 +167,15 @@ export default function HomePage() {
           ))}
         </div>
       </main>
-      <nav className="fixed bottom-0 left-0 right-0 flex justify-around py-4 bg-[#2C2C2C]">
-        <Home className="text-[#00C853] w-6 h-6" />
+      <nav className="fixed bottom-0 left-0 right-0 flex justify-around py-4 bg-customBlack-200">
+        <Home className="text-green-700 w-6 h-6" />
         <Zap className="w-6 h-6" />
         <BookOpen className="w-6 h-6" />
         <User className="w-6 h-6" />
       </nav>
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-[#2C2C2C] rounded-lg p-6 w-5/6 max-w-md">
+          <div className="bg-customBlack-200 rounded-lg p-6 w-5/6 max-w-md">
             <h2 className="text-xl font-bold mb-4">Filters</h2>
             <div className="mb-4">
               <h3 className="font-semibold mb-2">Languages</h3>
@@ -213,7 +213,7 @@ export default function HomePage() {
             </div>
             <button
               onClick={applyFilters}
-              className="w-full bg-[#00e677b7] text-white py-2 rounded-lg hover:bg-[#00e677bd] transition-colors"
+              className="w-full bg-green-900 text-white py-2 rounded-lg hover:bg-green-800 transition-colors"
             >
               Apply
             </button>
