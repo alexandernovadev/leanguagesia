@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Search, SlidersHorizontal } from "lucide-react";
-import { NabvarMain } from "../../shared/NabvarMain";
 import { CardList } from "./CardList";
 import { Modal } from "../../shared/Modal";
 import { FormFilters } from "./FormFilters";
+import { MainLayout } from "../../shared/Layouts/MainLayout";
 
 export default function HomePage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -11,7 +11,7 @@ export default function HomePage() {
   const toggleModal = () => setIsModalOpen(!isModalOpen);
 
   return (
-    <div className="bg-gradient-to-b from-black-800 via-customGreen-100 to-customBlack-100 text-black-200 min-h-screen flex flex-col">
+    <MainLayout>
       <div className="sticky top-0 z-10 bg-gradient-to-b from-black-800 to-transparent p-4">
         <div className="flex items-center space-x-2">
           <div className="relative flex-grow">
@@ -33,10 +33,10 @@ export default function HomePage() {
       <main className="flex-1 p-4 pb-20">
         <CardList />
       </main>
-      <NabvarMain />
+
       <Modal isOpen={isModalOpen} onClose={toggleModal}>
         <FormFilters />
       </Modal>
-    </div>
+    </MainLayout>
   );
 }
