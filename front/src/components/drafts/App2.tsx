@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import subtitle from "./data/ejaudio.json";
+import subtitle from "../../data/ejaudio.json";
 import AudioFile from "./assets/audio/1728618786940.wav";
 import { debounce } from "lodash"; // Asegúrate de tener lodash instalado
 
