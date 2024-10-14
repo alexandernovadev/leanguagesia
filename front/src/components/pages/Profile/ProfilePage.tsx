@@ -1,8 +1,8 @@
 import React from 'react'
 import { MainLayout } from '../../shared/Layouts/MainLayout'
 
-export const GeneratorPage = () => {
+export const ProfilePage = () => {
   return (
-    <MainLayout>GeneratorPage</MainLayout>
+    <MainLayout>ProfilePage</MainLayout>
   )
 }
