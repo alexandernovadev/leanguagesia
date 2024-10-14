@@ -12,23 +12,7 @@ import { Link } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import { useCustomMarkdownRenderer } from "./procesatorMarkdown";
-
-// Define the markdown content
-const markdownText: string = `# The best practice with zustand and more
-
-When working with Zustand, a lightweight state management library for React, it's crucial to 
-follow best practices to ensure efficient and maintainable code. 
-
-## Key Points
-
-1. **Organize your stores modularly**, keeping your logic decoupled and reusable. 
-2. Use middleware for tasks like logging or persistence.
-3. Ensure that your stores are kept lean by only including necessary state. 
-
-Zustand's flexible API allows for better performance when using shallow comparison
-or selectors, which can optimize re-renders. Combined with React's features like 
-suspense and concurrent rendering, Zustand can scale effectively in larger applications.
-`;
+import { markdownText } from "./data/textMarkdown";
 
 export const LecturaPage = () => {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
@@ -72,28 +56,42 @@ export const LecturaPage = () => {
         </section>
         <div className="flex items-center justify-center gap-3">
           <span className="flex">
-
-          <Dessert className="w-6 h-6 text-green-800" /> - {wordSelected}
+            <Dessert className="w-6 h-6 text-green-800" /> - {wordSelected}
           </span>
           <Theater className="w-6 h-6 text-green-800" />
         </div>
       </div>
-      <div className="flex-grow overflow-y-auto mb-4 px-3 rounded-lg border border-gray-700">
-        <img src={'https://avatars.githubusercontent.com/u/6078720?s=200&v=4'} alt="" />
-        {/* @ts-ignore */}
-        <ReactMarkdown components={customComponents}
-          rehypePlugins={[rehypeRaw]}
-        >
-          {markdownText}
-        </ReactMarkdown>
+
+      <div className="overflow-y-auto mb-4 px-3 rounded-lg border border-gray-700">
+        {/* Main content section where the image and text are side by side */}
+        <div className="clearfix">
+          {/* Image */}
+          <img
+            src={"https://avatars.githubusercontent.com/u/6078720?s=200&v=4"}
+            alt="NPM Logo"
+            className="w-32 h-32 object-cover float-left mr-4 mb-2" // Utilizamos float-left y márgenes para crear espacio alrededor de la imagen
+          />
+
+          {/* Markdown text */}
+          <div>
+            <ReactMarkdown
+              // @ts-ignore
+              components={customComponents}
+              rehypePlugins={[rehypeRaw]}
+            >
+              {markdownText}
+            </ReactMarkdown>
+          </div>
+        </div>
       </div>
+
       <div className="mb-4">
         <div className="h-1 w-full bg-gray-700 rounded-full">
           <div className="h-1 bg-gray-500 rounded-full"></div>
         </div>
       </div>
       <div className="flex justify-center items-center space-x-4">
-        <button className={`p-2  opacity-50 cursor-not-allowed`}>
+        <button className={`p-2 opacity-50 cursor-not-allowed`}>
           <SkipBack className="w-6 h-6" />
         </button>
         <button
@@ -106,7 +104,7 @@ export const LecturaPage = () => {
             <Play className="w-6 h-6 text-black" />
           )}
         </button>
-        <button className={`p-2 `}>
+        <button className={`p-2`}>
           <SkipForward className="w-6 h-6" />
         </button>
       </div>
