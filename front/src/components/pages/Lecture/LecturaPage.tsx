@@ -58,7 +58,7 @@ export const LecturaPage = () => {
             </svg>
             3 min
           </span>
-          <span className="border py-1 rounded-xl px-2 text-sm cursor-pointer text-green-600" title="Level A1">Level: <strong>A1</strong></span>
+          <span className="border py-1 rounded-xl px-2 text-xs cursor-pointer text-green-600" title="Level A1">Level: <strong>A1</strong></span>
         </section>
         <div className="flex items-center justify-center gap-3">
           <Dessert className="w-6 h-6 text-green-800" />
@@ -71,7 +71,7 @@ export const LecturaPage = () => {
       <div className="mb-4">
         <div className="h-1 w-full bg-gray-700 rounded-full">
           <div
-            className="h-1 bg-green-800 rounded-full"
+            className="h-1 bg-gray-500 rounded-full"
             // style={{ width: `${progress}%` }}
           ></div>
         </div>

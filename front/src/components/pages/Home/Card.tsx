@@ -7,12 +7,13 @@ interface CardProps {
 
 export const Card = ({ card }: CardProps) => {
   return (
-    <Link to={`/lecture/${card.id}`}
+    <Link
+      to={`/lecture/${card.id}`}
       key={card.id}
-      className="flex flex-col border border-gray-600 rounded-lg focus:outline-none focus:ring-[0.3px] focus:ring-green-600 focus:border-green-600 cursor-pointer" 
+      className="flex flex-col border border-gray-600 rounded-lg focus:outline-none focus:ring-[0.3px] focus:ring-green-600 focus:border-green-600 cursor-pointer"
       role="article"
-      aria-labelledby={`card-title-${card.id}`} 
-      tabIndex={0} 
+      aria-labelledby={`card-title-${card.id}`}
+      tabIndex={0}
     >
       <div
         className={`bg-customBlack-200 rounded-lg p-4 aspect-square relative`}
@@ -20,20 +21,21 @@ export const Card = ({ card }: CardProps) => {
         <div
           className="absolute top-2 left-2 text-2xl"
           role="img"
-          aria-label={`Flag representing ${card.flag}`} 
+          aria-label={`Flag representing ${card.flag}`}
         >
           {card.flag}
         </div>
         <div className="absolute bottom-2 right-2 flex flex-col space-y-1">
           <span
-            className="text-xs bg-customGreen-50 text-green-700 px-2 py-1 rounded-full"
-            aria-label={`Level: ${card.level}`} 
+            className="text-xs bg-gray-800 text-green-700 w-[29px] rounded-full px-2 py-1 relative left-[35px]"
+            aria-label={`Level: ${card.level}`}
           >
             {card.level}
           </span>
+
           <span
             className="text-xs bg-customGreen-50 text-green-700 px-2 py-1 rounded-full flex items-center"
-            aria-label={`Duration: ${card.duration} minutes`} 
+            aria-label={`Duration: ${card.duration} minutes`}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -55,7 +57,7 @@ export const Card = ({ card }: CardProps) => {
         </div>
       </div>
       <p
-        id={`card-title-${card.id}`} 
+        id={`card-title-${card.id}`}
         className="mt-2 text-base font-medium py-2 line-clamp-2 px-2"
       >
         {card.title}
