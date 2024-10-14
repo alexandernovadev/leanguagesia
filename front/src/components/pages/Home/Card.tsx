@@ -8,7 +8,7 @@ export const Card = ({ card }: CardProps) => {
   return (
     <div
       key={card.id}
-      className="flex flex-col border border-gray-600 rounded-lg focus:outline-none focus:ring focus:ring-green-300 focus:border-green-300 cursor-pointer" 
+      className="flex flex-col border border-gray-600 rounded-lg focus:outline-none focus:ring-[0.3px] focus:ring-green-600 focus:border-green-600 cursor-pointer" 
       role="article"
       aria-labelledby={`card-title-${card.id}`} 
       tabIndex={0} 
