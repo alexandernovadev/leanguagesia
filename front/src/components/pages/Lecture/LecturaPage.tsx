@@ -8,10 +8,13 @@ import {
   Theater,
 } from "lucide-react";
 import { useState } from "react";
-import ReactMarkdown from "react-markdown";
 import { Link } from "react-router-dom";
+import ReactMarkdown from "react-markdown";
+import rehypeRaw from "rehype-raw";
+import { useCustomMarkdownRenderer } from "./procesatorMarkdown";
 
-const markdownText = `# The best practice with zustand and more
+// Define the markdown content
+const markdownText: string = `# The best practice with zustand and more
 
 When working with Zustand, a lightweight state management library for React, it's crucial to 
 follow best practices to ensure efficient and maintainable code. 
@@ -28,7 +31,9 @@ suspense and concurrent rendering, Zustand can scale effectively in larger appli
 `;
 
 export const LecturaPage = () => {
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const { customComponents, handleWordClick, makeTextClickable, wordSelected } =
+    useCustomMarkdownRenderer();
 
   return (
     <div className="bg-gradient-to-b px-4 pt-2 pb-4 from-black-800 via-customGreen-100 to-customBlack-100 text-black-200 min-h-screen flex flex-col">
@@ -58,29 +63,43 @@ export const LecturaPage = () => {
             </svg>
             3 min
           </span>
-          <span className="border py-1 rounded-xl px-2 text-xs cursor-pointer text-green-600" title="Level A1">Level: <strong>A1</strong></span>
+          <span
+            className="border py-1 rounded-xl px-2 text-xs cursor-pointer text-green-600"
+            title="Level A1"
+          >
+            Level: <strong>A1</strong>
+          </span>
         </section>
         <div className="flex items-center justify-center gap-3">
-          <Dessert className="w-6 h-6 text-green-800" />
+          <span className="flex">
+
+          <Dessert className="w-6 h-6 text-green-800" /> - {wordSelected}
+          </span>
           <Theater className="w-6 h-6 text-green-800" />
         </div>
       </div>
       <div className="flex-grow overflow-y-auto mb-4 px-3 rounded-lg border border-gray-700">
-        <ReactMarkdown className="" children={markdownText} />
+        <img src={'https://avatars.githubusercontent.com/u/6078720?s=200&v=4'} alt="" />
+        {/* @ts-ignore */}
+        <ReactMarkdown components={customComponents}
+          rehypePlugins={[rehypeRaw]}
+        >
+          {markdownText}
+        </ReactMarkdown>
       </div>
       <div className="mb-4">
         <div className="h-1 w-full bg-gray-700 rounded-full">
-          <div
-            className="h-1 bg-gray-500 rounded-full"
-            // style={{ width: `${progress}%` }}
-          ></div>
+          <div className="h-1 bg-gray-500 rounded-full"></div>
         </div>
       </div>
       <div className="flex justify-center items-center space-x-4">
         <button className={`p-2  opacity-50 cursor-not-allowed`}>
           <SkipBack className="w-6 h-6" />
         </button>
-        <button className="p-2 bg-green-800 rounded-full">
+        <button
+          className="p-2 bg-green-800 rounded-full"
+          onClick={() => setIsPlaying(!isPlaying)}
+        >
           {isPlaying ? (
             <Pause className="w-6 h-6 text-black" />
           ) : (
