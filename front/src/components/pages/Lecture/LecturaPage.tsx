@@ -7,7 +7,7 @@ import {
   Dessert,
   Theater,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
@@ -16,7 +16,7 @@ import { markdownText } from "./data/textMarkdown";
 
 export const LecturaPage = () => {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
-  const { customComponents, handleWordClick, makeTextClickable, wordSelected } =
+  const { customComponents, wordSelected } =
     useCustomMarkdownRenderer();
 
   return (

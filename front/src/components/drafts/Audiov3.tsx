@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Play, Rewind, FastForward, X } from "lucide-react";
 
 interface Transcript {
@@ -12,7 +12,7 @@ export default function PodcastPlayer() {
     "Transcript"
   );
   const [currentTime, setCurrentTime] = useState(0);
-  const [currentWordIndex, setCurrentWordIndex] = useState(0);
+  const [currentWordIndex] = useState(0);
 
   const transcript: Transcript[] = [
     {

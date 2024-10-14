@@ -28,7 +28,7 @@ export const processSubtitles = (segments: Segment[]): WordTiming[] => {
     if (duration > 0 && totalChars > 0) {
       let accumulatedTime: number = start;
 
-      words.forEach((word: string, index: number) => {
+      words.forEach((word: string) => {
         const isPunctuation = /^[.,!?;"]$/.test(word);
         const wordDuration = isPunctuation
           ? 0.01 // Duración mínima para puntuaciones

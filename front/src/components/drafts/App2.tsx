@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import subtitle from "../../data/ejaudio.json";
 import AudioFile from "./assets/audio/1728618786940.wav";
-import { debounce } from "lodash"; // Asegúrate de tener lodash instalado
 
 const App: React.FC = () => {
   const [currentTime, setCurrentTime] = useState<number>(0);
@@ -103,7 +102,7 @@ export const processSubtitles = (segments: Segment[]): WordTiming[] => {
     if (duration > 0 && totalChars > 0) {
       let accumulatedTime: number = start;
 
-      words.forEach((word: string, index: number) => {
+      words.forEach((word: string) => {
         const isPunctuation = /^[.,!?;"]$/.test(word);
         const wordDuration = isPunctuation
           ? 0.01 // Duración mínima para puntuaciones

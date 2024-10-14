@@ -1,6 +1,5 @@
-import React from "react";
 import { useForm, Controller } from "react-hook-form";
-import { Filters, Language, Level } from "./types/types";
+import { Filters } from "./types/types";
 import Checkbox from "../../ui/Checkbox";
 
 export const FormFilters = () => {
@@ -31,7 +30,7 @@ export const FormFilters = () => {
               key={lang}
               name="languages"
               control={control}
-              render={({ field }) => (
+              render={() => (
                 <Checkbox
                   label={lang}
                   name={`languages.${lang}`}
@@ -51,7 +50,7 @@ export const FormFilters = () => {
               key={level}
               name="levels"
               control={control}
-              render={({ field }) => (
+              render={() => (
                 <Checkbox
                   label={level}
                   name={`levels.${level}`}
