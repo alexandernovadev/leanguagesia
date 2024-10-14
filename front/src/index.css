@@ -70,7 +70,7 @@ p {
 /* Estilos para listas ordenadas (ol) y no ordenadas (ul) */
 ol, ul {
   @apply font-serif text-gray-200 text-lg leading-relaxed mt-4 mb-6;
-  list-style-position: inside; /* Mantener la numeración o viñetas alineadas con el contenido */
+  list-style-position: outside; /* Mantener la numeración o viñetas alineadas con el contenido */
   padding-left: 1.5rem; /* Espaciado de indentación para una lectura clara */
 }
 

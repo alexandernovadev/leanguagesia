@@ -1,13 +1,45 @@
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 
 // Function to handle word click and log it to the console
 
 export const useCustomMarkdownRenderer = () => {
   const [wordSelected, setWordSelected] = useState<string | null>(null);
 
-  const handleWordClick = (word: string): void => {
-    console.log(`Word clicked: ${word}`);
-    setWordSelected(word);
+  const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
+
+  useEffect(() => {
+    // Function to handle voice load, ensuring voices are loaded before using them
+    const loadVoices = () => {
+      const synth = window.speechSynthesis;
+      let voicesList = synth.getVoices();
+
+      // If voices are not loaded yet, wait for them
+      if (voicesList.length === 0) {
+        synth.onvoiceschanged = () => {
+          voicesList = synth.getVoices();
+          setVoices(voicesList);
+        };
+      } else {
+        setVoices(voicesList);
+      }
+    };
+
+    loadVoices();
+  }, []);
+
+  const handleWordClick = (word: string): void => {    
+    
+    // Remove dots, commas, and other punctuation
+    setWordSelected(word.replace(/[.,\/#!$%\^&\*;:{}=\_`~()]/g, ""));
+    const synth = window.speechSynthesis;
+
+    // Cancel any ongoing speech before starting a new one
+    synth.cancel();
+
+    const utterance = new SpeechSynthesisUtterance(word);
+    utterance.voice = voices[0];
+    utterance.lang = "en-US";
+    synth.speak(utterance);
   };
 
   // Function to split text into clickable spans for words
@@ -16,7 +48,8 @@ export const useCustomMarkdownRenderer = () => {
       <span
         key={index}
         className="cursor-pointer hover:underline"
-        onClick={() => handleWordClick(word)}
+        // onClick={() => handleWordClick(word)}
+        onDoubleClick={() => handleWordClick(word)}
       >
         {word}{" "}
       </span>
