@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Card as CardType } from "./types/types";
 
 interface CardProps {
@@ -6,7 +7,7 @@ interface CardProps {
 
 export const Card = ({ card }: CardProps) => {
   return (
-    <div
+    <Link to={`/lecture/${card.id}`}
       key={card.id}
       className="flex flex-col border border-gray-600 rounded-lg focus:outline-none focus:ring-[0.3px] focus:ring-green-600 focus:border-green-600 cursor-pointer" 
       role="article"
@@ -59,6 +60,6 @@ export const Card = ({ card }: CardProps) => {
       >
         {card.title}
       </p>
-    </div>
+    </Link>
   );
 };

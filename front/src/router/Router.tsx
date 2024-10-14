@@ -3,6 +3,7 @@ import HomePage from "../components/pages/Home/HomePage";
 import { WordPage } from "../components/pages/Words/WordPage";
 import { ProfilePage } from "../components/pages/Profile/ProfilePage";
 import { GeneratorPage } from "../components/pages/Generator/GeneratorPage";
+import { LecturaPage } from "../components/pages/Lecture/LecturaPage";
 
 const RouterP = () => {
   return (
@@ -13,6 +14,7 @@ const RouterP = () => {
         <Route path="/word" element={<WordPage />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/generator" element={<GeneratorPage />} />
+        <Route path="/lecture/:id" element={<LecturaPage />} />
 
         {/* Ruta de captura para redirigir a la página de inicio */}
         <Route path="*" element={<Navigate to="/?sequovs=true" replace />} />

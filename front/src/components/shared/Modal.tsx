@@ -44,7 +44,7 @@ export const Modal = ({ isOpen, onClose, children }: ModalProps) => {
 
   return (
     <div
-      className="fixed inset-0 flex items-center justify-center bg-gray-600 bg-opacity-40 z-10"
+      className="fixed inset-0 flex items-center justify-center bg-gray-700 bg-opacity-40 z-10"
       onClick={handleOverlayClick}
     >
       <div className="m-4">{children}</div>

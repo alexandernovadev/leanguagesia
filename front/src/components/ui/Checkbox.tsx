@@ -37,8 +37,8 @@ const Checkbox: React.FC<CheckboxProps> = ({
         tabIndex={0} // Permite la navegación con el teclado
       />
       <span
-        className={`w-6 h-6 rounded-md bg-gray-700 border border-gray-700 flex items-center justify-center transition-all duration-200 
-        text-transparent peer-checked:bg-green-500 peer-checked:text-white peer-focus-visible:ring-2 peer-focus-visible:ring-green-500`} // Estilos para el foco visible
+        className={`w-6 h-6 min-h-6 min-w-6 rounded-md bg-gray-700 border border-gray-700 flex items-center justify-center transition-all duration-200 
+        text-transparent peer-checked:bg-green-900 peer-checked:text-white peer-focus-visible:ring-2 peer-focus-visible:ring-green-500`} // Estilos para el foco visible
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
