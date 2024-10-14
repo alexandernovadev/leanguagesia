@@ -44,6 +44,8 @@ export const Modal = ({ isOpen, onClose, children }: ModalProps) => {
 
   return (
     <div
+      role="dialog"
+      aria-modal="true"
       className="fixed inset-0 flex items-center justify-center bg-gray-700 bg-opacity-40 z-10"
       onClick={handleOverlayClick}
     >
