@@ -1,11 +1,8 @@
 import { ReactNode, useEffect, useState } from "react";
-import useVoiceStore from "../../../store/useVoiceStore"; // Importa el store de voces seleccionadas
 
 export const useCustomMarkdownRenderer = () => {
   const [wordSelected, setWordSelected] = useState<string | null>(null);
 
-  // Acceder a la voz seleccionada desde el estado global (Zustand en este caso)
-  const selectedVoice = useVoiceStore((state) => state.selectedVoice);
   const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
 
   useEffect(() => {
@@ -40,8 +37,8 @@ export const useCustomMarkdownRenderer = () => {
     const utterance = new SpeechSynthesisUtterance(word);
 
     // Si hay una voz seleccionada, usarla. De lo contrario, usar la primera voz disponible
-    utterance.voice = selectedVoice || voices[0];
-    utterance.lang = selectedVoice?.lang || "en-US"; // Usa el idioma de la voz seleccionada
+    utterance.voice = voices[0];
+    utterance.lang = "en-US"; // Usa el idioma de la voz seleccionada
     synth.speak(utterance);
   };
 
