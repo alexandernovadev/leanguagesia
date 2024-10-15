@@ -4,24 +4,35 @@ import { CardList } from "./CardList";
 import { Modal } from "../../shared/Modal";
 import { FormFilters } from "./FormFilters";
 import { MainLayout } from "../../shared/Layouts/MainLayout";
+import Input from "../../ui/Input";
+import { useForm } from "react-hook-form";
+
+interface FormData {
+  searchQuery: string;
+}
 
 export default function HomePage() {
+  const { handleSubmit, control } = useForm<FormData>();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const toggleModal = () => setIsModalOpen(!isModalOpen);
+
+  const onSubmit = (data: FormData) => {
+    console.log(data);
+  };
 
   return (
     <MainLayout>
       <div className="sticky top-0 z-10 bg-gradient-to-b from-black-800 to-transparent p-4">
         <div className="flex items-center space-x-2">
-          <div className="relative flex-grow">
-            <input
-              type="text"
-              placeholder="Search"
-              className="w-full bg-customBlack-200 rounded-lg py-2 pl-10 pr-4"
+          <form onSubmit={handleSubmit(onSubmit)} className="w-full">
+            <Input
+              name="searchQuery"
+              control={control}
+              placeholder="Search..."
             />
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-green-700 w-5 h-5" />
-          </div>
+          </form>
+
           <button
             onClick={toggleModal}
             className="bg-customBlack-200 p-2 rounded-lg"
