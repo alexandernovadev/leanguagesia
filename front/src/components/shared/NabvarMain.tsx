@@ -1,4 +1,4 @@
-import { BookOpen, Home, User, Zap } from "lucide-react";
+import { BookOpen, Home, User, Zap, Settings } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export const NabvarMain = () => {
@@ -14,6 +14,9 @@ export const NabvarMain = () => {
         <BookOpen className="w-6 h-6" />
       </Link>
 
+      <Link to="/settings" className="rounded-lg p-1">
+        <Settings className="w-6 h-6" />
+      </Link>
       <Link to="/profile" className="rounded-lg p-1">
         <User className="w-6 h-6" />
       </Link>
