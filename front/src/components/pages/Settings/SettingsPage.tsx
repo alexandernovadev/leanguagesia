@@ -15,8 +15,11 @@ export const SettingsPage: React.FC = () => {
   // Cargar las voces de Speech Synthesis
   useEffect(() => {
     const loadVoices = () => {
-      const voices = window.speechSynthesis.getVoices();
-      setVoices(voices);
+      setTimeout(() => {
+        const synth = window.speechSynthesis;
+        const voicesList = synth.getVoices();
+        setVoices(voicesList);
+      } , 1000);
     };
 
     if (window.speechSynthesis.onvoiceschanged !== undefined) {
