@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Search, SlidersHorizontal } from "lucide-react";
+import { SlidersHorizontal } from "lucide-react";
 import { CardList } from "./CardList";
 import { Modal } from "../../shared/Modal";
 import { FormFilters } from "./FormFilters";
