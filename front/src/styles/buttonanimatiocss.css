@@ -1,7 +1,7 @@
 .box {
   position: relative;
   width: 50px;
-  height: 30px;
+  height: 33px;
   background: rgba(87, 87, 87, 0.75);
   border-radius: 16px;
   display: flex;
@@ -13,6 +13,25 @@
 
 .box:active,
 .box:focus {
+  outline: none;
+  box-shadow: none
+}
+
+.boxEmp {
+  position: relative;
+  width: 50px;
+  height: 33px;
+  background: rgba(87, 87, 87, 0.75);
+  border-radius: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  outline: none;
+}
+
+.boxEmp:active,
+.boxEmp:focus {
   outline: none;
   box-shadow: none
 }
