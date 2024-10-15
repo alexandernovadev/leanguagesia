@@ -111,7 +111,7 @@ const Select: React.FC<SelectProps> = ({
 
       {/* Dropdown Options */}
       {isOpen && (
-        <div className="absolute z-50 w-full top-[73px] mt-1 max-h-60 overflow-auto bg-gray-800 border border-gray-700 rounded-md">
+        <div className="absolute z-50 w-full top-[73px] mt-1 max-h-60 overflow-auto bg-gray-800 border border-gray-700 rounded-md transition-all duration-300 ease-in-out">
           {filteredOptions.length > 0 ? (
             filteredOptions.map((option) => (
               <div
