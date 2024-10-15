@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useController, Control } from "react-hook-form";
-import { ChevronDown, ChevronUp } from "lucide-react"; // Importar los íconos de Lucide
+import { ChevronDown, ChevronUp } from "lucide-react";
 
 interface Option {
   label: string;
@@ -30,12 +30,12 @@ const Select: React.FC<SelectProps> = ({
     name,
     control,
     rules,
-    defaultValue: multiple ? [] : "", // Default depending on single/multiple selection
+    defaultValue: multiple ? [] : "",
   });
 
-  const [search, setSearch] = useState<string>(""); // Estado de búsqueda
+  const [search, setSearch] = useState<string>("");
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const selectRef = useRef<HTMLDivElement>(null); // Referencia al contenedor del select
+  const selectRef = useRef<HTMLDivElement>(null);
 
   const handleSelectOption = (optionValue: string | number) => {
     if (multiple) {
@@ -48,10 +48,9 @@ const Select: React.FC<SelectProps> = ({
       onChange(optionValue);
       setIsOpen(false);
     }
-    setSearch(""); // Limpia el campo de búsqueda después de seleccionar
+    setSearch("");
   };
 
-  // Mantén separado el valor que se muestra en el input
   const displayValue = multiple
     ? options
         .filter((option) => value.includes(option.value))
@@ -63,16 +62,18 @@ const Select: React.FC<SelectProps> = ({
     option.label.toLowerCase().includes(search.toLowerCase())
   );
 
-  // Manejar el cierre del dropdown cuando se hace clic fuera del componente
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (selectRef.current && !selectRef.current.contains(event.target as Node)) {
+      if (
+        selectRef.current &&
+        !selectRef.current.contains(event.target as Node)
+      ) {
         setIsOpen(false); // Cierra el dropdown si el clic ocurrió fuera del select
       }
     };
 
     document.addEventListener("mousedown", handleClickOutside);
-    
+
     // Cleanup para remover el listener al desmontar el componente
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
@@ -89,7 +90,9 @@ const Select: React.FC<SelectProps> = ({
           type="text"
           value={search || displayValue} // Mostrar búsqueda o el valor seleccionado
           onChange={(e) => setSearch(e.target.value)}
-          placeholder={multiple && value.length > 0 ? displayValue : "Search..."}
+          placeholder={
+            multiple && value.length > 0 ? displayValue : "Search..."
+          }
           onFocus={() => setIsOpen(true)} // Abre el dropdown al hacer focus
           className="w-full p-2 border rounded-md border-gray-700 bg-gray-800 text-white pr-10" // Añadimos espacio para el ícono
         />
@@ -115,7 +118,11 @@ const Select: React.FC<SelectProps> = ({
                 key={option.value}
                 onMouseDown={() => handleSelectOption(option.value)} // Usa onMouseDown en vez de onClick
                 className={`cursor-pointer flex items-center p-2 transition-all duration-200 ${
-                  (multiple ? value.includes(option.value) : value === option.value)
+                  (
+                    multiple
+                      ? value.includes(option.value)
+                      : value === option.value
+                  )
                     ? "bg-green-900 text-white"
                     : "bg-gray-800 text-white"
                 } hover:bg-gray-700`}
@@ -124,7 +131,9 @@ const Select: React.FC<SelectProps> = ({
                 {multiple ? (
                   <span
                     className={`w-6 h-6 min-h-6 min-w-6 rounded-md border border-gray-700 flex items-center justify-center transition-all duration-200 ${
-                      value.includes(option.value) ? "bg-green-900" : "bg-gray-700"
+                      value.includes(option.value)
+                        ? "bg-green-900"
+                        : "bg-gray-700"
                     }`}
                   >
                     {value.includes(option.value) && (
