@@ -1,0 +1,51 @@
+import React from "react";
+import { useController, Control } from "react-hook-form";
+import { Search } from "lucide-react"; // Default icon
+
+interface InputProps {
+  name: string;
+  control: Control<any>;
+  placeholder?: string;
+  icon?: React.ReactNode; // Property for custom icon
+  rounded?: string; // Class for rounded corners
+  rules?: any; // Validation rules for react-hook-form
+  type?: string; // Input type, default is "text"
+}
+
+const Input: React.FC<InputProps> = ({
+  name,
+  control,
+  placeholder = "Search...",
+  icon = <Search className="w-5 h-5 text-green-700" />, // Default icon
+  rounded = "rounded-md", // Default class for rounded corners
+  rules,
+  type = "text", // Default input type
+}) => {
+  const {
+    field: { value, onChange, onBlur },
+  } = useController({
+    name,
+    control,
+    rules,
+    defaultValue: "",
+  });
+
+  return (
+    <div className="relative flex-grow">
+      <input
+        type={type}
+        value={value}
+        onChange={onChange}
+        onBlur={onBlur}
+        placeholder={placeholder}
+        className={`w-full bg-customBlack-200 py-2 pl-10 pr-4 ${rounded} focus:outline-none`}
+      />
+      {/* Icon positioned on the left side of the input */}
+      <span className="absolute left-3 top-1/2 transform -translate-y-1/2">
+        {icon}
+      </span>
+    </div>
+  );
+};
+
+export default Input;

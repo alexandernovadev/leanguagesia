@@ -2,6 +2,8 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { MainLayout } from "../../shared/Layouts/MainLayout";
 import Select from "../../ui/Select";
 import Checkbox from "../../ui/Checkbox";
+import Input from "../../ui/Input";
+import { Mail } from "lucide-react";
 // Asegúrate de importar tu Select
 
 interface FormData {
@@ -38,14 +40,16 @@ export const GeneratorPage = () => {
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           {/* Text Input */}
-          <div>
-            <label className="text-white">Text Input</label>
-            <input
-              type="text"
-              className="w-full p-2 mt-2 border border-gray-700 rounded-md bg-gray-800 text-white"
-              {...control.register("textInput", { required: true })}
-            />
-          </div>
+          <Input name="searchQuery" control={control} placeholder="Search..." />
+
+          {/* Email Input with Custom Icon */}
+          <Input
+            name="email"
+            control={control}
+            placeholder="Email Address"
+            icon={<Mail className="w-5 h-5 text-blue-700" />}
+            rounded="rounded-lg" // Custom rounded corners
+          />
 
           {/* Single Select */}
           <Select
