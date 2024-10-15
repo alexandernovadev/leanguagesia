@@ -25,7 +25,7 @@ const Select: React.FC<SelectProps> = ({
   rules,
 }) => {
   const {
-    field: { value, onChange, onBlur },
+    field: { value, onChange },
   } = useController({
     name,
     control,
@@ -33,7 +33,7 @@ const Select: React.FC<SelectProps> = ({
     defaultValue: multiple ? [] : "", // Default depending on single/multiple selection
   });
 
-  const [search, setSearch] = useState<string>("");
+  const [search, setSearch] = useState<string>(""); // Estado de búsqueda
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const selectRef = useRef<HTMLDivElement>(null); // Referencia al contenedor del select
 
@@ -48,15 +48,16 @@ const Select: React.FC<SelectProps> = ({
       onChange(optionValue);
       setIsOpen(false);
     }
+    setSearch(""); // Limpia el campo de búsqueda después de seleccionar
   };
 
-  // Actualizamos el input cuando haya selecciones
+  // Mantén separado el valor que se muestra en el input
   const displayValue = multiple
     ? options
         .filter((option) => value.includes(option.value))
         .map((option) => option.label)
         .join(", ")
-    : options.find((option) => option.value === value)?.label || search;
+    : options.find((option) => option.value === value)?.label || "";
 
   const filteredOptions = options.filter((option) =>
     option.label.toLowerCase().includes(search.toLowerCase())
@@ -86,9 +87,9 @@ const Select: React.FC<SelectProps> = ({
       <div className="relative w-full">
         <input
           type="text"
-          value={displayValue}
+          value={search || displayValue} // Mostrar búsqueda o el valor seleccionado
           onChange={(e) => setSearch(e.target.value)}
-          placeholder="Search..."
+          placeholder={multiple && value.length > 0 ? displayValue : "Search..."}
           onFocus={() => setIsOpen(true)} // Abre el dropdown al hacer focus
           className="w-full p-2 border rounded-md border-gray-700 bg-gray-800 text-white pr-10" // Añadimos espacio para el ícono
         />
