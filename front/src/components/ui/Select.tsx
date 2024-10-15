@@ -14,6 +14,7 @@ interface SelectProps {
   options: Option[];
   multiple?: boolean;
   rules?: any;
+  disabled?: boolean;
 }
 
 const Select: React.FC<SelectProps> = ({
@@ -23,6 +24,7 @@ const Select: React.FC<SelectProps> = ({
   options,
   multiple = false,
   rules,
+  disabled = false,
 }) => {
   const {
     field: { value, onChange },
@@ -81,7 +83,12 @@ const Select: React.FC<SelectProps> = ({
   }, [selectRef]);
 
   return (
-    <div ref={selectRef} className="relative flex flex-col space-y-2 w-full">
+    <div
+      ref={selectRef}
+      className={`relative flex flex-col space-y-2 w-full ${
+        disabled ? "opacity-50 cursor-not-allowed" : ""
+      }`} // Aplica estilos de deshabilitado
+    >
       <label className="text-white">{label}</label>
 
       {/* Search Box */}
@@ -93,13 +100,16 @@ const Select: React.FC<SelectProps> = ({
           placeholder={
             multiple && value.length > 0 ? displayValue : "Search..."
           }
-          onFocus={() => setIsOpen(true)} // Abre el dropdown al hacer focus
+          onFocus={() => !disabled && setIsOpen(true)} // Abre el dropdown al hacer focus si no está deshabilitado
+          disabled={disabled} // Deshabilita el input
           className="w-full p-2 border rounded-md border-gray-700 bg-gray-800 text-white pr-10" // Añadimos espacio para el ícono
         />
         {/* Icono al final del input */}
         <span
-          className="absolute inset-y-0 right-2 flex items-center cursor-pointer"
-          onClick={() => setIsOpen(!isOpen)}
+          className={`absolute inset-y-0 right-2 flex items-center ${
+            disabled ? "cursor-not-allowed" : "cursor-pointer"
+          }`} // Deshabilita el cursor si está deshabilitado
+          onClick={() => !disabled && setIsOpen(!isOpen)} // Solo abre/cierra si no está deshabilitado
         >
           {isOpen ? (
             <ChevronUp className="text-white" />
@@ -110,7 +120,7 @@ const Select: React.FC<SelectProps> = ({
       </div>
 
       {/* Dropdown Options */}
-      {isOpen && (
+      {isOpen && !disabled && ( // Solo muestra las opciones si no está deshabilitado
         <div className="absolute z-50 w-full top-[73px] mt-1 max-h-60 overflow-auto bg-gray-800 border border-gray-700 rounded-md transition-all duration-300 ease-in-out">
           {filteredOptions.length > 0 ? (
             filteredOptions.map((option) => (

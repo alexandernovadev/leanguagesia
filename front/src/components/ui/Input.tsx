@@ -10,6 +10,7 @@ interface InputProps {
   rounded?: string; // Class for rounded corners
   rules?: any; // Validation rules for react-hook-form
   type?: string; // Input type, default is "text"
+  disabled?: boolean; // Disabled input
 }
 
 const Input: React.FC<InputProps> = ({
@@ -20,6 +21,7 @@ const Input: React.FC<InputProps> = ({
   rounded = "rounded-md", // Default class for rounded corners
   rules,
   type = "text", // Default input type
+  disabled = false, // Default disabled state is false
 }) => {
   const {
     field: { value, onChange, onBlur },
@@ -38,10 +40,14 @@ const Input: React.FC<InputProps> = ({
         onChange={onChange}
         onBlur={onBlur}
         placeholder={placeholder}
-        className={`w-full bg-customBlack-200 py-2 pl-10 pr-4 ${rounded} focus:outline-none`}
+        disabled={disabled}
+        className={`w-full bg-customBlack-200 py-2 pl-10 pr-4 ${rounded} focus:outline-none
+          ${disabled ? "opacity-50 cursor-not-allowed" : ""}
+        `}
       />
       {/* Icon positioned on the left side of the input */}
-      <span className="absolute left-3 top-1/2 transform -translate-y-1/2">
+      <span className={`absolute left-3 top-1/2 transform -translate-y-1/2 
+        ${disabled ? "text-gray-400" : ""}`}>
         {icon}
       </span>
     </div>
