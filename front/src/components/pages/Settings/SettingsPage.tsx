@@ -7,7 +7,6 @@ export const SettingsPage: React.FC = () => {
   const setVoices = useVoiceStore((state) => state.setVoices);
   const setSelectedVoice = useVoiceStore((state) => state.setSelectedVoice);
   const selectedVoice = useVoiceStore((state) => state.selectedVoice);
-  const speak = useVoiceStore((state) => state.speak);
 
   const [languageFilter, setLanguageFilter] = useState<string>("");
   const [regionFilter, setRegionFilter] = useState<string>("");
@@ -32,9 +31,13 @@ export const SettingsPage: React.FC = () => {
     setSelectedVoice(voice);
   };
 
-  // Función para probar la voz seleccionada
+  // Función para probar la voz de cada tarjeta
   const handleTestVoice = (voice: SpeechSynthesisVoice) => {
-    speak(`This is a test of the voice: ${voice.name}`);
+    const utterance = new SpeechSynthesisUtterance(
+      `This is a test of the voice: ${voice.name}`
+    );
+    utterance.voice = voice; // Usamos la voz específica de la tarjeta
+    window.speechSynthesis.speak(utterance);
   };
 
   // Filtrar por idioma, región, y si es default
@@ -149,7 +152,7 @@ export const SettingsPage: React.FC = () => {
               <div className="mt-1 flex space-x-2">
                 {/* Botón para probar la voz */}
                 <button
-                  className="px-2 py-1 bg-green-500 text-white rounded hover:bg-green-600 text-xs"
+                  className="px-2 py-1 bg-green-700 text-white rounded hover:bg-green-600 text-xs"
                   onClick={() => handleTestVoice(voice)}
                 >
                   Test
