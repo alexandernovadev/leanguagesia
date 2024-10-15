@@ -79,7 +79,7 @@ export const GeneratorPage = () => {
           {/* Submit Button */}
           <button
             type="submit"
-            className="w-full bg-green-600 text-white p-3 rounded-md hover:bg-green-700 transition-colors"
+            className="w-full bg-green-800 text-white p-3 rounded-md hover:bg-green-900 transition-colors"
           >
             Submit
           </button>
