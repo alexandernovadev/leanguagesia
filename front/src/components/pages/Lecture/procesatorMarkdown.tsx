@@ -1,10 +1,11 @@
 import { ReactNode, useEffect, useState } from "react";
-
-// Function to handle word click and log it to the console
+import useVoiceStore from "../../../store/useVoiceStore"; // Importa el store de voces seleccionadas
 
 export const useCustomMarkdownRenderer = () => {
   const [wordSelected, setWordSelected] = useState<string | null>(null);
 
+  // Acceder a la voz seleccionada desde el estado global (Zustand en este caso)
+  const selectedVoice = useVoiceStore((state) => state.selectedVoice);
   const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
 
   useEffect(() => {
@@ -27,8 +28,7 @@ export const useCustomMarkdownRenderer = () => {
     loadVoices();
   }, []);
 
-  const handleWordClick = (word: string): void => {    
-    
+  const handleWordClick = (word: string): void => {
     // Remove dots, commas, and other punctuation
     setWordSelected(word.replace(/[.,\/#!$%\^&\*;:{}=\_`~()]/g, ""));
     const synth = window.speechSynthesis;
@@ -36,9 +36,12 @@ export const useCustomMarkdownRenderer = () => {
     // Cancel any ongoing speech before starting a new one
     synth.cancel();
 
+    // Crear el utterance usando la voz seleccionada del estado global
     const utterance = new SpeechSynthesisUtterance(word);
-    utterance.voice = voices[0];
-    utterance.lang = "en-US";
+
+    // Si hay una voz seleccionada, usarla. De lo contrario, usar la primera voz disponible
+    utterance.voice = selectedVoice || voices[0];
+    utterance.lang = selectedVoice?.lang || "en-US"; // Usa el idioma de la voz seleccionada
     synth.speak(utterance);
   };
 
@@ -48,7 +51,6 @@ export const useCustomMarkdownRenderer = () => {
       <span
         key={index}
         className="cursor-pointer hover:underline"
-        // onClick={() => handleWordClick(word)}
         onDoubleClick={() => handleWordClick(word)}
       >
         {word}{" "}
