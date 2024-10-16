@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 import Select from "../../ui/Select";
 
 // Opciones para los Select
-const selectOptions = [
+const writeStyle = [
   { label: "Narracion", value: "option1" },
   { label: "Cuento", value: "option2" },
   { label: "Ariticle", value: "option3" },
@@ -30,12 +30,12 @@ export const GeneratorPage = () => {
 
   const onSubmit = (data: FormData) => {
     console.log(data);
-  }
+  };
 
   return (
     <MainLayout>
       <section>
-        <form  onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           <Input
             name={"Search"}
             icon={<Brain />}
@@ -50,7 +50,7 @@ export const GeneratorPage = () => {
             name="selectOption"
             control={control}
             disabled={isLoaded}
-            options={selectOptions}
+            options={writeStyle}
           />
 
           <Select
