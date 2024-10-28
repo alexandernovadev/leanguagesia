@@ -1,7 +1,6 @@
 import express, { Request, Response, NextFunction } from "express";
 import dotenv from "dotenv";
-import { generateText } from "./app/services/generateText";
-import { textToAudioUseCase } from "./app/services/generateAudio";
+import { generateRoutes } from "./app/routes/generatorIARoutes";
 
 dotenv.config();
 
@@ -11,42 +10,8 @@ const PORT = process.env.PORT || 3000;
 // Middleware to parse JSON
 app.use(express.json());
 
-// Example route
-app.get(
-  "/",
-  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    const prompt = "Paises de america";
-
-    try {
-      const response = await generateText(prompt);
-      res.json(response);
-    } catch (error) {
-      next(error); // Forward the error to error-handling middleware
-    }
-  }
-);
-
-app.post(
-  "/generate-audio",
-  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    const { prompt, voice } = req.body;
-
-    if (!prompt) {
-      res.status(400).json({ error: "Prompt is required." });
-      return;
-    }
-
-    try {
-      // Call the textToAudioUseCase to generate the audio file
-      const { audio, subtitles } = await textToAudioUseCase({ prompt, voice });
-
-      // Send back the file path or stream the file to the user
-      res.status(200).json({ audio, subtitles });
-    } catch (error) {
-      next(error); // Forward the error to error-handling middleware
-    }
-  }
-);
+// Routes
+app.use("/api/ai", generateRoutes);
 
 // Error-handling middleware
 app.use((err: Error, req: Request, res: Response, next: NextFunction): void => {
