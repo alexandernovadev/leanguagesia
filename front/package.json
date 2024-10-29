@@ -12,10 +12,10 @@
   "dependencies": {
     "lodash": "^4.17.21",
     "lucide-react": "^0.451.0",
+    "markdown-to-jsx": "^7.5.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.53.0",
-    "react-markdown": "^9.0.1",
     "react-router-dom": "^6.27.0",
     "rehype-raw": "^7.0.0",
     "zustand": "^5.0.0-rc.2"
