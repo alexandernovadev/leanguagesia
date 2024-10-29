@@ -7,8 +7,8 @@ import { useForm } from "react-hook-form";
 import Select from "../../ui/Select";
 import { writeStyle } from "./data/writesStyles";
 import { levels } from "./data/levels";
-import Markdown from "markdown-to-jsx";
 import { BACKURL } from "../../../api/backConf";
+import ReactMarkdown from "react-markdown";
 
 export const GeneratorPage = () => {
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
@@ -121,7 +121,7 @@ export const GeneratorPage = () => {
               No text generated yet.
             </div>
           )}
-          <Markdown>{text}</Markdown>
+          <ReactMarkdown>{text}</ReactMarkdown>
         </section>
       </section>
     </MainLayout>
