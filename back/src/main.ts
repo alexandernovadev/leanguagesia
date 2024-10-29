@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import { generateRoutes } from "./app/routes/generatorIARoutes";
 import LectureRoutes  from "./app/routes/lectureRoutes";
 import cors from "cors";
+import { connectDB } from "./app/db/mongoConnection";
 
 dotenv.config();
 
@@ -14,6 +15,15 @@ app.use(express.json());
 
 // Middleware to handle CORS
 app.use(cors());
+
+// Connection to MongoDB
+connectDB().then(() => {
+  console.log("Connection to MongoDB established successfully");
+}
+).catch((error) => {
+  console.error("Error connecting to MongoDB:", error);
+});
+
 
 // Routes
 app.use("/api/ai", generateRoutes);
