@@ -18,10 +18,41 @@ export const GeneratorPage = () => {
   const textRef = useRef<HTMLDivElement>(null);
   const { handleSubmit, control } = useForm<FormData>();
 
-
-  const escapeMarkdown = (text:string) => {
+  const escapeMarkdown = (text: string) => {
     return text.replace(/```/g, "\\`\\`\\`").replace(/`/g, "\\`");
   };
+
+  const saveLecture = async () => {
+    const lecture = {
+      time: 2,
+      level: "B1",
+      typeWrite: "Engaging Article",
+      language: "en",
+      img: "",
+      content: text,
+    };
+
+    try {
+      const response = await fetch(`${BACKURL}/api/lecture`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(lecture),
+      });
+
+      if (response.ok) {
+        console.log("Lecture saved successfully.");
+      } else {
+        console.error("Failed to save the lecture.");
+      }
+    } catch (err) {
+      console.error("Failed to save the lecture.");
+    }
+  };
+
+
+
 
   const handleGenerateText = async () => {
     setIsLoaded(true);
@@ -36,8 +67,8 @@ export const GeneratorPage = () => {
         },
         body: JSON.stringify({
           prompt: "MAXIMO 600 characters",
-          // level,
-          // ammountQuestions,
+          level: "B1",
+          typeWrite: "Engaging Article",
         }),
       });
 

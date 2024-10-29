@@ -2,9 +2,15 @@ import OpenAI from "openai";
 
 interface Options {
   prompt: string;
+  level: string;
+  typeWrite: string;
 }
 
-export const generateTextStreamService= async ({ prompt }: Options) => {
+export const generateTextStreamService = async ({
+  prompt,
+  level = "A1",
+  typeWrite = "Engaging Article",
+}: Options) => {
   const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY || "",
   });
@@ -16,14 +22,20 @@ export const generateTextStreamService= async ({ prompt }: Options) => {
       {
         role: "system",
         content: `
-            Genera un Markdown en ingles sobre un ARTICULO que contenga 
-            una descripcion about tecnología blockchain y sus aplicaciones.
-            debera tner un title un subtitle y una descripcion larga.
+            Genera un Markdown en INGLES con un estilo de "${typeWrite}"
+            con vocabulario ${level}, el texto tendra
+            # Title
+            ## Subtitle
+
+            Contentent, and if un need to add more subititles it would be use ### Subtitles
+
+            MINIMO 800 characters
+            MAXIMO 2000 characters
           `,
       },
       {
         role: "user",
-        content: prompt,
+        content: "The topic would be "+ prompt,
       },
     ],
     temperature: 0.8,

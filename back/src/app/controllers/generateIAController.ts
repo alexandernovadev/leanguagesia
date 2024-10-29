@@ -2,14 +2,14 @@ import { Request, Response } from "express";
 import { generateTextStreamService } from "../services/generateTextStream";
 
 export const generateTextStream = async (req: Request, res: Response) => {
-  const { prompt } = req.body;
+  const { prompt, level,typeWrite } = req.body;
 
   if (!prompt) {
     return res.status(400).json({ error: "Prompt is required." });
   }
 
   try {
-    const stream = await generateTextStreamService({ prompt });
+    const stream = await generateTextStreamService({ prompt,level,typeWrite });
 
     res.setHeader("Content-Type", "application/json");
     res.flushHeaders();
