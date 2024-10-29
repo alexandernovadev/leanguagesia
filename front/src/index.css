@@ -7,6 +7,7 @@ html {
   background: #1A1A1A;
   -webkit-font-smoothing: antialiased;
   overflow-y: hidden;
+  overflow-x: hidden;
 }
 
 #root {
@@ -27,12 +28,17 @@ textarea {
 
 
 button:focus {
-  @apply outline-none ring-2 ring-green-200; 
+  @apply outline-none ring-2 ring-green-200;
 }
 
 
 /* Estilos para los encabezados h1, h2, h3, etc. */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   @apply font-serif font-bold text-gray-100 tracking-wide leading-tight;
 }
 
@@ -64,31 +70,39 @@ h6 {
 p {
   @apply font-serif text-lg text-gray-200 leading-relaxed mt-4 mb-6;
   text-align: justify;
-  hyphens: auto; /* Permitir división de palabras para mejor legibilidad */
+  hyphens: auto;
+  /* Permitir división de palabras para mejor legibilidad */
 }
 
 /* Estilos para listas ordenadas (ol) y no ordenadas (ul) */
-ol, ul {
+ol,
+ul {
   @apply font-serif text-gray-200 text-lg leading-relaxed mt-4 mb-6;
-  list-style-position: outside; /* Mantener la numeración o viñetas alineadas con el contenido */
-  padding-left: 1.5rem; /* Espaciado de indentación para una lectura clara */
+  list-style-position: outside;
+  /* Mantener la numeración o viñetas alineadas con el contenido */
+  padding-left: 1.5rem;
+  /* Espaciado de indentación para una lectura clara */
 }
 
 /* Estilos específicos para listas ordenadas (ol) */
 ol {
-  list-style-type: decimal; /* Usar numeración */
+  list-style-type: decimal;
+  /* Usar numeración */
 }
 
 /* Estilos específicos para listas no ordenadas (ul) */
 ul {
-  list-style-type: disc; /* Usar viñetas circulares */
+  list-style-type: disc;
+  /* Usar viñetas circulares */
 }
 
 /* Estilos para los elementos de lista (li) */
 li {
   @apply mb-2;
-  text-indent: -1.5rem; /* Para mantener el texto alineado con el inicio de los números o viñetas */
-  padding-left: 1.5rem; /* Para un pequeño margen visual */
+  text-indent: -1.5rem;
+  /* Para mantener el texto alineado con el inicio de los números o viñetas */
+  padding-left: 1.5rem;
+  /* Para un pequeño margen visual */
 }
 
 /* Estilos para bloques de cita (blockquote) */
@@ -98,7 +112,8 @@ blockquote {
 
 /* Estilos para imágenes */
 img {
-  @apply my-4 max-w-full h-auto; /* Asegurar que las imágenes sean responsivas */
+  @apply my-4 max-w-full h-auto;
+  /* Asegurar que las imágenes sean responsivas */
 }
 
 /* Estilos para códigos embebidos (inline code) */

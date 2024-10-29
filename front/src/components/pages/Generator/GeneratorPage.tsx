@@ -117,7 +117,7 @@ export const GeneratorPage = () => {
           className="flex-1 border border-white m-5 overflow-auto rounded-lg px-4"
         >
           {text.length === 0 && (
-            <div className="text-center text-zinc-400">
+            <div className="flex-1 h-[100%] text-zinc-400 flex justify-center items-center">
               No text generated yet.
             </div>
           )}
