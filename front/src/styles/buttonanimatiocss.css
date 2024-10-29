@@ -1,7 +1,8 @@
 .box {
   position: relative;
-  width: 50px;
+  width: 150px;
   height: 33px;
+  bottom: -13px;
   background: rgba(87, 87, 87, 0.75);
   border-radius: 16px;
   display: flex;
@@ -19,7 +20,8 @@
 
 .boxEmp {
   position: relative;
-  width: 50px;
+  bottom: -13px;
+  width: 150px;
   height: 33px;
   background: rgba(87, 87, 87, 0.75);
   border-radius: 16px;
