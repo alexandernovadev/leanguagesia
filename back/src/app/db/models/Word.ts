@@ -11,6 +11,10 @@ export interface IWord extends Document {
   level?: "A1" | "A2" | "B1" | "B2" | "C1" | "C2";
   codeSwitching?: string[];
   language: string;
+  spanish?:{
+    definition: string;
+    word: string;
+  };
 }
 
 const WordSchema: Schema = new Schema<IWord>(
@@ -85,6 +89,18 @@ const WordSchema: Schema = new Schema<IWord>(
       type: [String],
       default: [],
     },
+    spanish:{
+      definition: {
+        type: String,
+        minlength: 5,
+        maxlength: 1000,
+      },
+      word: {
+        type: String,
+        minlength: 1,
+        maxlength: 100,
+      }
+    }
   },
   { timestamps: true }
 );
