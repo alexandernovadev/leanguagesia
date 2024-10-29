@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import Select from "../../ui/Select";
 import { writeStyle } from "./data/writesStyles";
 import { levels } from "./data/levels";
+import { TextGenerator } from "./textGenerator";
 
 export const GeneratorPage = () => {
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
@@ -59,19 +60,7 @@ export const GeneratorPage = () => {
         </form>
 
         {/* Content section that will take the remaining height */}
-        <section className="flex-1 border border-white m-5 overflow-auto rounded-lg">
-          {Array.from({ length: 10 }).map((_, index) => (
-            <div key={index} className="p-4 border-b border-white">
-              <h1 className="text-2xl">Title</h1>
-              <p className="text-lg">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis
-                quae, tempore, voluptas, quod quibusdam quia doloremque
-                repudiandae voluptates quidem doloribus quos. Quisquam, quas
-                doloremque. Quisquam, quas doloremque.
-              </p>
-            </div>
-          ))}
-        </section>
+        <TextGenerator />
       </section>
     </MainLayout>
   );

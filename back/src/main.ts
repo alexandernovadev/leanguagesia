@@ -1,6 +1,7 @@
 import express, { Request, Response, NextFunction } from "express";
 import dotenv from "dotenv";
 import { generateRoutes } from "./app/routes/generatorIARoutes";
+import cors from "cors";
 
 dotenv.config();
 
@@ -9,6 +10,10 @@ const PORT = process.env.PORT || 3000;
 
 // Middleware to parse JSON
 app.use(express.json());
+
+// Middleware to handle CORS
+app.use(cors());
+
 
 // Routes
 app.use("/api/ai", generateRoutes);
