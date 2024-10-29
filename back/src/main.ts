@@ -1,6 +1,7 @@
 import express, { Request, Response, NextFunction } from "express";
 import dotenv from "dotenv";
 import { generateRoutes } from "./app/routes/generatorIARoutes";
+import LectureRoutes  from "./app/routes/lectureRoutes";
 import cors from "cors";
 
 dotenv.config();
@@ -14,9 +15,9 @@ app.use(express.json());
 // Middleware to handle CORS
 app.use(cors());
 
-
 // Routes
 app.use("/api/ai", generateRoutes);
+app.use("/api/lectures", LectureRoutes);
 
 // Error-handling middleware
 app.use((err: Error, req: Request, res: Response, next: NextFunction): void => {
