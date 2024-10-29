@@ -1,7 +1,19 @@
-const mongoose = require("mongoose");
+import mongoose, { Schema, Document } from "mongoose";
 
-// Definir el esquema para cada palabra en un idioma
-const WordSchema = new mongoose.Schema(
+export interface IWord extends Document {
+  word: string;
+  definition: string;
+  examples?: string[];
+  type?: string[];
+  IPA?: string;
+  seen?: number;
+  img?: string;
+  level?: "A1" | "A2" | "B1" | "B2" | "C1" | "C2";
+  codeSwitching?: string[];
+  language: string;
+}
+
+const WordSchema: Schema = new Schema<IWord>(
   {
     word: {
       type: String,
@@ -9,6 +21,10 @@ const WordSchema = new mongoose.Schema(
       unique: true,
       minlength: 1,
       maxlength: 100,
+    },
+    language: {
+      type: String,
+      required: true,
     },
     definition: {
       type: String,
@@ -40,15 +56,14 @@ const WordSchema = new mongoose.Schema(
         "infinitive",
         "participle",
         "gerund",
-        "reflexive verb",
       ],
       default: [],
     },
     IPA: {
-      type: String, 
+      type: String,
     },
     seen: {
-      type: Number, 
+      type: Number,
       default: 0,
     },
     img: {
@@ -57,36 +72,24 @@ const WordSchema = new mongoose.Schema(
         validator: function (v: string) {
           return /^(https?:\/\/.*\.(?:png|jpg|jpeg|gif|svg))$/i.test(v);
         },
-        message: (props: any) =>
+        message: (props: { value: string }) =>
           `${props.value} no es una URL de imagen válida.`,
       },
     },
     level: {
-      type: String, 
+      type: String,
       enum: ["A1", "A2", "B1", "B2", "C1", "C2"],
       default: "A1",
     },
     codeSwitching: {
-      type: [String], 
+      type: [String],
       default: [],
     },
   },
   { timestamps: true }
 );
 
-// Índice para optimizar las búsquedas de palabras
-WordSchema.index({ word: 1 });
+// Crear el modelo
+const Word = mongoose.model<IWord>("Word", WordSchema);
 
-// Definir el esquema general para el diccionario con múltiples idiomas
-const DictionarySchema = new mongoose.Schema(
-  {
-    languages: {
-      type: Map, // Mapa dinámico para diferentes idiomas
-      of: WordSchema, // Cada idioma sigue la estructura de WordSchema
-    },
-  },
-  { timestamps: true }
-); // timestamps para la creación y modificación del diccionario
-
-// Exportar el modelo
-module.exports = mongoose.model("Dictionary", DictionarySchema);
+export default Word;

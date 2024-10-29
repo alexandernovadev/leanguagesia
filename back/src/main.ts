@@ -1,9 +1,12 @@
 import express, { Request, Response, NextFunction } from "express";
 import dotenv from "dotenv";
-import { generateRoutes } from "./app/routes/generatorIARoutes";
-import LectureRoutes  from "./app/routes/lectureRoutes";
 import cors from "cors";
 import { connectDB } from "./app/db/mongoConnection";
+
+// Routes
+import { generateRoutes } from "./app/routes/generatorIARoutes";
+import LectureRoutes from "./app/routes/lectureRoutes";
+import WordsRoutes from "./app/routes/wordsRoutes";
 
 dotenv.config();
 
@@ -17,17 +20,18 @@ app.use(express.json());
 app.use(cors());
 
 // Connection to MongoDB
-connectDB().then(() => {
-  console.log("Connection to MongoDB established successfully");
-}
-).catch((error) => {
-  console.error("Error connecting to MongoDB:", error);
-});
-
+connectDB()
+  .then(() => {
+    console.log("Connection to MongoDB established successfully");
+  })
+  .catch((error) => {
+    console.error("Error connecting to MongoDB:", error);
+  });
 
 // Routes
 app.use("/api/ai", generateRoutes);
 app.use("/api/lectures", LectureRoutes);
+app.use("/api/words", WordsRoutes);
 
 // Error-handling middleware
 app.use((err: Error, req: Request, res: Response, next: NextFunction): void => {

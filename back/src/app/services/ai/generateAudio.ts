@@ -56,3 +56,28 @@ export const textToAudioUseCase = async ({ prompt, voice }: Options) => {
     subtitles,
   };
 };
+
+
+/*
+app.post(
+  "/generate-audio",
+  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    const { prompt, voice } = req.body;
+
+    if (!prompt) {
+      res.status(400).json({ error: "Prompt is required." });
+      return;
+    }
+
+    try {
+      // Call the textToAudioUseCase to generate the audio file
+      const { audio, subtitles } = await textToAudioUseCase({ prompt, voice });
+
+      // Send back the file path or stream the file to the user
+      res.status(200).json({ audio, subtitles });
+    } catch (error) {
+      next(error); // Forward the error to error-handling middleware
+    }
+  }
+);
+*/
