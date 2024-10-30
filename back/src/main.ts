@@ -28,11 +28,11 @@ connectDB()
     console.error("Error connecting to MongoDB:", error);
   });
 
-// Routes
-app.use("/", (req,res)=>{
-  console.log("Server is running");
-  res.send("Server is running");
-});
+// // Routes
+// app.use("/", (req,res)=>{
+//   console.log("Server is running");
+//   res.send("Server is running");
+// });
 
 
 app.use("/api/ai", generateRoutes);
