@@ -5,7 +5,7 @@ import {
   Pause,
   SkipForward,
   Timer,
-  BookOpen
+  BookOpen,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
@@ -14,10 +14,14 @@ import rehypeRaw from "rehype-raw";
 import { useCustomMarkdownRenderer } from "./procesatorMarkdown";
 import { BACKURL } from "../../../api/backConf";
 import { Lecture } from "./types/Lecture";
+import { SidePanelModalWord } from "./SidePanelModalWord";
+
+// LecturaPage.tsx (actualizado)
 
 export const LecturaPage = () => {
   const [lecture, setLecture] = useState<Lecture>();
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const [isSidePanelOpen, setIsSidePanelOpen] = useState(false);
   const { customComponents, wordSelected } = useCustomMarkdownRenderer();
 
   const { id } = useParams<{ id: string }>();
@@ -59,25 +63,27 @@ export const LecturaPage = () => {
         </section>
         <div className="flex items-center justify-center gap-3">
           {wordSelected && (
-            <span className="flex rounded-lg px-2 py-1 border border-white capitalize">
-              {wordSelected}
-            </span>
+            <>
+              <span className="flex rounded-lg px-2 py-1 border border-white capitalize">
+                {wordSelected}
+              </span>
+              <BookOpen
+                className="w-6 h-6 text-green-800 cursor-pointer"
+                onClick={() => setIsSidePanelOpen(true)}
+              />
+            </>
           )}
-          <BookOpen className="w-6 h-6 text-green-800 cursor-pointer" />
         </div>
       </div>
 
+      {/* Contenido principal */}
       <div className="overflow-y-auto mb-4 px-3 rounded-lg border border-gray-700">
-        {/* Main content section where the image and text are side by side */}
         <div className="clearfix">
-          {/* Image */}
           <img
             src={"https://avatars.githubusercontent.com/u/6078720?s=200&v=4"}
             alt="NPM Logo"
             className="w-32 h-32 object-cover float-left mr-4 mb-2"
           />
-
-          {/* Markdown text */}
           <div>
             <ReactMarkdown
               // @ts-ignore
@@ -90,11 +96,14 @@ export const LecturaPage = () => {
         </div>
       </div>
 
+      {/* Barra de progreso */}
       <div className="mb-4">
         <div className="h-1 w-full bg-gray-700 rounded-full">
           <div className="h-1 bg-gray-500 rounded-full"></div>
         </div>
       </div>
+
+      {/* Controles de reproducción */}
       <div className="flex justify-center items-center space-x-4">
         <button className={`p-2 opacity-50 cursor-not-allowed`}>
           <SkipBack className="w-6 h-6" />
@@ -113,6 +122,13 @@ export const LecturaPage = () => {
           <SkipForward className="w-6 h-6" />
         </button>
       </div>
+
+      {/* Panel lateral */}
+      <SidePanelModalWord
+        isVisible={isSidePanelOpen}
+        wordSelected={wordSelected}
+        onClose={() => setIsSidePanelOpen(false)}
+      />
     </div>
   );
 };
