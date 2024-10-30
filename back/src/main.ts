@@ -7,6 +7,7 @@ import { connectDB } from "./app/db/mongoConnection";
 import { generateRoutes } from "./app/routes/generatorIARoutes";
 import LectureRoutes from "./app/routes/lectureRoutes";
 import WordsRoutes from "./app/routes/wordsRoutes";
+import { nodeCacheMiddleware } from "./app/middlewares/nodecache";
 
 dotenv.config();
 
@@ -28,16 +29,15 @@ connectDB()
     console.error("Error connecting to MongoDB:", error);
   });
 
-// // Routes
-// app.use("/", (req,res)=>{
-//   console.log("Server is running");
-//   res.send("Server is running");
-// });
-
-
+// Routes
 app.use("/api/ai", generateRoutes);
-app.use("/api/lectures", LectureRoutes);
-app.use("/api/words", WordsRoutes);
+app.use("/api/lectures", nodeCacheMiddleware, LectureRoutes);
+app.use("/api/words", nodeCacheMiddleware, WordsRoutes);
+
+app.use("/", (req, res) => {
+  // send json saying that the server is running
+  res.json({ message: "Server is running", date: new Date().toISOString() });
+});
 
 // Error-handling middleware
 app.use((err: Error, req: Request, res: Response, next: NextFunction): void => {
