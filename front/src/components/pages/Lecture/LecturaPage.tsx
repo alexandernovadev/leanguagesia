@@ -4,11 +4,8 @@ import {
   Play,
   Pause,
   SkipForward,
-  Dessert,
-  Theater,
   Timer,
-  BookOpen,
-  NotebookText,
+  BookOpen
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";

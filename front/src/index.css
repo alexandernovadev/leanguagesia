@@ -54,6 +54,10 @@ h3 {
   @apply text-2xl mt-4 mb-3;
 }
 
+h3 span {
+  @apply font-semibold;
+}
+
 h4 {
   @apply text-xl mt-4 mb-2;
 }
