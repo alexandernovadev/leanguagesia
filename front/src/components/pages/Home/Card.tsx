@@ -6,13 +6,20 @@ interface CardProps {
 }
 
 export const Card = ({ card }: CardProps) => {
+  const getTitle = (title: string) => {
+    // Usamos una expresión regular para encontrar el primer título (# Title)
+    const match = title.match(/^#\s(.+)/m);
+    // Si se encuentra un título, devolvemos el texto; si no, devolvemos una cadena vacía
+    return match ? match[1].trim() : "Sin título";
+  };
+
   return (
     <Link
-      to={`/lecture/${card.id}`}
-      key={card.id}
+      to={`/lecture/${card._id}`}
+      key={card._id}
       className="flex flex-col border border-gray-600 rounded-lg focus:outline-none focus:ring-[0.3px] focus:ring-green-600 focus:border-green-600 cursor-pointer"
       role="article"
-      aria-labelledby={`card-title-${card.id}`}
+      aria-labelledby={`card-title-${card._id}`}
       tabIndex={0}
     >
       <div
@@ -23,7 +30,7 @@ export const Card = ({ card }: CardProps) => {
           role="img"
           aria-label={`Flag representing ${card.flag}`}
         >
-          {card.flag}
+          {card.language == "en" ? "🇬🇧" : ""}
         </div>
         <div className="absolute bottom-2 right-2 flex flex-col space-y-1">
           <span
@@ -35,7 +42,7 @@ export const Card = ({ card }: CardProps) => {
 
           <span
             className="text-xs bg-customGreen-50 text-green-700 px-2 py-1 rounded-full flex items-center"
-            aria-label={`Duration: ${card.duration} minutes`}
+            aria-label={`Duration: ${card.time} minutes`}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -52,15 +59,15 @@ export const Card = ({ card }: CardProps) => {
                 d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
               />
             </svg>
-            {card.duration} min
+            {card.time} min
           </span>
         </div>
       </div>
       <p
-        id={`card-title-${card.id}`}
+        id={`card-title-${card._id}`}
         className="mt-2 text-base font-medium py-2 line-clamp-2 px-2"
       >
-        {card.title}
+        {getTitle(card.content)}
       </p>
     </Link>
   );

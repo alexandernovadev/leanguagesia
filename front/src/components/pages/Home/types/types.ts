@@ -6,10 +6,14 @@ export interface Filters {
   levels: Level[];
 }// TODO Esto no debería estar aquí
 
+
 export interface Card {
-  id: number;
-  flag: string;
-  level: Level;
-  duration: number;
-  title: string;
+  _id: string;
+  time: number;
+  level: string;
+  flag?: string;
+  typeWrite: string;
+  language: string;
+  img: string;
+  content: string;
 }
