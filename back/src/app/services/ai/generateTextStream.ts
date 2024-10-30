@@ -35,6 +35,7 @@ export const generateTextStreamService = async ({
           - Avoid using additional H1 or H2 headers after the initial title and subtitle.
 
           Content guidelines:
+          - Avoid using rare, uncommon words or special symbols, as each word should be clickable and easily searchable in a dictionary.
           - Length should be between 2000 and 3000 characters.
           - For ${level} level:
             - **A1-A2:** Use simple words, basic sentences, and give short, clear examples. Define complex words as needed.
@@ -57,6 +58,6 @@ export const generateTextStreamService = async ({
       },
     ],
     temperature: 0.8,
-    max_tokens: 500,
+    // max_tokens: 500,
   });
 };
