@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { CircleX, Volume2 } from "lucide-react";
+import { CircleX, Loader, Volume2 } from "lucide-react";
 import { Word } from "./types/Word";
 import { BACKURL } from "../../../api/backConf";
 
@@ -16,6 +16,8 @@ export const SidePanelModalWord: React.FC<SidePanelProps> = ({
 }) => {
   const [wordDb, setWordDb] = useState<Word | undefined>(undefined);
 
+  const [loadingGetWord, setLoadingGetWord] = useState(false);
+
   const getWord = async (word: string) => {
     try {
       const response = await fetch(`${BACKURL}/api/words/word/${word}`);
@@ -26,8 +28,24 @@ export const SidePanelModalWord: React.FC<SidePanelProps> = ({
     }
   };
 
-  const generateWord = () => {
+  const generateWord = async () => {
     console.log("Generate Word with AI");
+    setLoadingGetWord(true);
+    try {
+      const response = await fetch(`${BACKURL}/api/ai/generate-wordJson`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ prompt: wordSelected, language: "en" }),
+      });
+      const { data } = await response.json();
+      setWordDb(data);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoadingGetWord(false);
+    }
   };
 
   useEffect(() => {
@@ -180,9 +198,13 @@ export const SidePanelModalWord: React.FC<SidePanelProps> = ({
               </p>
               <button
                 onClick={generateWord}
-                className="px-6 py-2 bg-green-600 hover:bg-green-800 text-white rounded-md font-medium"
+                disabled={loadingGetWord}
+                className="flex items-center justify-center gap-2 px-6 py-2 bg-green-600 hover:bg-green-800 text-white rounded-md font-medium"
               >
-                Generate Word with AI
+                {loadingGetWord ? (
+                  <Loader className="animate-spin w-5 h-5" /> // Spinner with animation
+                ) : null}
+                {loadingGetWord ? "Generating..." : "Generate Word with AI"}
               </button>
             </div>
           )}

@@ -1,6 +1,9 @@
 import { Request, Response } from "express";
 import { generateTextStreamService } from "../services/ai/generateTextStream";
 import { generateWordJson } from "../services/ai/generateWordJson";
+import { WordService } from "../services/words/wordService";
+
+const wordService = new WordService();
 
 export const generateTextStream = async (req: Request, res: Response) => {
   const { prompt, level, typeWrite } = req.body;
@@ -47,13 +50,18 @@ export const generateJSONword = async (req: Request, res: Response) => {
 
     const wordStructurefinal = {
       ...json,
-      language:'en',
-      seen:1,
-      img:"",
-    }
+      language: "en",
+      seen: 1,
+      img: "",
+    };
 
-    res.json(wordStructurefinal);
-
+    const newWord = await wordService.createWord(wordStructurefinal);
+    return res.status(201).json({
+      success: true,
+      message: "Word created successfully",
+      data: newWord,
+    });
+    
   } catch (error) {
     res.status(500).json({
       message: "Error trying to generate JSON word",

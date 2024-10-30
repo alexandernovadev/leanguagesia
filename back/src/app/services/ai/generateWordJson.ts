@@ -97,7 +97,7 @@ export const generateWordJson = async (prompt: string, language = "en") => {
           ["noun", "verb", "adjective", "adverb", "personal pronoun", "possessive pronoun", "preposition", "conjunction", "determiner", "article", "quantifier", "interjection", "auxiliary verb", "modal verb", "infinitive", "participle", "gerund", "other"].
         - "level" remains "B2" unless specified otherwise.
         - Every field contains accurate, B2-appropriate content with correct grammar and relevant contexts.
-
+        - The "IPA" field is in standard format need to be perfect THINK WELL the IPA con ingles de USA.
         `,
       },
       {

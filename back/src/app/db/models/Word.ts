@@ -73,13 +73,13 @@ const WordSchema: Schema = new Schema<IWord>(
     },
     img: {
       type: String,
-      validate: {
-        validator: function (v: string) {
-          return /^(https?:\/\/.*\.(?:png|jpg|jpeg|gif|svg))$/i.test(v);
-        },
-        message: (props: { value: string }) =>
-          `${props.value} no es una URL de imagen válida.`,
-      },
+      // validate: {
+      //   validator: function (v: string) {
+      //     return /^(https?:\/\/.*\.(?:png|jpg|jpeg|gif|svg))$/i.test(v);
+      //   },
+      //   message: (props: { value: string }) =>
+      //     `${props.value} no es una URL de imagen válida.`,
+      // },
     },
     level: {
       type: String,
