@@ -1,6 +1,7 @@
-import { CircleX } from "lucide-react";
-import React from "react";
-import { TextLorem } from "../../shared/TextLorem";
+import { CircleX, Volume2 } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { Word } from "./types/Word";
+import { BACKURL } from "../../../api/backConf";
 
 interface SidePanelProps {
   isVisible: boolean;
@@ -13,24 +14,180 @@ export const SidePanelModalWord: React.FC<SidePanelProps> = ({
   wordSelected,
   onClose,
 }) => {
+  const [wordDb, setWordDb] = useState<Word | undefined>(undefined);
+
+  const getWord = async (word: string) => {
+    try {
+      const response = await fetch(`${BACKURL}/api/words/word/${word}`);
+      const { data } = await response.json();
+      setWordDb(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const generateWord = () => {
+    console.log("Generate Word with AI");
+  };
+
+  useEffect(() => {
+    const closeSidePanel = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onClose();
+      }
+    };
+    window.addEventListener("keydown", closeSidePanel);
+    return () => {
+      window.removeEventListener("keydown", closeSidePanel);
+    };
+  }, [onClose]);
+
+  useEffect(() => {
+    if (isVisible && wordSelected) {
+      getWord(wordSelected);
+    }
+  }, [isVisible, wordSelected]);
+
+  const handlePanelClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+  };
+
+  // Function to listen to the word pronunciation
+  const listenWord = () => {
+    if (wordDb?.word) {
+      const utterance = new SpeechSynthesisUtterance(wordDb.word);
+      utterance.lang = "en-US"; // Set language to English
+      speechSynthesis.speak(utterance);
+    }
+  };
+
   return (
-    <div
-      className={`fixed top-0 right-0 h-full w-[35%] bg-black-800
-        border border-green-500 rounded-xl
-        text-white shadow-lg transition-transform duration-300 ${
-          isVisible ? "translate-x-0" : "translate-x-full"
-        }`}
+    <section
+      className={`fixed inset-0 bg-black bg-opacity-70 transition-opacity ${
+        isVisible ? "opacity-100 visible" : "opacity-0 invisible"
+      }`}
+      onClick={onClose}
     >
-      <button
-        className="absolute top-2 left-2 text-white text-2xl w-full flex justify-end outline-none border-none"
-        onClick={onClose}
+      <div
+        onClick={handlePanelClick}
+        className={`fixed top-0 right-0 h-full w-[35%] max-w-md bg-gray-900
+          border border-green-700 rounded-l-xl
+          text-gray-200 shadow-lg transition-transform duration-300 ${
+            isVisible ? "translate-x-0" : "translate-x-full"
+          }`}
       >
-        <CircleX className="relative right-2 mt-2 mx-2"/>
-      </button>
-      <div className="p-4 mt-4 overflow-auto h-[100%]">
-        <h1 className="text-2xl font-semibold capitalize">{wordSelected}</h1>
-        <TextLorem length={20} />
+        <button
+          className="absolute top-4 right-4 text-gray-400 hover:text-green-300"
+          onClick={onClose}
+        >
+          <CircleX className="h-6 w-6" />
+        </button>
+
+        <div className="p-6 pt-10 space-y-6 overflow-auto h-full">
+          <section className="flex gap-3 justify-center items-center">
+            <h1 className="text-4xl font-bold text-green-400 capitalize mb-2">
+              {wordSelected}
+            </h1>
+            {wordDb && (
+              <span onClick={listenWord} className="cursor-pointer pt-2">
+                <Volume2 className="w-8 h-8" />
+              </span>
+            )}
+          </section>
+
+          {wordDb ? (
+            <div className="space-y-6">
+              <section className="flex gap-3 justify-start items-center">
+                <p className="text-sm font-medium text-green-300">
+                  {wordDb.level ? `Level: ${wordDb.level}` : ""}
+                </p>
+
+                {wordDb.type && (
+                  <p className="text-green-200 font-medium text-sm">
+                    Type: {wordDb.type.join(", ")}
+                  </p>
+                )}
+              </section>
+              <p className="text-xl font-semibold">{wordDb.definition}</p>
+
+              {wordDb.IPA && (
+                <div className="flex gap-3">
+                  <span className="text-lg font-semibold text-green-200">
+                    IPA:{" "}
+                  </span>
+                  <span className="text-green-500 italic text-lg">
+                    {wordDb.IPA}
+                  </span>
+                </div>
+              )}
+
+              {wordDb.img && (
+                <img
+                  src={wordDb.img}
+                  alt={wordDb.word}
+                  className="w-full h-48 object-cover rounded-md border border-green-700"
+                />
+              )}
+
+              {wordDb.examples && (
+                <div>
+                  <h2 className="text-lg font-semibold text-green-400 mb-2">
+                    Examples:
+                  </h2>
+                  <ul className="list-disc list-inside space-y-1">
+                    {wordDb.examples.map((example, index) => (
+                      <li key={index} className="text-black-200">
+                        {example}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {wordDb.codeSwitching && (
+                <div>
+                  <h2 className="text-lg font-semibold text-green-400 mb-2">
+                    Code-Switching Examples:
+                  </h2>
+                  <ul className="list-disc list-inside space-y-1">
+                    {wordDb.codeSwitching.map((example, index) => (
+                      <li key={index} className="text-black-200">
+                        {example}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {wordDb.spanish && (
+                <div>
+                  <h2 className="text-lg font-semibold text-green-400 mb-2">
+                    Spanish:
+                  </h2>
+                  <p className="text-black-200 capitalize">
+                    <strong>Word:</strong> {wordDb.spanish.word}
+                  </p>
+                  <p className="text-black-200">
+                    <strong>Definición:</strong> {wordDb.spanish.definition}
+                  </p>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="flex flex-col items-center justify-center h-full space-y-4">
+              <p className="text-green-300 text-center">
+                Word not found in the database.
+              </p>
+              <button
+                onClick={generateWord}
+                className="px-6 py-2 bg-green-600 hover:bg-green-800 text-white rounded-md font-medium"
+              >
+                Generate Word with AI
+              </button>
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+    </section>
   );
 };
