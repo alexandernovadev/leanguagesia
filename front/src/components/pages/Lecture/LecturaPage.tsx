@@ -7,17 +7,34 @@ import {
   Dessert,
   Theater,
 } from "lucide-react";
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import { useCustomMarkdownRenderer } from "./procesatorMarkdown";
-import { markdownText } from "./data/textMarkdown";
+import { BACKURL } from "../../../api/backConf";
+import { Lecture } from "./types/Lecture";
 
 export const LecturaPage = () => {
+  const [lecture, setLecture] = useState<Lecture>();
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
-  const { customComponents, wordSelected } =
-    useCustomMarkdownRenderer();
+  const { customComponents, wordSelected } = useCustomMarkdownRenderer();
+
+  const { id } = useParams<{ id: string }>();
+
+  const getLecture = async () => {
+    try {
+      const response = await fetch(`${BACKURL}/api/lectures/${id}`);
+      const data: Lecture = await response.json();
+      setLecture(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    getLecture();
+  }, []);
 
   return (
     <div className="bg-gradient-to-b px-4 pt-2 pb-4 from-black-800 via-customGreen-100 to-customBlack-100 text-black-200 min-h-screen flex flex-col">
@@ -45,13 +62,13 @@ export const LecturaPage = () => {
                 d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
               />
             </svg>
-            3 min
+            {lecture?.time} min
           </span>
           <span
             className="border py-1 rounded-xl px-2 text-xs cursor-pointer text-green-600"
             title="Level A1"
           >
-            Level: <strong>A1</strong>
+            Level: <strong> {lecture?.level}</strong>
           </span>
         </section>
         <div className="flex items-center justify-center gap-3">
@@ -69,7 +86,7 @@ export const LecturaPage = () => {
           <img
             src={"https://avatars.githubusercontent.com/u/6078720?s=200&v=4"}
             alt="NPM Logo"
-            className="w-32 h-32 object-cover float-left mr-4 mb-2" // Utilizamos float-left y márgenes para crear espacio alrededor de la imagen
+            className="w-32 h-32 object-cover float-left mr-4 mb-2"
           />
 
           {/* Markdown text */}
@@ -79,7 +96,7 @@ export const LecturaPage = () => {
               components={customComponents}
               rehypePlugins={[rehypeRaw]}
             >
-              {markdownText}
+              {lecture?.content}
             </ReactMarkdown>
           </div>
         </div>

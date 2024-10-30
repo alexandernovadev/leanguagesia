@@ -2,19 +2,10 @@ import { useEffect, useState } from "react";
 import { Card } from "./Card";
 // import { demoCards } from "./data/CardsData";
 import { BACKURL } from "../../../api/backConf";
-
-export interface Lectures {
-  _id: string;
-  time: number;
-  level: string;
-  typeWrite: string;
-  language: string;
-  img: string;
-  content: string;
-}
+import { Lecture } from "../Lecture/types/Lecture";
 
 export const CardList = () => {
-  const [lectures, setLectures] = useState<Lectures[]>([]);
+  const [lectures, setLectures] = useState<Lecture[]>([]);
 
   const getLecture = async () => {
     const response = await fetch(`${BACKURL}/api/lectures`);
