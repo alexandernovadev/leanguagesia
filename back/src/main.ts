@@ -29,6 +29,12 @@ connectDB()
   });
 
 // Routes
+app.use("/", (req,res)=>{
+  console.log("Server is running");
+  res.send("Server is running");
+});
+
+
 app.use("/api/ai", generateRoutes);
 app.use("/api/lectures", LectureRoutes);
 app.use("/api/words", WordsRoutes);
