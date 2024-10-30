@@ -1,14 +1,17 @@
-import { MainLayout } from "../../shared/Layouts/MainLayout";
-import "../../../styles/buttonanimatiocss.css";
-import { SendHorizontal, Brain } from "lucide-react";
 import { useRef, useState } from "react";
-import Input from "../../ui/Input";
+import ReactMarkdown from "react-markdown";
 import { useForm } from "react-hook-form";
+import { SendHorizontal, Brain } from "lucide-react";
+
+import { BACKURL } from "../../../api/backConf";
+
+import { MainLayout } from "../../shared/Layouts/MainLayout";
+import Input from "../../ui/Input";
 import Select from "../../ui/Select";
+
 import { writeStyle } from "./data/writesStyles";
 import { levels } from "./data/levels";
-import { BACKURL } from "../../../api/backConf";
-import ReactMarkdown from "react-markdown";
+import "../../../styles/buttonanimatiocss.css";
 
 export const GeneratorPage = () => {
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
@@ -16,7 +19,14 @@ export const GeneratorPage = () => {
 
   const [error, setError] = useState("");
   const textRef = useRef<HTMLDivElement>(null);
-  const { handleSubmit, control } = useForm<FormData>();
+
+  const { handleSubmit, control, getValues } = useForm({
+    defaultValues: {
+      prompt: "Write an article about why the english language is important.",
+      typeWrite: "narration",
+      level: "C1",
+    },
+  });
 
   const escapeMarkdown = (text: string) => {
     return text.replace(/```/g, "\\`\\`\\`").replace(/`/g, "\\`");
@@ -51,13 +61,12 @@ export const GeneratorPage = () => {
     }
   };
 
-
-
-
   const handleGenerateText = async () => {
     setIsLoaded(true);
     setText("");
     setError("");
+
+    const { prompt, typeWrite, level } = getValues();
 
     try {
       const response = await fetch(`${BACKURL}/api/ai/generate-text`, {
@@ -66,9 +75,9 @@ export const GeneratorPage = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          prompt: "MAXIMO 600 characters",
-          level: "B1",
-          typeWrite: "Engaging Article",
+          prompt,
+          level,
+          typeWrite,
         }),
       });
 
@@ -95,7 +104,12 @@ export const GeneratorPage = () => {
     }
   };
 
-  const onSubmit = (data: FormData) => {
+  const onSubmit = (data: {
+    typeWrite: string;
+    level: string;
+    prompt: string;
+  }) => {
+    handleGenerateText();
     console.log(data);
   };
 
@@ -105,7 +119,7 @@ export const GeneratorPage = () => {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 px-5 pt-4">
           <div>
             <Input
-              name={"Search"}
+              name={"prompt"}
               icon={<Brain />}
               disabled={isLoaded}
               placeholder="Write an article about..."
@@ -116,24 +130,21 @@ export const GeneratorPage = () => {
           <div className="flex justify-center items-center gap-2">
             <Select
               label="Style"
-              name="selectOption"
+              name="typeWrite"
               control={control}
               disabled={isLoaded}
               options={writeStyle}
             />
             <Select
-              label="Levels"
-              name="levels"
+              label="Level"
+              name="level"
               disabled={isLoaded}
               control={control}
               options={levels}
             />
 
             <button
-              onClick={() => {
-                setIsLoaded(!isLoaded);
-                handleGenerateText();
-              }}
+              type="submit"
               className={`${isLoaded ? "box" : "boxEmp"} m-4`}
             >
               <span className="relative">
