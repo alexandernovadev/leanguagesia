@@ -32,18 +32,28 @@ export const GeneratorPage = () => {
     return text.replace(/```/g, "\\`\\`\\`").replace(/`/g, "\\`");
   };
 
+  // TODO Improve the calculation of the reading time
+  const calculateReadingTime = (text: string) => {
+    const wordsPerMinute = 225; // Puedes ajustar este valor según el nivel de los estudiantes
+    const words = text.split(/\s+/).length; // Contar el número de palabras
+    const minutes = Math.ceil(words / wordsPerMinute); // Calcular el tiempo y redondear al entero más cercano
+    return minutes;
+  };
+
   const saveLecture = async () => {
+    const { typeWrite, level } = getValues();
+
     const lecture = {
-      time: 2,
-      level: "B1",
-      typeWrite: "Engaging Article",
+      time: calculateReadingTime(text),
+      level,
+      typeWrite,
       language: "en",
       img: "",
       content: text,
     };
 
     try {
-      const response = await fetch(`${BACKURL}/api/lecture`, {
+      const response = await fetch(`${BACKURL}/api/lectures`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -156,7 +166,7 @@ export const GeneratorPage = () => {
 
         <section
           ref={textRef}
-          className="flex-1 border border-white m-5 overflow-auto rounded-lg px-4"
+          className="flex-1 border border-white m-5 overflow-auto rounded-lg px-4 relative"
         >
           {text.length === 0 && (
             <div className="flex-1 h-[100%] text-zinc-400 flex justify-center items-center">
@@ -164,6 +174,15 @@ export const GeneratorPage = () => {
             </div>
           )}
           <ReactMarkdown>{text}</ReactMarkdown>
+          {/* Conditionally render the SAVE button only if there's generated text */}
+          {!isLoaded && text.length > 0 && (
+            <button
+              onClick={saveLecture}
+              className="bg-green-600 text-white rounded-lg px-5 py-2 mt-4 sticky bottom-4"
+            >
+              SAVE
+            </button>
+          )}
         </section>
       </section>
     </MainLayout>
