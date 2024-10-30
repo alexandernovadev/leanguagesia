@@ -60,6 +60,7 @@ const WordSchema: Schema = new Schema<IWord>(
         "infinitive",
         "participle",
         "gerund",
+        "other"
       ],
       default: [],
     },

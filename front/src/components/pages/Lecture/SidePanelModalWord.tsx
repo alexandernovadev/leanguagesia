@@ -1,5 +1,5 @@
-import { CircleX, Volume2 } from "lucide-react";
 import React, { useEffect, useState } from "react";
+import { CircleX, Volume2 } from "lucide-react";
 import { Word } from "./types/Word";
 import { BACKURL } from "../../../api/backConf";
 

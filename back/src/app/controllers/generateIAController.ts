@@ -1,15 +1,20 @@
 import { Request, Response } from "express";
 import { generateTextStreamService } from "../services/ai/generateTextStream";
+import { generateWordJson } from "../services/ai/generateWordJson";
 
 export const generateTextStream = async (req: Request, res: Response) => {
-  const { prompt, level,typeWrite } = req.body;
+  const { prompt, level, typeWrite } = req.body;
 
   if (!prompt) {
     return res.status(400).json({ error: "Prompt is required." });
   }
 
   try {
-    const stream = await generateTextStreamService({ prompt,level,typeWrite });
+    const stream = await generateTextStreamService({
+      prompt,
+      level,
+      typeWrite,
+    });
 
     res.setHeader("Content-Type", "application/json");
     res.flushHeaders();
@@ -30,3 +35,29 @@ export const generateTextStream = async (req: Request, res: Response) => {
   }
 };
 
+export const generateJSONword = async (req: Request, res: Response) => {
+  const { prompt, language } = req.body;
+
+  if (!prompt) {
+    return res.status(400).json({ error: "Prompt is required." });
+  }
+
+  try {
+    const json = await generateWordJson(prompt, language);
+
+    const wordStructurefinal = {
+      ...json,
+      language:'en',
+      seen:1,
+      img:"",
+    }
+
+    res.json(wordStructurefinal);
+
+  } catch (error) {
+    res.status(500).json({
+      message: "Error trying to generate JSON word",
+      error: error.message || error,
+    });
+  }
+};
