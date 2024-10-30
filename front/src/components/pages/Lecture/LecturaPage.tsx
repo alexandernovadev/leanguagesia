@@ -6,6 +6,9 @@ import {
   SkipForward,
   Dessert,
   Theater,
+  Timer,
+  BookOpen,
+  NotebookText,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
@@ -44,25 +47,11 @@ export const LecturaPage = () => {
             <ChevronLeft className="w-10 h-10 text-green-800" />
           </Link>
           <span
-            className="text-xs bg-customGreen-50 text-green-700 px-2 py-1 rounded-full flex items-center"
+            className="text-xs bg-customGreen-50 text-green-700 px-2 py-1 rounded-full flex items-center justify-center"
             aria-label={`Duration: 3 minutes`}
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-3 w-3 mr-1"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              aria-hidden="true"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
-            {lecture?.time} min
+            <Timer className="w-4 h-4 text-green-800" />
+            <span>{lecture?.time} min</span>
           </span>
           <span
             className="border py-1 rounded-xl px-2 text-xs cursor-pointer text-green-600"
@@ -72,10 +61,12 @@ export const LecturaPage = () => {
           </span>
         </section>
         <div className="flex items-center justify-center gap-3">
-          <span className="flex">
-            <Dessert className="w-6 h-6 text-green-800" /> - {wordSelected}
-          </span>
-          <Theater className="w-6 h-6 text-green-800" />
+          {wordSelected && (
+            <span className="flex rounded-lg px-2 py-1 border border-white capitalize">
+              {wordSelected}
+            </span>
+          )}
+          <BookOpen className="w-6 h-6 text-green-800 cursor-pointer" />
         </div>
       </div>
 
