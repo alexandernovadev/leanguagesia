@@ -3,6 +3,44 @@ import { WordService } from "../services/words/wordService";
 
 const wordService = new WordService();
 
+// Obtener una palabra por nombre (ignorando mayúsculas y minúsculas)
+export const findWordByName = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  try {
+    // Forzamos el tipo a `string`, y si es un array, tomamos el primer elemento.
+    const word = (req.params.word || req.query.word) as string | undefined;
+
+    // Verificamos que `word` sea un `string` y no esté vacío.
+    if (!word || Array.isArray(word)) {
+      return res.status(400).json({
+        success: false,
+        message: "A single word parameter is required",
+      });
+    }
+
+    const foundWord = await wordService.findWordByWord(word);
+    if (!foundWord) {
+      return res.status(404).json({
+        success: false,
+        message: "Word not found",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: foundWord,
+    });
+  } catch (error) {
+    console.error("Error finding word:", error);
+    return res.status(500).json({
+      success: false,
+      message: "An error occurred while finding the word",
+    });
+  }
+};
+
 export const createWord = async (
   req: Request,
   res: Response

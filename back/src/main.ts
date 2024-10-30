@@ -7,7 +7,7 @@ import { connectDB } from "./app/db/mongoConnection";
 import { generateRoutes } from "./app/routes/generatorIARoutes";
 import LectureRoutes from "./app/routes/lectureRoutes";
 import WordsRoutes from "./app/routes/wordsRoutes";
-import { nodeCacheMiddleware } from "./app/middlewares/nodecache";
+import { nodeCacheMiddleware } from "./app/middlewares/nodecache"; // estte hp no sirve bien
 
 dotenv.config();
 
@@ -31,8 +31,8 @@ connectDB()
 
 // Routes
 app.use("/api/ai", generateRoutes);
-app.use("/api/lectures", nodeCacheMiddleware, LectureRoutes);
-app.use("/api/words", nodeCacheMiddleware, WordsRoutes);
+app.use("/api/lectures", LectureRoutes);
+app.use("/api/words", WordsRoutes);
 
 app.use("/", (req, res) => {
   // send json saying that the server is running

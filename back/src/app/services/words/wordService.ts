@@ -34,13 +34,24 @@ export class WordService {
   }
 
   // Actualizar una palabra por ID
-  async updateWord(id: string, updateData: Partial<IWord>): Promise<IWord | null> {
+  async updateWord(
+    id: string,
+    updateData: Partial<IWord>
+  ): Promise<IWord | null> {
     return await Word.findByIdAndUpdate(id, updateData, { new: true });
   }
 
   // Eliminar una palabra por ID
   async deleteWord(id: string): Promise<IWord | null> {
     return await Word.findByIdAndDelete(id);
+  }
+
+  // Método para buscar una palabra ignorando mayúsculas y minúsculas
+  async findWordByWord(word: string): Promise<IWord | null> {
+    const lowercaseWord = word.toLowerCase();
+    return await Word.findOne({
+      word: { $regex: `^${lowercaseWord}$`, $options: "i" },
+    });
   }
 }
 
