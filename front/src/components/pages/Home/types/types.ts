@@ -8,7 +8,7 @@ export interface Filters {
 
 
 export interface Card {
-  _id: string;
+  _id: string | number; 
   time: number;
   level: string;
   flag?: string;

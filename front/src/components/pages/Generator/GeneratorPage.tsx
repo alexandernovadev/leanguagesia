@@ -17,7 +17,7 @@ export const GeneratorPage = () => {
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const [text, setText] = useState("");
 
-  const [error, setError] = useState("");
+  // const [error, setError] = useState("");
   const textRef = useRef<HTMLDivElement>(null);
 
   const { handleSubmit, control, getValues } = useForm({
@@ -74,7 +74,7 @@ export const GeneratorPage = () => {
   const handleGenerateText = async () => {
     setIsLoaded(true);
     setText("");
-    setError("");
+    // setError("");
 
     const { prompt, typeWrite, level } = getValues();
 
@@ -108,7 +108,7 @@ export const GeneratorPage = () => {
         }
       }
     } catch (err) {
-      setError("Failed to fetch the generated text.");
+      // setError("Failed to fetch the generated text.");
     } finally {
       setIsLoaded(false);
     }
