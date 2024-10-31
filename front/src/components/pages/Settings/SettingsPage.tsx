@@ -1,6 +1,5 @@
+import { MainLayout } from "../../shared/Layouts/MainLayout";
 
 export const SettingsPage = () => {
-  return (
-    <div>SettingsPage</div>
-  )
-}
+  return <MainLayout>V. 31.10.2024</MainLayout>;
+};
