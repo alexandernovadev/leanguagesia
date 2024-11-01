@@ -36,7 +36,11 @@ app.use("/api/words", WordsRoutes);
 
 app.use("/", (req, res) => {
   // send json saying that the server is running
-  res.json({ message: "Server is running", date: new Date().toISOString() });
+  res.json({
+    message: "Server is running",
+    date: new Date().toISOString(),
+    version: "V. Friday 1 November 2:28 PM",
+  });
 });
 
 // Error-handling middleware

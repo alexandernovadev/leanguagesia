@@ -1,5 +1,5 @@
 import { MainLayout } from "../../shared/Layouts/MainLayout";
 
 export const SettingsPage = () => {
-  return <MainLayout>V. 31.10.2024</MainLayout>;
+  return <MainLayout>V. Friday 1 November 2:28 PM</MainLayout>;
 };
