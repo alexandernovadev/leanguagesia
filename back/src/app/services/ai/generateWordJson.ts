@@ -98,6 +98,7 @@ export const generateWordJson = async (prompt: string, language = "en") => {
         - "level" remains "B2" unless specified otherwise.
         - Every field contains accurate, B2-appropriate content with correct grammar and relevant contexts.
         - The "IPA" field is in standard format need to be perfect THINK WELL the IPA con ingles de USA.
+        - The example and codeSwitching must be different. 
         `,
       },
       {
