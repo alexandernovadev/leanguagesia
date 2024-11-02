@@ -7,7 +7,6 @@ import { connectDB } from "./app/db/mongoConnection";
 import { generateRoutes } from "./app/routes/generatorIARoutes";
 import LectureRoutes from "./app/routes/lectureRoutes";
 import WordsRoutes from "./app/routes/wordsRoutes";
-import { nodeCacheMiddleware } from "./app/middlewares/nodecache"; // estte hp no sirve bien
 
 dotenv.config();
 

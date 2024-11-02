@@ -1,41 +1,21 @@
+import React from "react";
 import { FlipHorizontal } from "lucide-react";
-import React, { useState } from "react";
+import { Word } from "../Lecture/types/Word";
 
-export interface CardData {
-  spanish: {
-    definition: string;
-    word: string;
-  };
-  _id: string;
-  word: string;
-  language: string;
-  definition: string;
-  examples: string[];
-  type: string[];
-  IPA: string;
-  seen: number;
-  img: string;
-  level: string;
-  codeSwitching: string[];
-  createdAt: string;
-  updatedAt: string;
-}
 
 interface CardProps {
-  card: CardData;
+  card: Word;
+  flipped: boolean;
+  onFlip: () => void;
 }
 
-export const Card: React.FC<CardProps> = ({ card }) => {
-  const [flipped, setFlipped] = useState(false);
-
-  const handleFlip = () => setFlipped(!flipped);
-
+export const Card: React.FC<CardProps> = ({ card, flipped, onFlip }) => {
   return (
     <div className="relative w-full h-[76vh] bg-opacity-50 rounded-lg overflow-hidden" style={{ perspective: "1000px" }}>
       
       {/* Flip Button */}
       <button
-        onClick={handleFlip}
+        onClick={onFlip}
         className="absolute top-4 left-3 px-2 py-1 flex gap-3 bg-green-600 text-white rounded shadow-md hover:bg-green-700 z-30"
       >
         Flip <FlipHorizontal />
@@ -43,7 +23,7 @@ export const Card: React.FC<CardProps> = ({ card }) => {
 
       {/* Card Container */}
       <div
-        className={`w-full h-full border border-green-800 rounded-lg  shadow-lg transition-transform transform ${flipped ? "rotate-y-180" : ""}`}
+        className={`w-full h-full border border-green-800 rounded-lg shadow-lg transition-transform transform ${flipped ? "rotate-y-180" : ""}`}
       >
         {/* Front Side */}
         {!flipped && (

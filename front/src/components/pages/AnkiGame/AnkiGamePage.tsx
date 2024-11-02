@@ -1,24 +1,22 @@
 import { useState, useEffect } from "react";
 import { MainLayout } from "../../shared/Layouts/MainLayout";
-import { Card, CardData } from "./Card";
+import { Card } from "./Card";
 import { CardNavigation } from "./CardNavigation";
-import { cardsData as exampleCardsData } from "./data/wordsexample"; // Local data for example
+import { cardsData as exampleCardsData } from "./data/wordsexample";
+import { Word } from "../Lecture/types/Word";
 
 export const AnkiGamePage = () => {
-  const [cards, setCards] = useState<CardData[]>(exampleCardsData);
+  const [cards, setCards] = useState<Word[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [flipped, setFlipped] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Simulated API fetch function
   const fetchCards = async () => {
     try {
       setLoading(true);
-      // Here would be the API call in the future
-      // For example: const response = await fetch("/api/cards");
-      // const data = await response.json();
-      
-      const data = exampleCardsData; // Using local data for now
+      const data = exampleCardsData;
+      // @ts-ignore
       setCards(data);
       setLoading(false);
     } catch (err) {
@@ -32,11 +30,17 @@ export const AnkiGamePage = () => {
   }, []);
 
   const handleNext = () => {
-    if (currentIndex < cards.length - 1) setCurrentIndex(currentIndex + 1);
+    if (currentIndex < cards.length - 1) {
+      setCurrentIndex(currentIndex + 1);
+      setFlipped(false); // Reset to front view
+    }
   };
 
   const handlePrevious = () => {
-    if (currentIndex > 0) setCurrentIndex(currentIndex - 1);
+    if (currentIndex > 0) {
+      setCurrentIndex(currentIndex - 1);
+      setFlipped(false); // Reset to front view
+    }
   };
 
   return (
@@ -49,7 +53,7 @@ export const AnkiGamePage = () => {
             <p className="text-red-600">{error}</p>
           ) : (
             <>
-              <Card card={cards[currentIndex]} />
+              <Card card={cards[currentIndex]} flipped={flipped} onFlip={() => setFlipped(!flipped)} />
               <CardNavigation
                 currentIndex={currentIndex}
                 totalCards={cards.length}
