@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { useForm } from "react-hook-form";
-import { SendHorizontal, Brain } from "lucide-react";
+import { SendHorizontal, Brain, Save } from "lucide-react";
 
 import { BACKURL } from "../../../api/backConf";
 
@@ -161,6 +161,16 @@ export const GeneratorPage = () => {
                 <SendHorizontal />
               </span>
             </button>
+
+            {/* Conditionally render the SAVE button only if there's generated text */}
+            {!isLoaded && text.length > 0 && (
+              <button
+                onClick={saveLecture}
+                className="border border-green-700 text-white rounded-lg px-3 py-2 mt-4 sticky top-4 right-0"
+              >
+                <Save />
+              </button>
+            )}
           </div>
         </form>
 
@@ -174,15 +184,6 @@ export const GeneratorPage = () => {
             </div>
           )}
           <ReactMarkdown>{text}</ReactMarkdown>
-          {/* Conditionally render the SAVE button only if there's generated text */}
-          {!isLoaded && text.length > 0 && (
-            <button
-              onClick={saveLecture}
-              className="bg-green-600 text-white rounded-lg px-5 py-2 mt-4 sticky bottom-4"
-            >
-              SAVE
-            </button>
-          )}
         </section>
       </section>
     </MainLayout>
