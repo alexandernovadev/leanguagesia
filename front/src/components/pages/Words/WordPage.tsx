@@ -42,7 +42,9 @@ export const WordPage = () => {
               <button
                 onClick={handlePreviousPage}
                 disabled={page === 1}
-                className="px-4 py-2 border border-green-600 rounded-lg text-white disabled:bg-gray-800"
+                className={`px-4 py-2 border border-green-600 rounded-lg text-white ${
+                  page === 1 ? "bg-gray-800 opacity-50 cursor-not-allowed" : ""
+                }`}
               >
                 Previous
               </button>
@@ -52,7 +54,11 @@ export const WordPage = () => {
               <button
                 onClick={handleNextPage}
                 disabled={page === totalPages}
-                className="px-4 py-2 border border-green-600 rounded-lg text-white disabled:bg-gray-800"
+                className={`px-4 py-2 border border-green-600 rounded-lg text-white ${
+                  page === totalPages
+                    ? "bg-gray-800 opacity-50 cursor-not-allowed"
+                    : ""
+                }`}
               >
                 Next
               </button>

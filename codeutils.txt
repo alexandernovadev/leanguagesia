@@ -12,3 +12,18 @@ pm2 stop ${NAME}
 
 pm2 logs ${NAME}
 
+
+
+scp -i alex -r root@IP:/root/backupsdb MYRUTAAQUI
+
+
+mongodump --db test --out /root/backupsdb 
+
+
+docker cp MYRUTAAQUI mongo_container:/backupsdb
+
+
+docker exec -it mongo_container bash
+
+mongorestore --db nombre_db_destino /backupsdb/test
+
