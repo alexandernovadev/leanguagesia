@@ -103,28 +103,33 @@ export const getWords = async (
     const limit = parseInt(req.query.limit as string) || 10;
     const cacheKey = `words_page${page}_limit${limit}`;
 
-    // Revisar si el caché tiene los resultados de la página solicitada
+    // Revisar si el caché tiene los resultados de la página solicitada, incluyendo paginación
     if (cache.has(cacheKey)) {
       return res.status(200).json({
         success: true,
-        data: cache.get(cacheKey),
+        ...cache.get(cacheKey), // Devuelve el objeto completo con data y paginación
       });
     }
 
     const result = await wordService.getWords(page, limit);
 
-    // Convertir cada palabra a objeto simple y luego almacenar en caché el array resultante
+    // Convertir cada palabra a objeto simple y luego almacenar en caché el array resultante junto con la paginación
     const wordsData = result.data.map((word) => word.toObject());
-    cache.set(cacheKey, wordsData);
-
-    return res.status(200).json({
-      success: true,
+    const responseData = {
       data: wordsData,
       pagination: {
         total: result.total,
         page: result.page,
         pages: result.pages,
       },
+    };
+
+    // Guardar en caché el objeto completo con datos y paginación
+    cache.set(cacheKey, responseData);
+
+    return res.status(200).json({
+      success: true,
+      ...responseData, // Enviar el objeto completo
     });
   } catch (error) {
     console.error("Error retrieving words:", error);
@@ -134,7 +139,6 @@ export const getWords = async (
     });
   }
 };
-
 
 export const createWord = async (
   req: Request,
