@@ -38,7 +38,7 @@ app.use("/", (req, res) => {
   res.json({
     message: "Server is running",
     date: new Date().toISOString(),
-    version: "V. Friday 1 November 2:28 PM",
+    version: "V. Satudarday 2 November 2:38 PM",
   });
 });
 

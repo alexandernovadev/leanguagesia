@@ -23,7 +23,7 @@ export const ProfilePage = () => {
         </ul>
 
         <h3 className="text-lg font-semibold text-green-700 mt-8 mb-2">Version</h3>
-        <p className="text-lg text-gray-200">V. Saturday 2 November 1:28 PM</p>
+        <p className="text-lg text-gray-200">V. Satudarday 2 November 2:38 PM</p>
       </section>
     </MainLayout>
   );

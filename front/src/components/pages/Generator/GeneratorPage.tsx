@@ -164,12 +164,12 @@ export const GeneratorPage = () => {
 
             {/* Conditionally render the SAVE button only if there's generated text */}
             {!isLoaded && text.length > 0 && (
-              <button
+              <span
                 onClick={saveLecture}
                 className="border border-green-700 text-white rounded-lg px-3 py-2 mt-4 sticky top-4 right-0"
               >
                 <Save />
-              </button>
+              </span>
             )}
           </div>
         </form>
