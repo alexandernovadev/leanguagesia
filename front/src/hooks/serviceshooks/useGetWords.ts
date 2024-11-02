@@ -31,6 +31,8 @@ export const useGetWords = (
       );
       const data = await response.json();
       if (data.success) {
+        console.log(data.data);
+        
           setWords(data.data);
           setTotalPages(data.pagination.pages);
       } else {

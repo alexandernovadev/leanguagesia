@@ -14,7 +14,7 @@ export const NabvarMain = () => {
         <BookOpen className="w-6 h-6" />
       </Link>
 
-      <Link to="/cards" className="rounded-lg p-1">
+      <Link to="/ankigame" className="rounded-lg p-1">
         <Gamepad2 className="w-6 h-6" />
       </Link>
       <Link to="/profile" className="rounded-lg p-1">
