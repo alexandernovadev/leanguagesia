@@ -1,6 +1,6 @@
 export interface Word {
   spanish: Spanish;
-  _id?: string;
+  _id: string;
   word: string;
   language: string;
   definition: string;

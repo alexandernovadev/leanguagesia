@@ -1,7 +1,65 @@
-import { MainLayout } from '../../shared/Layouts/MainLayout'
+import { MainLayout } from "../../shared/Layouts/MainLayout";
+import { useGetWords } from "../../../hooks/serviceshooks/useGetWords";
+import { Loading } from "./Loading";
+import { ErrorMessage } from "./ErrorMessage";
+import { WordTable } from "./WordTable";
 
 export const WordPage = () => {
+  const { words, loading, error, page, totalPages, setPage, retry } =
+    useGetWords();
+
+  const handleNextPage = () => {
+    if (page < totalPages) setPage(page + 1);
+  };
+
+  const handlePreviousPage = () => {
+    if (page > 1) setPage(page - 1);
+  };
+
+  const handleEdit = (id: string) => {
+    console.log(`Edit word with ID: ${id}`);
+  };
+
+  const handleRemove = (id: string) => {
+    console.log(`Remove word with ID: ${id}`);
+  };
+
   return (
-    <MainLayout>WordPage</MainLayout>
-  )
-}
+    <MainLayout>
+      <div className="text-customGreen-100 p-6 h-full">
+        <h2 className="text-4xl text-green-800 font-bold mb-4">Word List</h2>
+
+        {loading && <Loading />}
+        {error && <ErrorMessage retry={retry} />}
+        {!loading && !error && (
+          <>
+            <WordTable
+              words={words}
+              onEdit={handleEdit}
+              onRemove={handleRemove}
+            />
+            <div className="flex justify-between items-center mt-4">
+              <button
+                onClick={handlePreviousPage}
+                disabled={page === 1}
+                className="px-4 py-2 border border-green-600 rounded-lg text-white disabled:bg-gray-800"
+              >
+                Previous
+              </button>
+              <span className="text-black-200">
+                Page {page} of {totalPages}
+              </span>
+              <button
+                onClick={handleNextPage}
+                disabled={page === totalPages}
+                className="px-4 py-2 border border-green-600 rounded-lg text-white disabled:bg-gray-800"
+              >
+                Next
+              </button>
+            </div>
+          </>
+        )}
+      </div>
+    </MainLayout>
+  );
+};
