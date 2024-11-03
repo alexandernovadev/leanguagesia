@@ -11,12 +11,9 @@ import { ArrayInput } from "./ArrayInput";
 
 // Opciones para los selects de nivel y tipo
 const levelOptions = [
-  { label: "A1", value: "A1" },
-  { label: "A2", value: "A2" },
-  { label: "B1", value: "B1" },
-  { label: "B2", value: "B2" },
-  { label: "C1", value: "C1" },
-  { label: "C2", value: "C2" },
+  { label: "Hard", value: "hard" },
+  { label: "Medium", value: "medium" },
+  { label: "Easy", value: "easy" },
 ];
 
 const typeOptions = [

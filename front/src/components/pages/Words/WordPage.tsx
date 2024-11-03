@@ -3,6 +3,9 @@ import { useGetWords } from "../../../hooks/serviceshooks/useGetWords";
 import { Loading } from "./Loading";
 import { ErrorMessage } from "./ErrorMessage";
 import { WordTable } from "./WordTable";
+import { Word } from "../Lecture/types/Word";
+import { ToastContainer, toast } from "react-toastify";
+import { BACKURL } from "../../../api/backConf";
 
 export const WordPage = () => {
   const { words, loading, error, page, totalPages, setPage, retry } =
@@ -16,18 +19,65 @@ export const WordPage = () => {
     if (page > 1) setPage(page - 1);
   };
 
-  const handleEdit = (id: string) => {
-    console.log(`Edit word with ID: ${id}`);
+  const handleEdit = async (word: Word) => {
+    try {
+      const { _id, __v, ...rest } = word;
+      const edit = await fetch(`${BACKURL}/api/words/${_id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(rest),
+      });
+
+      if (edit.ok) {
+        toast.success("Word updated successfully!");
+        retry();
+      } else {
+        throw new Error("Failed to update word");
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Error updating word.");
+    }
   };
 
-  const handleRemove = (id: string) => {
-    console.log(`Remove word with ID: ${id}`);
+  const handleRemove = async (id: string) => {
+    try {
+      const response = await fetch(`${BACKURL}/api/words/${id}`, {
+        method: "DELETE",
+      });
+
+      if (response.ok) {
+        toast.success("Word removed successfully!");
+        retry();
+      } else {
+        throw new Error("Failed to delete word");
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Error deleting word.");
+    }
   };
 
   return (
     <MainLayout>
       <div className="text-customGreen-100 p-6 h-full">
-
+        <ToastContainer
+          toastClassName={() =>
+            "relative flex p-1 min-h-10 rounded-md justify-between overflow-hidden cursor-pointer bg-gray-900"
+          }
+          bodyClassName={() => "text-white flex items-center"}
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
         {loading && <Loading />}
         {error && <ErrorMessage retry={retry} />}
         {!loading && !error && (
