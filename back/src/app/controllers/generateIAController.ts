@@ -52,6 +52,7 @@ export const generateJSONword = async (req: Request, res: Response) => {
       ...json,
       language: "en",
       seen: 1,
+      level: "hard",
       img: "",
     };
 
@@ -61,7 +62,6 @@ export const generateJSONword = async (req: Request, res: Response) => {
       message: "Word created successfully",
       data: newWord,
     });
-    
   } catch (error) {
     res.status(500).json({
       message: "Error trying to generate JSON word",

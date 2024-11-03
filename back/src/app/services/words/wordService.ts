@@ -19,7 +19,7 @@ export class WordService {
     return await Word.findById(id);
   }
 
-  // Obtener todas las palabras con paginación
+  // Obtener todas las palabras con paginación y ordenadas por fecha de creación
   async getWords(
     page: number = 1,
     limit: number = 10
@@ -27,6 +27,7 @@ export class WordService {
     const total = await Word.countDocuments();
     const pages = Math.ceil(total / limit);
     const data = await Word.find()
+      .sort({ createdAt: -1 }) 
       .skip((page - 1) * limit)
       .limit(limit)
       .exec();

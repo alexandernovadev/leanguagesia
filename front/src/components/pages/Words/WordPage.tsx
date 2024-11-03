@@ -27,7 +27,6 @@ export const WordPage = () => {
   return (
     <MainLayout>
       <div className="text-customGreen-100 p-6 h-full">
-        <h2 className="text-4xl text-green-800 font-bold mb-4">Word List</h2>
 
         {loading && <Loading />}
         {error && <ErrorMessage retry={retry} />}

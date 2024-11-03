@@ -14,7 +14,7 @@ interface UseGetWordsResult {
 
 export const useGetWords = (
   initialPage: number = 1,
-  limit: number = 10
+  limit: number = 7
 ): UseGetWordsResult => {
   const [words, setWords] = useState<Word[]>([]);
   const [loading, setLoading] = useState(false);

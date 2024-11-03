@@ -25,7 +25,6 @@ export const generateWordJson = async (prompt: string, language = "en") => {
               "[one or more grammatical types, such as 'noun', 'adjective', or 'verb', selected only from the list below]"
           ],
           "IPA": "[IPA notation in standard format]",
-          "level": "Choose from A1, A2, B1, B2, C1, C2 depending on the CEFR level and context of the word",
           "codeSwitching": [
               "[5 sentences that use the word in English and rest of the sentence in spanish language]"
           ],
@@ -53,7 +52,6 @@ export const generateWordJson = async (prompt: string, language = "en") => {
         "noun","verb","adjective"
     ],
     "IPA": "/ˈtʃæl.ɪn.dʒɪz/",
-    "level": "B2",
     "codeSwitching": [
         "Hay muchos challenges en el camino hacia el éxito.",
         "Enfrentamos varios challenges al implementar el proyecto.",
@@ -84,7 +82,6 @@ export const generateWordJson = async (prompt: string, language = "en") => {
                 "noun","adjective"
             ],
             "IPA": "/ˈɪnfrəˌstrʌktʃə/",
-            "level": "B2",
             "codeSwitching": [
                 "La infrastructure de la ciudad ha mejorado mucho en los últimos años.",
                 "La nueva infrastructure ayuda a que el tráfico sea más eficiente.",
