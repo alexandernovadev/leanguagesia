@@ -42,7 +42,7 @@ app.use("/", (req, res) => {
   res.json({
     message: "Server is running",
     date: new Date().toISOString(),
-    version: "V. Satudarday 2 November 11:38 PM",
+    version: "V. Satudarday 3 November 3:38 PM",
   });
 });
 
