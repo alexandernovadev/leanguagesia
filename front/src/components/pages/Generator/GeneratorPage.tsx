@@ -12,10 +12,14 @@ import Select from "../../ui/Select";
 import { writeStyle } from "./data/writesStyles";
 import { levels } from "./data/levels";
 import "../../../styles/buttonanimatiocss.css";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export const GeneratorPage = () => {
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const [text, setText] = useState("");
+
+  const navigate = useNavigate();
 
   // const [error, setError] = useState("");
   const textRef = useRef<HTMLDivElement>(null);
@@ -63,6 +67,8 @@ export const GeneratorPage = () => {
 
       if (response.ok) {
         console.log("Lecture saved successfully.");
+        toast.success("Lecture saved successfully!");
+        navigate(`/`);
       } else {
         console.error("Failed to save the lecture.");
       }

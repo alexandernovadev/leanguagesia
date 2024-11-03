@@ -32,39 +32,41 @@ export const generateWordJson = async (prompt: string, language = "en") => {
               "definition": "[Clear and concise Spanish translation of the definition]",
               "word": "[Spanish equivalent of the word]"
           }
+          "sinonyms": [ List of sinonyms in english, minimum 5]
         }
 
     
 
-        SOME EXAMPLES:
+        // SOME EXAMPLES:
         {
-    "word": "challenges",
-    "language": "en",
-    "definition": "Difficult situations or tasks that require effort and determination to overcome.",
-    "examples": [
-        "Starting a new job comes with its own set of challenges.",
-        "The team faced several challenges in completing the project on time.",
-        "One of the main challenges in learning a language is mastering pronunciation.",
-        "They overcame many challenges to reach their goal.",
-        "Climate change presents serious challenges for all nations."
-    ],
-    "type": [
-        "noun","verb","adjective"
-    ],
-    "IPA": "/ˈtʃæl.ɪn.dʒɪz/",
-    "codeSwitching": [
-        "Hay muchos challenges en el camino hacia el éxito.",
-        "Enfrentamos varios challenges al implementar el proyecto.",
-        "La vida está llena de challenges que nos ayudan a crecer.",
-        "Superar estos challenges nos hará más fuertes.",
-        "El cambio climático trae numerosos challenges para el futuro."
-    ],
-    "spanish": {
-        "definition": "Situaciones o tareas difíciles que requieren esfuerzo y determinación para superarse.",
-        "word": "desafíos"
-    }
-}
- "spanish": {
+          "word": "challenges",
+          "language": "en",
+          "definition": "Difficult situations or tasks that require effort and determination to overcome.",
+          "examples": [
+              "Starting a new job comes with its own set of challenges.",
+              "The team faced several challenges in completing the project on time.",
+              "One of the main challenges in learning a language is mastering pronunciation.",
+              "They overcame many challenges to reach their goal.",
+              "Climate change presents serious challenges for all nations."
+          ],
+          "type": [
+              "noun","verb","adjective"
+          ],
+          "IPA": "/ˈtʃæl.ɪn.dʒɪz/",
+          "codeSwitching": [
+              "Hay muchos challenges en el camino hacia el éxito.",
+              "Enfrentamos varios challenges al implementar el proyecto.",
+              "La vida está llena de challenges que nos ayudan a crecer.",
+              "Superar estos challenges nos hará más fuertes.",
+              "El cambio climático trae numerosos challenges para el futuro."
+          ],
+          "sinonyms": [ "obstacles", "difficulties", "problems", "hurdles", "obstructions" ],
+          "spanish": {
+              "definition": "Situaciones o tareas difíciles que requieren esfuerzo y determinación para superarse.",
+              "word": "desafíos"
+          }
+        }   
+       "spanish": {
                 "definition": "Las estructuras físicas y organizativas básicas necesarias para el funcionamiento de una sociedad o empresa.",
                 "word": "infraestructura"
             },
@@ -82,6 +84,7 @@ export const generateWordJson = async (prompt: string, language = "en") => {
                 "noun","adjective"
             ],
             "IPA": "/ˈɪnfrəˌstrʌktʃə/",
+            "sinonyms": ["base", "platform", "system", "network", "support"];
             "codeSwitching": [
                 "La infrastructure de la ciudad ha mejorado mucho en los últimos años.",
                 "La nueva infrastructure ayuda a que el tráfico sea más eficiente.",

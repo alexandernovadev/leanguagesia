@@ -36,7 +36,7 @@ export const generateTextStreamService = async ({
 
           Content guidelines:
           - Avoid using rare, uncommon words or special symbols, as each word should be clickable and easily searchable in a dictionary.
-          - Length should be between 4000 and 4500 characters.
+          - Length should be between 4000 and 500 characters.
           - For ${level} level:
             - **A1-A2:** Use simple words, basic sentences, and give short, clear examples. Define complex words as needed.
             - **B1-B2:** Use intermediate vocabulary, compound sentences, and provide real-world examples.
@@ -45,8 +45,7 @@ export const generateTextStreamService = async ({
     
 
           Learning aids:
-          - At the end, add 2-3 reflection questions or a short exercise.
-          - For A1-B1 levels, add a glossary of key terms at the end.
+          - For alllevels, add a glossary of key terms at the end.
           - For C1-C2 levels, include a brief summary of the main points.
              `,
       },

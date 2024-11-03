@@ -88,7 +88,7 @@ export const SidePanelModalWord: React.FC<SidePanelProps> = ({
     >
       <div
         onClick={handlePanelClick}
-        className={`fixed top-0 right-0 h-full w-[35%] max-w-md bg-gray-900
+        className={`fixed top-0 right-0 h-full w-[420px] max-w-md bg-gray-900
           border border-green-700 rounded-l-xl
           text-gray-200 shadow-lg transition-transform duration-300 ${
             isVisible ? "translate-x-0" : "translate-x-full"
@@ -102,8 +102,8 @@ export const SidePanelModalWord: React.FC<SidePanelProps> = ({
         </button>
 
         <div className="p-6 pt-10 space-y-6 overflow-auto h-full">
-          <section className="flex gap-3 justify-center items-center">
-            <h1 className="text-4xl font-bold text-green-400 capitalize mb-2">
+          <section className="flex gap-3 justify-start items-center">
+            <h1 className="text-4xl font-bold text-green-400 capitalize">
               {wordSelected}
             </h1>
             {wordDb && (
@@ -112,6 +112,14 @@ export const SidePanelModalWord: React.FC<SidePanelProps> = ({
               </span>
             )}
           </section>
+
+          {wordDb?.IPA && (
+            <div className="flex gap-3">
+              <span className="text-green-300 font-semibold text-2xl">
+                {wordDb.IPA}
+              </span>
+            </div>
+          )}
 
           {wordDb ? (
             <div className="space-y-6">
@@ -127,17 +135,6 @@ export const SidePanelModalWord: React.FC<SidePanelProps> = ({
                 )}
               </section>
               <p className="text-xl font-semibold">{wordDb.definition}</p>
-
-              {wordDb.IPA && (
-                <div className="flex gap-3">
-                  <span className="text-lg font-semibold text-green-200">
-                    IPA:{" "}
-                  </span>
-                  <span className="text-green-500 italic text-lg">
-                    {wordDb.IPA}
-                  </span>
-                </div>
-              )}
 
               {wordDb.img && (
                 <img
@@ -177,16 +174,31 @@ export const SidePanelModalWord: React.FC<SidePanelProps> = ({
                 </div>
               )}
 
+              {wordDb.sinonyms && (
+                <div>
+                  <h2 className="text-lg font-semibold text-green-400 mb-2">
+                    Sinonyms
+                  </h2>
+                  <ul className="list-disc list-inside space-y-1">
+                    {wordDb.sinonyms.map((sinonym, index) => (
+                      <li key={index} className="text-black-200 capitalize">
+                        {sinonym}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
               {wordDb.spanish && (
                 <div>
                   <h2 className="text-lg font-semibold text-green-400 mb-2">
-                    Spanish:
+                    Spanish
                   </h2>
                   <p className="text-black-200 capitalize">
-                    <strong>Word:</strong> {wordDb.spanish.word}
+                    <strong>Word</strong> {wordDb.spanish.word}
                   </p>
                   <p className="text-black-200">
-                    <strong>Definición:</strong> {wordDb.spanish.definition}
+                    <strong>Definición</strong> {wordDb.spanish.definition}
                   </p>
                 </div>
               )}

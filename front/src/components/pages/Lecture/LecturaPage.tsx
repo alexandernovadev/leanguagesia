@@ -1,9 +1,9 @@
 import {
   ChevronLeft,
-  SkipBack,
-  Play,
-  Pause,
-  SkipForward,
+  // SkipBack,
+  // Play,
+  // Pause,
+  // SkipForward,
   Timer,
   BookOpen,
 } from "lucide-react";
@@ -20,7 +20,7 @@ import { SidePanelModalWord } from "./SidePanelModalWord";
 
 export const LecturaPage = () => {
   const [lecture, setLecture] = useState<Lecture>();
-  const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  // const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [isSidePanelOpen, setIsSidePanelOpen] = useState(false);
   const { customComponents, wordSelected } = useCustomMarkdownRenderer();
 
@@ -80,9 +80,13 @@ export const LecturaPage = () => {
       <div className="overflow-y-auto mb-4 px-3 rounded-lg border border-gray-700">
         <div className="clearfix">
           <img
-            src={"https://avatars.githubusercontent.com/u/6078720?s=200&v=4"}
+            src={
+              lecture?.img
+                ? lecture?.img
+                : "https://avatars.githubusercontent.com/u/6078720?s=200&v=4"
+            }
             alt="NPM Logo"
-            className="w-32 h-32 object-cover float-left mr-4 mb-2"
+            className="w-48 h-48 object-cover float-left mr-4 mb-2 rounded-lg"
           />
           <div>
             <ReactMarkdown
@@ -97,14 +101,14 @@ export const LecturaPage = () => {
       </div>
 
       {/* Barra de progreso */}
-      <div className="mb-4">
+      {/* <div className="mb-4">
         <div className="h-1 w-full bg-gray-700 rounded-full">
           <div className="h-1 bg-gray-500 rounded-full"></div>
         </div>
-      </div>
+      </div> */}
 
       {/* Controles de reproducción */}
-      <div className="flex justify-center items-center space-x-4">
+      {/* <div className="flex justify-center items-center space-x-4">
         <button className={`p-2 opacity-50 cursor-not-allowed`}>
           <SkipBack className="w-6 h-6" />
         </button>
@@ -121,7 +125,7 @@ export const LecturaPage = () => {
         <button className={`p-2`}>
           <SkipForward className="w-6 h-6" />
         </button>
-      </div>
+      </div> */}
 
       {/* Panel lateral */}
       <SidePanelModalWord

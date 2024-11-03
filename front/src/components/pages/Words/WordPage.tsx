@@ -4,7 +4,7 @@ import { Loading } from "./Loading";
 import { ErrorMessage } from "./ErrorMessage";
 import { WordTable } from "./WordTable";
 import { Word } from "../Lecture/types/Word";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { BACKURL } from "../../../api/backConf";
 
 export const WordPage = () => {
@@ -63,21 +63,6 @@ export const WordPage = () => {
   return (
     <MainLayout>
       <div className="text-customGreen-100 p-6 h-full">
-        <ToastContainer
-          toastClassName={() =>
-            "relative flex p-1 min-h-10 rounded-md justify-between overflow-hidden cursor-pointer bg-gray-900"
-          }
-          bodyClassName={() => "text-white flex items-center"}
-          position="top-right"
-          autoClose={5000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-        />
         {loading && <Loading />}
         {error && <ErrorMessage retry={retry} />}
         {!loading && !error && (

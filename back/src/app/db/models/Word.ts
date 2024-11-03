@@ -8,10 +8,11 @@ export interface IWord extends Document {
   IPA?: string;
   seen?: number;
   img?: string;
-  level?: "A1" | "A2" | "B1" | "B2" | "C1" | "C2";
+  level?: "easy" | "medium" | "hard";
+  sinonyms?: string[];
   codeSwitching?: string[];
   language: string;
-  spanish?:{
+  spanish?: {
     definition: string;
     word: string;
   };
@@ -40,6 +41,10 @@ const WordSchema: Schema = new Schema<IWord>(
       type: [String],
       default: [],
     },
+    sinonyms: {
+      type: [String],
+      default: [],
+    },
     type: {
       type: [String],
       enum: [
@@ -60,7 +65,7 @@ const WordSchema: Schema = new Schema<IWord>(
         "infinitive",
         "participle",
         "gerund",
-        "other"
+        "other",
       ],
       default: [],
     },
@@ -83,14 +88,14 @@ const WordSchema: Schema = new Schema<IWord>(
     },
     level: {
       type: String,
-      enum: ["A1", "A2", "B1", "B2", "C1", "C2"],
-      default: "A1",
+      enum: ["easy", "medium", "hard"],
+      default: "hard",
     },
     codeSwitching: {
       type: [String],
       default: [],
     },
-    spanish:{
+    spanish: {
       definition: {
         type: String,
         minlength: 5,
@@ -100,8 +105,8 @@ const WordSchema: Schema = new Schema<IWord>(
         type: String,
         minlength: 1,
         maxlength: 100,
-      }
-    }
+      },
+    },
   },
   { timestamps: true }
 );

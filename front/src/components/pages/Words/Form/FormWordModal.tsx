@@ -168,6 +168,17 @@ const EditWordModal: React.FC<EditWordModalProps> = ({
             />
           </div>
 
+          <div className="col-span-3">
+            <label className="text-white" htmlFor="sinonyms">
+            Sinonyms
+            </label>
+            <ArrayInput
+              control={control}
+              name="sinonyms"
+              placeholder="Add a code-switching phrase"
+            />
+          </div>
+
           <div>
             <label className="text-white" htmlFor="spanish.word">
               Spanish Word
