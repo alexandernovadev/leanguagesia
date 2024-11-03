@@ -27,7 +27,7 @@ export class WordService {
     const total = await Word.countDocuments();
     const pages = Math.ceil(total / limit);
     const data = await Word.find()
-      .sort({ createdAt: -1 }) 
+      .sort({ createdAt: -1 })
       .skip((page - 1) * limit)
       .limit(limit)
       .exec();
@@ -40,6 +40,11 @@ export class WordService {
     updateData: Partial<IWord>
   ): Promise<IWord | null> {
     return await Word.findByIdAndUpdate(id, updateData, { new: true });
+  }
+
+  // Update level of a word by ID
+  async updateWordLevel(id: string, level: string): Promise<IWord | null> {
+    return await Word.findByIdAndUpdate(id, { level }, { new: true });
   }
 
   // Eliminar una palabra por ID

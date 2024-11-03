@@ -23,7 +23,10 @@ export const Card = ({ card }: CardProps) => {
       tabIndex={0}
     >
       <div
-        className={`bg-customBlack-200 rounded-lg p-4 aspect-square relative`}
+        className="bg-customBlack-200 rounded-lg p-4 aspect-square relative bg-center bg-cover opacity-90"
+        style={{
+          backgroundImage: `url(${card.img})`,
+        }}
       >
         <div
           className="absolute top-2 left-2 text-2xl"

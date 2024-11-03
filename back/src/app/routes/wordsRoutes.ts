@@ -6,6 +6,7 @@ import {
   updateWord,
   deleteWord,
   findWordByName,
+  updateWordLevel,
 } from "../controllers/wordController";
 
 const router = Router();
@@ -18,5 +19,7 @@ router.delete("/:id", deleteWord);
 
 // Ruta para buscar una palabra por su nombre
 router.get("/word/:word", findWordByName);
+
+router.put("/:id/level", updateWordLevel);
 
 export default router;

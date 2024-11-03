@@ -11,11 +11,13 @@ interface InputProps {
   rules?: any; // Validation rules for react-hook-form
   type?: string; // Input type, default is "text"
   disabled?: boolean; // Disabled input
+  className?: string; // Custom class
 }
 
 const Input: React.FC<InputProps> = ({
   name,
   control,
+  className,
   placeholder = "Search...",
   icon = <Search className="w-5 h-5 text-green-700" />, // Default icon
   rounded = "rounded-md", // Default class for rounded corners
@@ -33,7 +35,7 @@ const Input: React.FC<InputProps> = ({
   });
 
   return (
-    <div className="relative flex-grow">
+    <div className={`relative flex-grow ${className}`}>
       <input
         type={type}
         value={value}

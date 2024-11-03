@@ -152,6 +152,36 @@ export const updateWord = async (
   }
 };
 
+// Update level of a word by ID
+export const updateWordLevel = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  try {
+    const { id } = req.params;
+    const level = req.body.level;
+    
+    const updatedWord = await wordService.updateWordLevel(id, level);
+    if (!updatedWord) {
+      return res.status(404).json({
+        success: false,
+        message: "Word not found",
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      message: "Word level updated successfully",
+      data: updatedWord,
+    });
+  } catch (error) {
+    console.error("Error updating word level:", error);
+    return res.status(500).json({
+      success: false,
+      message: "An error occurred while updating the word level",
+    });
+  }
+};
+
 // Eliminar una palabra por ID
 export const deleteWord = async (
   req: Request,
