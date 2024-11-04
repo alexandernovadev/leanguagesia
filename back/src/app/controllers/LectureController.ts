@@ -64,6 +64,22 @@ export const deleteLecture = async (
   }
 };
 
+export const updateImageLecureById = async (req: Request, res: Response) => {
+  const ID = req.params.id;
+  const { image } = req.body;
+
+  try {
+    const updatedLecture = await lectureService.updateImage(ID, image);
+    if (!updatedLecture) {
+      return res.status(404).json({ error: "Lecture not found" });
+    }
+    return res.json(updatedLecture);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: "Error updating lecture" });
+  }
+};
+
 export const getAllLectures = async (
   req: Request,
   res: Response
