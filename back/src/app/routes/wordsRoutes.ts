@@ -12,6 +12,7 @@ import {
 
 const router = Router();
 
+router.get("/get-cards-anki", getRecentHardOrMediumWords);
 router.post("/", createWord);
 router.get("/", getWords);
 router.get("/:id", getWordById);
@@ -22,6 +23,5 @@ router.get("/word/:word", findWordByName);
 
 router.put("/:id/level", updateWordLevel);
 
-router.get("/get-cards-anki", getRecentHardOrMediumWords);
 
 export default router;
