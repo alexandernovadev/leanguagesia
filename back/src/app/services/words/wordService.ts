@@ -64,7 +64,7 @@ export class WordService {
   // ordenadas por fecha de creación
   async getRecentHardOrMediumWords(): Promise<IWord[]> {
     return await Word.find({ level: { $in: ["hard", "medium"] } })
-      .sort({ createdAt: -1 })
+      .sort({ createdAt: 1 })
       .limit(20)
       .exec();
   }
