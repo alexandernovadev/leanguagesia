@@ -7,6 +7,7 @@ import {
   deleteWord,
   findWordByName,
   updateWordLevel,
+  getRecentHardOrMediumWords,
 } from "../controllers/wordController";
 
 const router = Router();
@@ -17,9 +18,10 @@ router.get("/:id", getWordById);
 router.put("/:id", updateWord);
 router.delete("/:id", deleteWord);
 
-// Ruta para buscar una palabra por su nombre
 router.get("/word/:word", findWordByName);
 
 router.put("/:id/level", updateWordLevel);
+
+router.get("/get-cards-anki", getRecentHardOrMediumWords);
 
 export default router;

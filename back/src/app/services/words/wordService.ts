@@ -59,6 +59,15 @@ export class WordService {
       word: { $regex: `^${lowercaseWord}$`, $options: "i" },
     });
   }
+
+  // Obtener las últimas 20 palabras donde el nivel sea "hard" o "medium", 
+  // ordenadas por fecha de creación
+  async getRecentHardOrMediumWords(): Promise<IWord[]> {
+    return await Word.find({ level: { $in: ["hard", "medium"] } })
+      .sort({ createdAt: -1 })
+      .limit(20)
+      .exec();
+  }
 }
 
 export default new WordService();

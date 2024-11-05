@@ -160,7 +160,7 @@ export const updateWordLevel = async (
   try {
     const { id } = req.params;
     const level = req.body.level;
-    
+
     const updatedWord = await wordService.updateWordLevel(id, level);
     if (!updatedWord) {
       return res.status(404).json({
@@ -205,6 +205,26 @@ export const deleteWord = async (
     return res.status(500).json({
       success: false,
       message: "An error occurred while deleting the word",
+    });
+  }
+};
+
+// Obtener las últimas 20 palabras con nivel "hard" o "medium" ordenadas por fecha de creación
+export const getRecentHardOrMediumWords = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  try {
+    const words = await wordService.getRecentHardOrMediumWords();
+    return res.status(200).json({
+      success: true,
+      data: words,
+    });
+  } catch (error) {
+    console.error("Error retrieving recent hard or medium words:", error);
+    return res.status(500).json({
+      success: false,
+      message: "An error occurred while retrieving recent hard or medium words",
     });
   }
 };
