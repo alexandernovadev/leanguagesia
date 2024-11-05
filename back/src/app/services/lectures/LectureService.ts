@@ -40,7 +40,7 @@ export class LectureService {
     const skip = (page - 1) * limit;
     const [total, data] = await Promise.all([
       Lecture.countDocuments(),
-      Lecture.find().skip(skip).sort({ createdAt: -1 }).limit(limit),
+      Lecture.find().skip(skip).sort({ createdAt: 1 }).limit(limit),
     ]);
 
     return {
