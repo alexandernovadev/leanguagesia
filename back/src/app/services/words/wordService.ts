@@ -65,7 +65,7 @@ export class WordService {
   async getRecentHardOrMediumWords(): Promise<IWord[]> {
     return await Word.find({ level: { $in: ["hard", "medium"] } })
       .sort({ createdAt: -1 })
-      .limit(20)
+      .limit(60)
       .exec();
   }
 }
