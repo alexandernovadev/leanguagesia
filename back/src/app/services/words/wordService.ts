@@ -60,13 +60,13 @@ export class WordService {
     });
   }
 
-  // Obtener las últimas 20 palabras donde el nivel sea "hard" o "medium", 
+  // Obtener las últimas 20 palabras donde el nivel sea "hard" o "medium",
   // ordenadas por fecha de creación
   async getRecentHardOrMediumWords(): Promise<IWord[]> {
-    return await Word.find({ level: { $in: ["hard", "medium"] } })
-      .sort({ createdAt: -1 })
-      .limit(60)
-      .exec();
+    return await Word.aggregate([
+      { $match: { level: { $in: ["hard", "medium"] } } }, // Filtrar por nivel "hard" o "medium"
+      { $sample: { size: 60 } }, // Seleccionar aleatoriamente 60 documentos
+    ]);
   }
 }
 
