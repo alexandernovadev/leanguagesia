@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { WordService } from "../services/words/wordService";
+import { shuffleArray } from "../utlis/shuffle";
 
 const wordService = new WordService();
 
@@ -216,9 +217,12 @@ export const getRecentHardOrMediumWords = async (
 ): Promise<Response> => {
   try {
     const words = await wordService.getRecentHardOrMediumWords();
+
+    const shuffledWords = shuffleArray(words);
+    
     return res.status(200).json({
       success: true,
-      data: words,
+      data: shuffledWords,
     });
   } catch (error) {
     console.error("Error retrieving recent hard or medium words:", error);

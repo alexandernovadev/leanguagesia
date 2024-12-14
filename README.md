@@ -1,11 +1,11 @@
 # IA Languages tutor 
 
 No voy a pagar por app que leen texto en ingles y por cada 
-palabra me cobra 9238093824 , Im dev , and I wanna learn langauges
-withoy pagar ni um sô peso . Eu soy muito bom ,;:D
+palabra me cobra 9238093824 , Im dev , and I wanna learn languages
+without pagar ni um sô peso . Eu sou muito bom ,;:D
 
 ```
-docker run -d --name mongodb -p 27017:27017 -v mongodata:/data/db mongo
+  docker run -d --name mongodb -p 27017:27017 -v mongodata:/data/db mongo
 ```
 
 -d corre el contenedor en modo desatendido (background).
