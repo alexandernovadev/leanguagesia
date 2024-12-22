@@ -45,25 +45,27 @@ export const AnkiGamePage = () => {
 
   return (
     <MainLayout>
-      <div className="w-full flex justify-center items-center mx-4">
-        <section className="flex flex-col items-center mt-12 w-[520px]">
-          {loading ? (
-            <p>Loading...</p>
-          ) : error ? (
-            <p className="text-red-600">{error}</p>
-          ) : (
-            <>
-              <Card card={cards[currentIndex]} flipped={flipped} onFlip={() => setFlipped(!flipped)} />
-              <CardNavigation
-                currentIndex={currentIndex}
-                totalCards={cards.length}
-                onNext={handleNext}
-                onPrevious={handlePrevious}
-              />
-            </>
-          )}
-        </section>
-      </div>
+      <section className="flex flex-col mt-12 w-full overflow-hidden">
+        {loading ? (
+          <p>Loading...</p>
+        ) : error ? (
+          <p className="text-red-600">{error}</p>
+        ) : (
+          <div className="mx-3">
+            <Card
+              card={cards[currentIndex]}
+              flipped={flipped}
+              onFlip={() => setFlipped(!flipped)}
+            />
+            <CardNavigation
+              currentIndex={currentIndex}
+              totalCards={cards.length}
+              onNext={handleNext}
+              onPrevious={handlePrevious}
+            />
+          </div>
+        )}
+      </section>
     </MainLayout>
   );
 };

@@ -26,7 +26,7 @@ export const GeneratorPage = () => {
 
   const { handleSubmit, control, getValues } = useForm({
     defaultValues: {
-      prompt: "Write an article about why the english language is important.",
+      prompt: " ",
       typeWrite: "narration",
       level: "C1",
     },

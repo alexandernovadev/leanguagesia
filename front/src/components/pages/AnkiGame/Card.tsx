@@ -2,7 +2,6 @@ import React from "react";
 import { FlipHorizontal } from "lucide-react";
 import { Word } from "../Lecture/types/Word";
 
-
 interface CardProps {
   card: Word;
   flipped: boolean;
@@ -11,8 +10,10 @@ interface CardProps {
 
 export const Card: React.FC<CardProps> = ({ card, flipped, onFlip }) => {
   return (
-    <div className="relative w-full h-[76vh] bg-opacity-50 rounded-lg overflow-hidden" style={{ perspective: "1000px" }}>
-      
+    <div
+      className="relative w-full h-[76vh] bg-opacity-50 rounded-lg overflow-hidden"
+      style={{ perspective: "1000px" }}
+    >
       {/* Flip Button */}
       <button
         onClick={onFlip}
@@ -23,7 +24,9 @@ export const Card: React.FC<CardProps> = ({ card, flipped, onFlip }) => {
 
       {/* Card Container */}
       <div
-        className={`w-full h-full border border-green-800 rounded-lg shadow-lg transition-transform transform ${flipped ? "rotate-y-180" : ""}`}
+        className={`w-full h-full border border-green-800 rounded-lg shadow-lg transition-transform transform ${
+          flipped ? "rotate-y-180" : ""
+        }`}
       >
         {/* Front Side */}
         {!flipped && (
@@ -37,7 +40,9 @@ export const Card: React.FC<CardProps> = ({ card, flipped, onFlip }) => {
         {flipped && (
           <div className="absolute inset-0 flex flex-col justify-between p-4 transform rotate-y-180 overflow-y-auto">
             <div className="mt-5">
-              <h2 className="text-2xl font-bold mb-2 capitalize">{card.word}</h2>
+              <h2 className="text-2xl font-bold mb-2 capitalize">
+                {card.word}
+              </h2>
               <p className="text-gray-400 mb-4">{card.definition}</p>
               <ul className="text-sm text-gray-300 space-y-2">
                 <li>

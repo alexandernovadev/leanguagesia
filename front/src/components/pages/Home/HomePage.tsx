@@ -41,7 +41,7 @@ export default function HomePage() {
           </button>
         </div>
       </div>
-      <main className="flex-1 p-4 pb-20">
+      <main className="flex-1 p-4 pb-20 overflow-auto h-full">
         <CardList />
       </main>
 
