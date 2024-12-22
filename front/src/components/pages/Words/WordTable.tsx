@@ -50,11 +50,16 @@ export const WordTable = ({
           {words.map((word) => (
             <tr key={word._id} className="border-t border-gray-600 text-sm">
               {/* Palabra e icono de reproducción */}
-              <td className="px-1 py-1">
-                <div className="flex items-center gap-2">
+              <td className="px-1">
+                <div className="flex items-center justify-start gap-2">
+                  <div>
+
                   <p className="text-base font-bold text-green-700">
                     {word.word}
                   </p>
+                  <span className="text-green-900">{word.IPA}</span>
+                  </div>
+                  
                   <button
                     className="flex justify-center items-center"
                     onClick={() => listenWord(word.word)}
@@ -65,7 +70,7 @@ export const WordTable = ({
               </td>
 
               {/* Traducción y detalles */}
-              <td className="px-1 py-1 text-center">
+              <td className="px-1 text-center">
                 <p className="capitalize">{word?.spanish.word}</p>
                 <p className="text-xs text-gray-400">Seen: {word.seen}</p>
               </td>
