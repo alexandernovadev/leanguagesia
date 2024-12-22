@@ -44,59 +44,60 @@ export const WordTable = ({
   };
 
   return (
-<div className="overflow-y-auto max-h-[70vh] w-full">
-  <table className="min-w-full text-gray-100 table-auto">
-    <tbody>
-      {words.map((word) => (
-        <tr key={word._id} className="border-t border-gray-600 text-sm">
-          {/* Palabra e icono de reproducción */}
-          <td className="px-1 py-1">
-            <div className="flex items-center gap-2">
-              <p className="text-base font-bold text-green-700">{word.word}</p>
-              <button
-                className="flex justify-center items-center"
-                onClick={() => listenWord(word.word)}
-              >
-                <Volume2 className="w-4 h-4" />
-              </button>
-            </div>
-          </td>
+    <div className="overflow-y-auto max-h-[70vh] w-full">
+      <table className="min-w-full text-gray-100 table-auto">
+        <tbody>
+          {words.map((word) => (
+            <tr key={word._id} className="border-t border-gray-600 text-sm">
+              {/* Palabra e icono de reproducción */}
+              <td className="px-1 py-1">
+                <div className="flex items-center gap-2">
+                  <p className="text-base font-bold text-green-700">
+                    {word.word}
+                  </p>
+                  <button
+                    className="flex justify-center items-center"
+                    onClick={() => listenWord(word.word)}
+                  >
+                    <Volume2 className="w-4 h-4" />
+                  </button>
+                </div>
+              </td>
 
-          {/* Traducción y detalles */}
-          <td className="px-1 py-1 text-center">
-            <p className="capitalize">{word?.spanish.word}</p>
-            <p className="text-xs text-gray-400">Seen: {word.seen}</p>
-          </td>
+              {/* Traducción y detalles */}
+              <td className="px-1 py-1 text-center">
+                <p className="capitalize">{word?.spanish.word}</p>
+                <p className="text-xs text-gray-400">Seen: {word.seen}</p>
+              </td>
 
-          {/* Nivel de dificultad */}
-          <td className="px-1 py-1 text-center">{word.level}</td>
+              {/* Nivel de dificultad */}
+              <td className="px-1 py-1 text-center">{word.level}</td>
 
-          {/* Íconos de acción */}
-          <td className="px-1 py-1">
-            <div className="flex justify-center items-center gap-2">
-              <button onClick={() => handleEditClick(word)}>
-                <Pencil className="w-4 h-4 text-yellow-400" />
-              </button>
-              <button onClick={() => onRemove(word._id)}>
-                <Trash2 className="w-4 h-4 text-red-600" />
-              </button>
-            </div>
-          </td>
-        </tr>
-      ))}
-    </tbody>
-  </table>
+              {/* Íconos de acción */}
+              <td className="px-1 py-1">
+                <div className="flex justify-center items-center gap-2">
+                  <button onClick={() => handleEditClick(word)}>
+                    <Pencil className="w-4 h-4 text-yellow-400" />
+                  </button>
+                  <button onClick={() => onRemove(word._id)}>
+                    <Trash2 className="w-4 h-4 text-red-600" />
+                  </button>
+                </div>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
 
-  {/* Modal para editar */}
-  {isModalOpen && activeWord && (
-    <EditWordModal
-      isOpen={isModalOpen}
-      onClose={handleModalClose}
-      onSubmit={handleEditSubmit}
-      wordData={activeWord}
-    />
-  )}
-</div>
-
+      {/* Modal para editar */}
+      {isModalOpen && activeWord && (
+        <EditWordModal
+          isOpen={isModalOpen}
+          onClose={handleModalClose}
+          onSubmit={handleEditSubmit}
+          wordData={activeWord}
+        />
+      )}
+    </div>
   );
 };
