@@ -96,13 +96,7 @@ export const WordPage = () => {
         {error && <ErrorMessage retry={retry} />}
         {!loading && !error && (
           <>
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                handleSearch();
-              }}
-              className="flex justify-between items-center w-full pb-4"
-            >
+            <div className="flex justify-between items-center w-full pb-4">
               <button
                 type="button"
                 onClick={() => setIsModalOpen(true)}
@@ -117,6 +111,7 @@ export const WordPage = () => {
                 placeholder="Search..."
               />
               <button
+                onClick={handleSearch}
                 type="submit"
                 className="px-4 py-2 ml-2 border border-green-600 rounded-lg text-white bg-green-600"
               >
@@ -126,7 +121,7 @@ export const WordPage = () => {
               <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
                 <GenerateWord />
               </Modal>
-            </form>
+            </div>
             <WordTable
               words={words}
               onEdit={handleEdit}
