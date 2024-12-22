@@ -6,10 +6,14 @@ import { WordTable } from "./WordTable";
 import { Word } from "../Lecture/types/Word";
 import { toast } from "react-toastify";
 import { BACKURL } from "../../../api/backConf";
+import { useState } from "react";
+import { Modal } from "../../shared/Modal";
+import { GenerateWord } from "./generateWord/generateWord";
 
 export const WordPage = () => {
   const { words, loading, error, page, totalPages, setPage, retry } =
     useGetWords();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleNextPage = () => {
     if (page < totalPages) setPage(page + 1);
@@ -62,11 +66,22 @@ export const WordPage = () => {
 
   return (
     <MainLayout>
-      <div className="text-customGreen-100 p-6 h-full">
+      <div className="text-customGreen-100 p-6 h-auto">
         {loading && <Loading />}
         {error && <ErrorMessage retry={retry} />}
         {!loading && !error && (
           <>
+            <div className="flex justify-between items-center w-full pb-4">
+              <button
+                onClick={() => setIsModalOpen(true)}
+                className="px-4 py-2 border border-green-600 rounded-lg text-white bg-green-600"
+              >
+                Add Word
+              </button>
+              <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+                <GenerateWord />
+              </Modal>
+            </div>
             <WordTable
               words={words}
               onEdit={handleEdit}
