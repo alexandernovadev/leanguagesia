@@ -9,6 +9,7 @@ interface UseGetWordsResult {
   page: number;
   totalPages: number;
   setPage: (page: number) => void;
+  setSearchQuery: (query: string) => void;
   retry: () => void;
 }
 
@@ -21,13 +22,14 @@ export const useGetWords = (
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState(initialPage);
   const [totalPages, setTotalPages] = useState(1);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const fetchWords = async () => {
     setLoading(true);
     setError(null);
     try {
       const response = await fetch(
-        `${BACKURL}/api/words?page=${page}&limit=${limit}`
+        `${BACKURL}/api/words?page=${page}&limit=${limit}&wordUser=${searchQuery}`
       );
       const data = await response.json();
       if (data.success) {
@@ -49,7 +51,16 @@ export const useGetWords = (
 
   useEffect(() => {
     fetchWords();
-  }, [page]);
+  }, [page, searchQuery]);
 
-  return { words, loading, error, page, totalPages, setPage, retry };
+  return {
+    words,
+    loading,
+    error,
+    page,
+    totalPages,
+    setPage,
+    setSearchQuery,
+    retry,
+  };
 };

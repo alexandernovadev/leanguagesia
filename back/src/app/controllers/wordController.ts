@@ -105,7 +105,8 @@ export const getWords = async (
   try {
     const page = parseInt(req.query.page as string) || 1;
     const limit = parseInt(req.query.limit as string) || 10;
-    const result = await wordService.getWords(page, limit);
+    const wordUser = req.query.wordUser as string;
+    const result = await wordService.getWords(page, limit,wordUser);
     return res.status(200).json({
       success: true,
       data: result.data,

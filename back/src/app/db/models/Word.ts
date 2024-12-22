@@ -66,6 +66,7 @@ const WordSchema: Schema = new Schema<IWord>(
         "participle",
         "gerund",
         "other",
+        "phrasal verb",
       ],
       default: [],
     },

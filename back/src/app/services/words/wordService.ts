@@ -19,18 +19,30 @@ export class WordService {
     return await Word.findById(id);
   }
 
-  // Obtener todas las palabras con paginación y ordenadas por fecha de creación
+  // Obtener todas las palabras con paginación, ordenadas por fecha de creación y
+  // filtro opcional por 'wordUser'
   async getWords(
     page: number = 1,
-    limit: number = 10
+    limit: number = 10,
+    wordUser?: string
   ): Promise<PaginatedResult<IWord>> {
-    const total = await Word.countDocuments();
+    const filter: Record<string, unknown> = {};
+
+    // Añadir filtro por palabra si 'wordUser' está definido
+    if (wordUser) {
+      filter.word = { $regex: wordUser, $options: "i" }; 
+      // Búsqueda parcial, insensible a mayúsculas
+    }
+
+    const total = await Word.countDocuments(filter);
     const pages = Math.ceil(total / limit);
-    const data = await Word.find()
+
+    const data = await Word.find(filter)
       .sort({ createdAt: -1 })
       .skip((page - 1) * limit)
       .limit(limit)
       .exec();
+
     return { data, total, page, pages };
   }
 
@@ -60,7 +72,7 @@ export class WordService {
     });
   }
 
-  // Obtener las últimas 20 palabras donde el nivel sea "hard" o "medium", 
+  // Obtener las últimas 20 palabras donde el nivel sea "hard" o "medium",
   // ordenadas por fecha de creación
   async getRecentHardOrMediumWords(): Promise<IWord[]> {
     return await Word.find({ level: { $in: ["hard", "medium"] } })

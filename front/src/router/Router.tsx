@@ -10,6 +10,7 @@ import { ProfilePage } from "../components/pages/Profile/ProfilePage";
 import { GeneratorPage } from "../components/pages/Generator/GeneratorPage";
 import { LecturaPage } from "../components/pages/Lecture/LecturaPage";
 import { AnkiGamePage } from "../components/pages/AnkiGame/AnkiGamePage";
+import { Sentences } from "../components/pages/Sentences/Sentences";
 
 const RouterP = () => {
   return (
@@ -20,6 +21,7 @@ const RouterP = () => {
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/generator" element={<GeneratorPage />} />
         <Route path="/ankigame" element={<AnkiGamePage />} />
+        <Route path="/senteces" element={<Sentences />} />
         <Route path="/lecture/:id" element={<LecturaPage />} />
 
         <Route path="*" element={<Navigate to="/?sequovs=true" replace />} />

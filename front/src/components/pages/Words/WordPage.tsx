@@ -8,12 +8,37 @@ import { toast } from "react-toastify";
 import { BACKURL } from "../../../api/backConf";
 import { useState } from "react";
 import { Modal } from "../../shared/Modal";
-import { GenerateWord } from "./generateWord/generateWord";
+import { GenerateWord } from "./generateWord/GenerateWord";
+import { CirclePlus, Search } from "lucide-react";
+import Input from "../../ui/Input";
+import { useForm } from "react-hook-form";
 
 export const WordPage = () => {
-  const { words, loading, error, page, totalPages, setPage, retry } =
-    useGetWords();
+  const {
+    words,
+    loading,
+    error,
+    page,
+    totalPages,
+    setPage,
+    setSearchQuery,
+    retry,
+  } = useGetWords();
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const { control, watch } = useForm({
+    defaultValues: {
+      searchQuery: "",
+    },
+  });
+
+  // Watch for changes in the searchQuery input
+  const searchQuery = watch("searchQuery");
+
+  // Update the query dynamically
+  const handleSearch = () => {
+    setSearchQuery(searchQuery);
+  };
 
   const handleNextPage = () => {
     if (page < totalPages) setPage(page + 1);
@@ -71,17 +96,37 @@ export const WordPage = () => {
         {error && <ErrorMessage retry={retry} />}
         {!loading && !error && (
           <>
-            <div className="flex justify-between items-center w-full pb-4">
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleSearch();
+              }}
+              className="flex justify-between items-center w-full pb-4"
+            >
               <button
+                type="button"
                 onClick={() => setIsModalOpen(true)}
-                className="px-4 py-2 border border-green-600 rounded-lg text-white bg-green-600"
+                className="px-4 py-2 border mx-2 border-green-600 rounded-lg text-white bg-green-600"
               >
-                Add Word
+                <CirclePlus />
               </button>
+
+              <Input
+                name="searchQuery"
+                control={control}
+                placeholder="Search..."
+              />
+              <button
+                type="submit"
+                className="px-4 py-2 ml-2 border border-green-600 rounded-lg text-white bg-green-600"
+              >
+                <Search />
+              </button>
+
               <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
                 <GenerateWord />
               </Modal>
-            </div>
+            </form>
             <WordTable
               words={words}
               onEdit={handleEdit}

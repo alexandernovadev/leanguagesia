@@ -1,4 +1,4 @@
-import { BookOpen, Home, User, Zap, Gamepad2 } from "lucide-react";
+import { BookOpen, Home, User, Zap, Gamepad2, FileChartColumn } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export const NabvarMain = () => {
@@ -16,6 +16,9 @@ export const NabvarMain = () => {
 
       <Link to="/ankigame" className="rounded-lg p-1">
         <Gamepad2 className="w-6 h-6" />
+      </Link>
+      <Link to="/senteces" className="rounded-lg p-1">
+        <FileChartColumn className="w-6 h-6" />
       </Link>
       <Link to="/profile" className="rounded-lg p-1">
         <User className="w-6 h-6" />
