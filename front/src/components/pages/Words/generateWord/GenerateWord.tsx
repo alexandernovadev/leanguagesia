@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { BACKURL } from "../../../../api/backConf";
 import { Word } from "../../Lecture/types/Word";
-import { CircleX, Loader, Volume2 } from "lucide-react";
+import { Loader, Volume2 } from "lucide-react";
 
 export const GenerateWord = () => {
   const [loadingGetWord, setLoadingGetWord] = useState(false);
@@ -49,7 +49,10 @@ export const GenerateWord = () => {
   };
 
   return (
-    <form onSubmit={generateWord} className="h-[620px] bg-black-700 min-w-96 p-5 overflow-y-scroll">
+    <form
+      onSubmit={generateWord}
+      className="h-[620px] bg-black-700 min-w-96 p-5 overflow-y-scroll"
+    >
       <input
         type="text"
         placeholder="Search..."
