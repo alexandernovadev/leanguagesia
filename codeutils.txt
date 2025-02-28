@@ -27,3 +27,8 @@ docker exec -it mongo_container bash
 
 mongorestore --db nombre_db_destino /backupsdb/test
 
+
+
+// restart
+
+sudo systemctl restart nginx
