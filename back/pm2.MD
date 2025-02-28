@@ -8,7 +8,7 @@ npm install -g pm2
 2. Correr con PM2
 
 ```
-pm2 start ts-node --name languages-ai-back -- src/main.ts
+pm2 start npm --name "back-dev" -- run start
 ```
 
 ## PM2 - Comandos esenciales
