@@ -20,22 +20,22 @@ pm2 list
 
 ### Ver detalles de un proceso específico
 ```sh
-pm2 show languages-ai-back
+pm2 show back-dev
 ```
 
 ### Ver logs en tiempo real
 ```sh
-pm2 logs languages-ai-back
+pm2 logs back-dev
 ```
 
 ### Detener un proceso en PM2
 ```sh
-pm2 stop languages-ai-back
+pm2 stop back-dev
 ```
 
 ### Eliminar un proceso en PM2
 ```sh
-pm2 delete languages-ai-back
+pm2 delete back-dev
 ```
 
 ### Eliminar todos los procesos en PM2
@@ -45,7 +45,7 @@ pm2 delete all
 
 ### Reiniciar un proceso en PM2
 ```sh
-pm2 restart languages-ai-back
+pm2 restart back-dev
 ```
 
 ### Guardar el estado de los procesos para que se ejecuten al reiniciar el servidor
