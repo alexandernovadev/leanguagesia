@@ -122,7 +122,7 @@ db.words.findOne()
 Edita el archivo `.env` en tu backend y cambia:
 
 ```env
-MONGO_URL=mongodb+srv://mongoatlas:mongoatlas@cluster0.0nyyj.mongodb.net/tu_basededatos
+mongorestore --uri "mongodb+srv://USER:PASS@cluster0.111111.mongodb.net/tu_basededatos"
 ```
 
 Por:
