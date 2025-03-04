@@ -1,34 +1,4 @@
-docker run -d --name mongodb -p 27017:27017 -v mongodata:/data/db mongo
+Code to backup
 
 
-// Make
-pm2 start npm --name "back-dev" -- run dev
-
-pm2 list
-
-pm2 restart ${NAME}
-
-pm2 stop ${NAME}
-
-pm2 logs ${NAME}
-
-
-
-scp -i alex -r root@IP:/root/backupsdb MYRUTAAQUI
-
-
-mongodump --db test --out /root/backupsdb 
-
-
-docker cp MYRUTAAQUI mongo_container:/backupsdb
-
-
-docker exec -it mongo_container bash
-
-mongorestore --db nombre_db_destino /backupsdb/test
-
-
-
-// restart
-
-sudo systemctl restart nginx
+mongodump --db leanguagesia --out /root/novalabs/leanguagesia/labs_nova/backupsdb
