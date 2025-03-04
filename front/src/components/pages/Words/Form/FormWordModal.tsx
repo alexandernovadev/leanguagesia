@@ -170,7 +170,7 @@ const EditWordModal: React.FC<EditWordModalProps> = ({
 
           <div className="col-span-3">
             <label className="text-white" htmlFor="sinonyms">
-            Sinonyms
+              Sinonyms
             </label>
             <ArrayInput
               control={control}
@@ -201,6 +201,27 @@ const EditWordModal: React.FC<EditWordModalProps> = ({
               placeholder="Spanish Definition"
               className="mt-2"
               name="spanish.definition"
+            />
+          </div>
+
+          <div className="col-span-3">
+            <label className="text-white" htmlFor="spanish.definition">
+              Image
+            </label>
+            {wordData.img && (
+              <img
+                className="w-32 h-32 object-cover rounded-lg mt-2"
+                src={wordData.img}
+                alt={wordData.word}
+              />
+            )}
+            <Input
+              control={control}
+              placeholder="Here goes the image"
+              className="mt-2"
+              name="img"
+              type="text"
+              icon={fieldIcons.seen}
             />
           </div>
 

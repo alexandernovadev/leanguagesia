@@ -43,7 +43,7 @@ const Input: React.FC<InputProps> = ({
         onBlur={onBlur}
         placeholder={placeholder}
         disabled={disabled}
-        className={`w-full bg-customBlack-200 py-2 pl-10 pr-4 ${rounded} focus:outline-none
+        className={`w-full bg-customBlack-200 placeholder-gray-500 py-2 pl-10 pr-4 ${rounded} focus:outline-none
           ${disabled ? "opacity-50 cursor-not-allowed" : ""}
         `}
       />
