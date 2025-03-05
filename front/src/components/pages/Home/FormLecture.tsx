@@ -1,7 +1,5 @@
 import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { Modal } from "../../shared/Modal";
-import { Edit2 } from "lucide-react";
 import Input from "../../ui/Input";
 import { TextAreaCustom } from "../../ui/TextArea";
 import { BACKURL } from "../../../api/backConf";
@@ -16,11 +14,10 @@ export const FormLecture: React.FC<FormLectureProps> = ({
   lecture,
   onUpdate,
 }) => {
-  const { control, handleSubmit, setValue } = useForm<CardType>({
+  const { control, handleSubmit } = useForm<CardType>({
     defaultValues: lecture,
   });
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const onSubmit: SubmitHandler<CardType> = async (data) => {
@@ -40,7 +37,6 @@ export const FormLecture: React.FC<FormLectureProps> = ({
 
       const updatedLecture = await response.json();
       onUpdate(updatedLecture);
-      setIsModalOpen(false);
     } catch (error) {
       console.error("Error updating lecture:", error);
     } finally {
