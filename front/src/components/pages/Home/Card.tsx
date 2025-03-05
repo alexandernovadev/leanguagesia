@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { Card as CardType } from "./types/types";
+import { Edit2, Eye } from "lucide-react";
 
 interface CardProps {
   card: CardType;
@@ -14,13 +15,11 @@ export const Card = ({ card }: CardProps) => {
   };
 
   return (
-    <Link
-      to={`/lecture/${card._id}`}
-      key={card._id}
-      className="flex flex-col border border-gray-600 rounded-lg focus:outline-none focus:ring-[0.3px] focus:ring-green-600 focus:border-green-600 cursor-pointer"
+    <div
       role="article"
       aria-labelledby={`card-title-${card._id}`}
       tabIndex={0}
+      className="flex flex-col border border-gray-600 rounded-lg focus:outline-none focus:ring-[0.3px] focus:ring-green-600 focus:border-green-600 cursor-pointer"
     >
       <div
         className="bg-customBlack-200 rounded-lg p-4 aspect-square relative bg-center bg-cover opacity-90"
@@ -29,11 +28,18 @@ export const Card = ({ card }: CardProps) => {
         }}
       >
         <div
-          className="absolute top-2 left-2 text-2xl"
+          className="absolute top-2 left-2 text-2xl flex gap-4 items-center"
           role="img"
           aria-label={`Flag representing ${card.flag}`}
         >
-          {card.language == "en" ? "🇬🇧" : ""}
+          <span>{card.language == "en" ? "🇬🇧" : ""}</span>
+          <button>
+            <Edit2 className="w-4 h-4 text-green-800" />
+          </button>
+
+          <Link to={`/lecture/${card._id}`} key={card._id}>
+            <Eye className="w-4 h-4 text-green-800" />
+          </Link>
         </div>
         <div className="absolute bottom-2 right-2 flex flex-col space-y-1">
           <span
@@ -72,6 +78,6 @@ export const Card = ({ card }: CardProps) => {
       >
         {getTitle(card.content)}
       </p>
-    </Link>
+    </div>
   );
 };
