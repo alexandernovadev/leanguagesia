@@ -1,12 +1,17 @@
 import { Link } from "react-router-dom";
 import { Card as CardType } from "./types/types";
 import { Edit2, Eye } from "lucide-react";
+import { useState } from "react";
+import { Modal } from "../../shared/Modal";
+import { FormLecture } from "./FormLecture";
 
 interface CardProps {
   card: CardType;
 }
 
 export const Card = ({ card }: CardProps) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const getTitle = (title: string) => {
     // Usamos una expresión regular para encontrar el primer título (# Title)
     const match = title.match(/^#\s(.+)/m);
@@ -33,11 +38,18 @@ export const Card = ({ card }: CardProps) => {
           aria-label={`Flag representing ${card.flag}`}
         >
           <span>{card.language == "en" ? "🇬🇧" : ""}</span>
-          <button>
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="bg-gray-800 p-2 rounded-full"
+          >
             <Edit2 className="w-4 h-4 text-green-800" />
           </button>
 
-          <Link to={`/lecture/${card._id}`} key={card._id}>
+          <Link
+            className="bg-gray-800 p-2 rounded-full"
+            to={`/lecture/${card._id}`}
+            key={card._id}
+          >
             <Eye className="w-4 h-4 text-green-800" />
           </Link>
         </div>
@@ -74,10 +86,19 @@ export const Card = ({ card }: CardProps) => {
       </div>
       <p
         id={`card-title-${card._id}`}
-        className="mt-2 text-base font-medium py-2 line-clamp-2 px-2"
+        title={getTitle(card.content)}
+        className="mt-2 text-sm font-medium py-2 line-clamp-2 px-2"
       >
         {getTitle(card.content)}
       </p>
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        <FormLecture
+          lecture={card}
+          onUpdate={(updatedLecture) => {
+            setIsModalOpen(false);
+          }}
+        />
+      </Modal>
     </div>
   );
 };
