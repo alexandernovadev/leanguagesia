@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { generateTextStreamService } from "../services/ai/generateTextStream";
 import { generateWordJson } from "../services/ai/generateWordJson";
 import { WordService } from "../services/words/wordService";
+import { generateWordExamplesJson } from "../services/ai/generateWordExamplesJson";
 
 const wordService = new WordService();
 
@@ -61,6 +62,30 @@ export const generateJSONword = async (req: Request, res: Response) => {
       success: true,
       message: "Word created successfully",
       data: newWord,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error trying to generate JSON word",
+      error: error.message || error,
+    });
+  }
+};
+
+export const updatedJSONWordExamples = async (req: Request, res: Response) => {
+  const { prompt, language, oldExamples } = req.body;
+
+  if (!prompt) {
+    return res.status(400).json({ error: "Prompt is required." });
+  }
+  // const IDWord = req.params.id
+  try {
+    const json = await generateWordExamplesJson(prompt, language, oldExamples);
+
+    // const newWord = await wordService.createWord(wordStructurefinal);
+    return res.status(201).json({
+      success: true,
+      message: "Word examples generated successfully",
+      data: json,
     });
   } catch (error) {
     res.status(500).json({

@@ -2,6 +2,7 @@ import { Router } from "express";
 import {
   generateJSONword,
   generateTextStream,
+  updatedJSONWordExamples,
 } from "../controllers/generateIAController";
 
 export const generateRoutes = Router();
@@ -145,8 +146,80 @@ generateRoutes.post("/generate-text", generateTextStream);
  */
 generateRoutes.post("/generate-wordJson", generateJSONword);
 
-// ToDo: update Examaples
-// router.post("/generate-word-examples", generateWordExamples);
+/**
+ * @swagger
+ * /api/ai/generate-word-examples/{idword}:
+ *   put:
+ *     summary: Generate and update word examples using AI
+ *     tags: [AI Generation]
+ *     parameters:
+ *       - in: path
+ *         name: idword
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the word to update with AI-generated examples
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               prompt:
+ *                 type: string
+ *                 example: "challenge"
+ *               language:
+ *                 type: string
+ *                 enum: [en, es, pt]
+ *                 default: "en"
+ *                 example: "en"
+ *               oldExamples:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                 example:
+ *                   - "This is an old example sentence."
+ *                   - "Another previous example of usage."
+ *             required:
+ *               - prompt
+ *               - language
+ *               - oldExamples
+ *     responses:
+ *       201:
+ *         description: Returns the updated word examples
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: "Word examples generated successfully"
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     word:
+ *                       type: string
+ *                       example: "challenge"
+ *                     examples:
+ *                       type: array
+ *                       items:
+ *                         type: string
+ *                       example:
+ *                         - "Overcoming obstacles is always a challenge."
+ *                         - "She accepted the challenge to improve her skills."
+ *                         - "Life is full of unexpected challenges."
+ *       400:
+ *         description: Bad request, missing required fields (prompt)
+ *       500:
+ *         description: Internal server error
+ */
+generateRoutes.put("/generate-word-examples/:idword", updatedJSONWordExamples);
+
 
 // ToDo: update Code Switching
 // router.post("/generate-code-switching", generateWordCodeSwitching);
