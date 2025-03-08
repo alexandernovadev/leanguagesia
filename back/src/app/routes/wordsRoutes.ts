@@ -20,8 +20,8 @@ const router = Router();
 /**
  * @swagger
  * tags:
- *   - name: Words
- *     description: Endpoints related to word management
+ *   name: Words
+ *   description: Endpoints related to word management
  */
 
 /**
@@ -43,6 +43,11 @@ const router = Router();
  *           type: integer
  *           default: 10
  *         description: Number of words per page
+ *       - in: query
+ *         name: wordUser
+ *         schema:
+ *           type: string
+ *         description: Filter words by user
  *     responses:
  *       200:
  *         description: A paginated list of words
@@ -61,6 +66,7 @@ router.get("/", getWords);
  *         required: true
  *         schema:
  *           type: string
+ *         description: Word ID
  *     responses:
  *       200:
  *         description: A word object
@@ -71,7 +77,7 @@ router.get("/:id", getWordById);
 
 /**
  * @swagger
- * /api/words/get-cards-anki:
+ * /api/words/recent-hard-medium:
  *   get:
  *     summary: Get the most recent hard or medium words
  *     tags: [Words]
@@ -79,13 +85,13 @@ router.get("/:id", getWordById);
  *       200:
  *         description: A list of recently added hard or medium words
  */
-router.get("/get-cards-anki", getRecentHardOrMediumWords);
+router.get("/recent-hard-medium", getRecentHardOrMediumWords);
 
 /**
  * @swagger
  * /api/words/word/{word}:
  *   get:
- *     summary: Find a word by name
+ *     summary: Find a word by name (case insensitive)
  *     tags: [Words]
  *     parameters:
  *       - in: path
@@ -93,6 +99,7 @@ router.get("/get-cards-anki", getRecentHardOrMediumWords);
  *         required: true
  *         schema:
  *           type: string
+ *         description: Word to search
  *     responses:
  *       200:
  *         description: Word object
@@ -118,6 +125,9 @@ router.get("/word/:word", findWordByName);
  *                 type: string
  *               meaning:
  *                 type: string
+ *             required:
+ *               - word
+ *               - meaning
  *     responses:
  *       201:
  *         description: Word created successfully
@@ -138,6 +148,7 @@ router.post("/", createWord);
  *         required: true
  *         schema:
  *           type: string
+ *         description: Word ID
  *     requestBody:
  *       required: true
  *       content:
@@ -148,6 +159,8 @@ router.post("/", createWord);
  *               level:
  *                 type: string
  *                 enum: [easy, medium, hard]
+ *             required:
+ *               - level
  *     responses:
  *       200:
  *         description: Word level updated
@@ -162,6 +175,27 @@ router.put("/:id/level", updateWordLevel);
  *   put:
  *     summary: Update the image of a word
  *     tags: [Words]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Word ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               img:
+ *                 type: string
+ *             required:
+ *               - img
+ *     responses:
+ *       200:
+ *         description: Word image updated
  */
 router.put("/:id/image", updateWordImg);
 
@@ -207,6 +241,32 @@ router.put("/:id/types", updateWordType);
  *   put:
  *     summary: Update an entire word object
  *     tags: [Words]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Word ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               word:
+ *                 type: string
+ *               meaning:
+ *                 type: string
+ *             required:
+ *               - word
+ *               - meaning
+ *     responses:
+ *       200:
+ *         description: Word updated successfully
+ *       404:
+ *         description: Word not found
  */
 router.put("/:id", updateWord);
 
@@ -222,6 +282,7 @@ router.put("/:id", updateWord);
  *         required: true
  *         schema:
  *           type: string
+ *         description: Word ID
  *     responses:
  *       200:
  *         description: Word deleted successfully
