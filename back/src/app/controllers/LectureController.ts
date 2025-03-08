@@ -86,7 +86,6 @@ export const getAllLectures = async (
 ): Promise<Response> => {
   try {
     const page = parseInt(req.query.page as string) || 1;
-    // TODO: Implement pagination on front-end
     const limit = parseInt(req.query.limit as string) || 1000;
     const lectures = await lectureService.getAllLectures(page, limit);
     return res.json(lectures);
