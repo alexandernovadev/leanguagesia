@@ -99,7 +99,7 @@ export const generateWordJson = async (prompt: string, language = "en") => {
         - "type" can contain one or multiple values, but each must be selected only from the following allowed types:
           ["noun", "verb", "adjective", "adverb", "personal pronoun", "possessive pronoun", "preposition", "conjunction",
            "determiner", "article", "quantifier", "interjection", "auxiliary verb",
-            "modal verb", "infinitive", "participle", "gerund", "other"].
+            "modal verb", "infinitive", "participle", "gerund", "other","phrasal verb"].
 
         - "level" remains "B2" unless specified otherwise.
         - Every field contains accurate, B2-appropriate content with correct grammar and relevant contexts.

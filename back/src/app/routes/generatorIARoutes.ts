@@ -3,6 +3,9 @@ import {
   generateJSONword,
   generateTextStream,
   updatedJSONWordExamples,
+  updatedJSONWordExamplesCodeSwitching,
+  updatedJSONWordSynonyms,
+  updatedJSONWordTypes
 } from "../controllers/generateIAController";
 
 export const generateRoutes = Router();
@@ -166,7 +169,7 @@ generateRoutes.post("/generate-wordJson", generateJSONword);
  *           schema:
  *             type: object
  *             properties:
- *               prompt:
+ *               word:
  *                 type: string
  *                 example: "challenge"
  *               language:
@@ -182,7 +185,7 @@ generateRoutes.post("/generate-wordJson", generateJSONword);
  *                   - "This is an old example sentence."
  *                   - "Another previous example of usage."
  *             required:
- *               - prompt
+ *               - word
  *               - language
  *               - oldExamples
  *     responses:
@@ -214,21 +217,234 @@ generateRoutes.post("/generate-wordJson", generateJSONword);
  *                         - "She accepted the challenge to improve her skills."
  *                         - "Life is full of unexpected challenges."
  *       400:
- *         description: Bad request, missing required fields (prompt)
+ *         description: Bad request, missing required fields (word)
  *       500:
  *         description: Internal server error
  */
 generateRoutes.put("/generate-word-examples/:idword", updatedJSONWordExamples);
 
 
-// ToDo: update Code Switching
-// router.post("/generate-code-switching", generateWordCodeSwitching);
+/**
+ * @swagger
+ * /api/ai/generate-code-switching/{idword}:
+ *   put:
+ *     summary: Generate and update word Code-Switching examples using AI
+ *     tags: [AI Generation]
+ *     parameters:
+ *       - in: path
+ *         name: idword
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the word to update with AI-generated code-switching examples
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               word:
+ *                 type: string
+ *                 example: "challenge"
+ *               language:
+ *                 type: string
+ *                 enum: [en, es, pt]
+ *                 default: "en"
+ *                 example: "en"
+ *               oldExamples:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                 example:
+ *                   - "El globo bursts y todos se asustan"
+ *                   - "Ella bursts en lágrimas al escuchar la noticia."
+ *             required:
+ *               - word
+ *               - language
+ *               - oldExamples
+ *     responses:
+ *       201:
+ *         description: Returns the updated word Code-Switching examples
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: "Word Code-Switching examples generated successfully"
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     word:
+ *                       type: string
+ *                       example: "bursts"
+ *                     examples:
+ *                       type: array
+ *                       items:
+ *                         type: string
+ *                       example:
+ *                         - "El globo bursts y todos se asustan."
+ *                         - "Ella bursts en lágrimas al escuchar la noticia."
+ *                         - "El río bursts sus orillas después de la tormenta."
+ *       400:
+ *         description: Bad request, missing required fields (word, language, or oldExamples)
+ *       500:
+ *         description: Internal server error
+ */
+generateRoutes.put("/generate-code-switching/:idword", updatedJSONWordExamplesCodeSwitching);
 
-// ToDo: update Code Synonyms
-// router.post("/generate-word-synonyms", generateWordSynonyms);
 
-// ToDo: update Code WordTypes
-// router.post("/generate-code-wordTypes", generateWordTypes);
+/**
+ * @swagger
+ * /api/ai/generate-word-wordtypes/{idword}:
+ *   put:
+ *     summary: Generate and update word types using AI
+ *     tags: [AI Generation]
+ *     parameters:
+ *       - in: path
+ *         name: idword
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the word to update with AI-generated types
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               word:
+ *                 type: string
+ *                 example: "run"
+ *               language:
+ *                 type: string
+ *                 enum: [en, es, pt]
+ *                 default: "en"
+ *                 example: "en"
+ *               oldExamples:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                 example:
+ *                   - "I love to run in the morning."
+ *                   - "He scored a home run in the final inning."
+ *             required:
+ *               - word
+ *               - language
+ *     responses:
+ *       201:
+ *         description: Returns the updated word types
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: "Word Types generated successfully"
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     word:
+ *                       type: string
+ *                       example: "run"
+ *                     type:
+ *                       type: array
+ *                       items:
+ *                         type: string
+ *                       example:
+ *                         - "noun"
+ *                         - "verb"
+ *       400:
+ *         description: Bad request, missing required fields (word, language)
+ *       500:
+ *         description: Internal server error
+ */
+generateRoutes.put("/generate-word-wordtypes/:idword", updatedJSONWordTypes);
+
+
+/**
+ * @swagger
+ * /api/ai/generate-code-synonyms/{idword}:
+ *   put:
+ *     summary: Generate and update word synonyms using AI
+ *     tags: [AI Generation]
+ *     parameters:
+ *       - in: path
+ *         name: idword
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the word to update with AI-generated synonyms
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               word:
+ *                 type: string
+ *                 example: "happy"
+ *               language:
+ *                 type: string
+ *                 enum: [en, es, pt]
+ *                 default: "en"
+ *                 example: "en"
+ *               oldExamples:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                 example:
+ *                   - "She felt very happy after receiving the good news."
+ *                   - "It was a happy moment for everyone."
+ *             required:
+ *               - word
+ *               - language
+ *     responses:
+ *       201:
+ *         description: Returns the updated word synonyms
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: "Word Synonyms generated successfully"
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     word:
+ *                       type: string
+ *                       example: "happy"
+ *                     synonyms:
+ *                       type: array
+ *                       items:
+ *                         type: string
+ *                       example:
+ *                         - "joyful"
+ *                         - "content"
+ *                         - "pleased"
+ *       400:
+ *         description: Bad request, missing required fields (word, language)
+ *       500:
+ *         description: Internal server error
+ */
+generateRoutes.put("/generate-code-synonyms/:idword", updatedJSONWordSynonyms);
+
 
 // ToDo: update Image
-// router.post("generate-image", generateImage);
+// generateRoutes.post("generate-image", generateImage);

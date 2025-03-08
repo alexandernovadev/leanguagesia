@@ -3,6 +3,9 @@ import { generateTextStreamService } from "../services/ai/generateTextStream";
 import { generateWordJson } from "../services/ai/generateWordJson";
 import { WordService } from "../services/words/wordService";
 import { generateWordExamplesJson } from "../services/ai/generateWordExamplesJson";
+import { generateWordExamplesCodeSwithcingJson } from "../services/ai/generateWordExamplesCodeSwithcingJson";
+import { generateWordTypesJson } from "../services/ai/generateWordTypesJson";
+import { generateWordSynomymsJson } from "../services/ai/generateWordSynomymsJson";
 
 const wordService = new WordService();
 
@@ -97,7 +100,98 @@ export const updatedJSONWordExamples = async (req: Request, res: Response) => {
     });
   } catch (error) {
     res.status(500).json({
-      message: "Error trying to generate JSON word",
+      message: "Error trying to generate JSON examples word",
+      error: error.message || error,
+    });
+  }
+};
+export const updatedJSONWordExamplesCodeSwitching = async (
+  req: Request,
+  res: Response
+) => {
+  const { word, language, oldExamples } = req.body;
+
+  if (!word) {
+    return res.status(400).json({ error: "Word is required." });
+  }
+  const IDWord = req.params.idword;
+  try {
+    const { codeSwitching } = await generateWordExamplesCodeSwithcingJson(
+      word,
+      language,
+      oldExamples
+    );
+
+    const updateExamples = await wordService.updateWordCodeSwitching(
+      IDWord,
+      codeSwitching
+    );
+
+    return res.status(201).json({
+      success: true,
+      message: "Word CodeSwiching examples generated successfully",
+      data: updateExamples,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error trying to generate JSON  CodeSwiching word",
+      error: error.message || error,
+    });
+  }
+};
+
+export const updatedJSONWordTypes = async (req: Request, res: Response) => {
+  const { word, language, oldExamples } = req.body;
+
+  if (!word) {
+    return res.status(400).json({ error: "Word is required." });
+  }
+  const IDWord = req.params.idword;
+  try {
+    const { type } = await generateWordTypesJson(word, language, oldExamples);
+
+    const updateExamples = await wordService.updateWordType(IDWord, type);
+
+    return res.status(201).json({
+      success: true,
+      message: "Word Types generated successfully",
+      data: updateExamples,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error trying to generate JSON Types word",
+      error: error.message || error,
+    });
+  }
+};
+
+export const updatedJSONWordSynonyms = async (req: Request, res: Response) => {
+  const { word, language, oldExamples } = req.body;
+
+  if (!word) {
+    return res.status(400).json({ error: "Word is required." });
+  }
+  const IDWord = req.params.idword;
+  try {
+    const { sinonyms } = await generateWordSynomymsJson(
+      word,
+      language,
+      oldExamples
+    );
+
+    const updateExamples = await wordService.updateWordSynonyms(
+      IDWord,
+      sinonyms
+    );
+
+    return res.status(201).json({
+      success: true,
+      message: "Word Sinonyms generated successfully",
+      data: updateExamples,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error trying to generate JSON Sinonyms word",
       error: error.message || error,
     });
   }
