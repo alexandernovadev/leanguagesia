@@ -145,9 +145,6 @@ generateRoutes.post("/generate-text", generateTextStream);
  */
 generateRoutes.post("/generate-wordJson", generateJSONword);
 
-// ToDo: update Image
-// router.post("generate-image", generateImage);
-
 // ToDo: update Examaples
 // router.post("/generate-word-examples", generateWordExamples);
 
@@ -159,3 +156,6 @@ generateRoutes.post("/generate-wordJson", generateJSONword);
 
 // ToDo: update Code WordTypes
 // router.post("/generate-code-wordTypes", generateWordTypes);
+
+// ToDo: update Image
+// router.post("generate-image", generateImage);

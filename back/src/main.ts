@@ -1,6 +1,7 @@
 import express, { Request, Response, NextFunction } from "express";
 import dotenv from "dotenv";
 import cors from "cors";
+
 import { connectDB } from "./app/db/mongoConnection";
 
 // Routes
@@ -14,6 +15,7 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const VERSION = process.env.VERSION || "V. March 8 2025 4:40 PM";
 
 // Middleware to parse JSON
 app.use(express.json());
@@ -46,7 +48,7 @@ app.use("/", (req, res) => {
   res.json({
     message: "Server is running",
     date: new Date().toISOString(),
-    version: "V. Satudarday 3 November 3:38 PM",
+    version: VERSION,
   });
 });
 
