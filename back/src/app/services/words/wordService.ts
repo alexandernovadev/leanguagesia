@@ -57,7 +57,7 @@ export class WordService {
     level: string
   ): Promise<{ level?: string } | null> {
     return await Word.findByIdAndUpdate(id, { level }, { new: true })
-      .select("level")
+      .select("level updatedAt")
       .lean();
   }
 
@@ -67,9 +67,9 @@ export class WordService {
     examples: string[]
   ): Promise<{ examples?: string[] } | null> {
     return await Word.findByIdAndUpdate(id, { examples }, { new: true })
-      .select("examples")
+      .select("examples updatedAt")
       .lean();
-  }
+  }updatedAt
 
   // Update only codeSwitching
   async updateWordCodeSwitching(
@@ -77,7 +77,7 @@ export class WordService {
     codeSwitching: string[]
   ): Promise<{ codeSwitching?: string[] } | null> {
     return await Word.findByIdAndUpdate(id, { codeSwitching }, { new: true })
-      .select("codeSwitching")
+      .select("codeSwitching updatedAt")
       .lean();
   }
 
@@ -91,7 +91,7 @@ export class WordService {
       { sinonyms: synonyms },
       { new: true }
     )
-      .select("sinonyms")
+      .select("sinonyms updatedAt")
       .lean();
   }
 
@@ -101,7 +101,7 @@ export class WordService {
     type: string[]
   ): Promise<{ type?: string[] } | null> {
     return await Word.findByIdAndUpdate(id, { type }, { new: true })
-      .select("type")
+      .select("type updatedAt")
       .lean();
   }
 
@@ -111,7 +111,7 @@ export class WordService {
     img: string
   ): Promise<{ img?: string } | null> {
     return await Word.findByIdAndUpdate(id, { img }, { new: true })
-      .select("img")
+      .select("img updatedAt")
       .lean();
   }
 
@@ -122,7 +122,7 @@ export class WordService {
       { $inc: { seen: 1 } },
       { new: true }
     )
-      .select("seen")
+      .select("seen updatedAt")
       .lean();
   }
 
