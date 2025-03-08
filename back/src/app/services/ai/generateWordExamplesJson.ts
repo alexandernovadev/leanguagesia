@@ -1,6 +1,10 @@
 import OpenAI from "openai";
 
-export const generateWordExamplesJson = async (prompt: string, language = "en", oldExamples: string) => {
+export const generateWordExamplesJson = async (
+  prompt: string,
+  language = "en",
+  oldExamples: string
+) => {
   const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY || "",
   });
@@ -27,7 +31,6 @@ export const generateWordExamplesJson = async (prompt: string, language = "en", 
 
         The user has this examples and he wish to changue those, so be aware in no generate the sames
         ${oldExamples}
-
 
         - Be creative with examples, ensuring they do not seem repetitive or too similar to the provided ones.
         - Ensure the examples are diverse and cover different contexts where the word might be used.

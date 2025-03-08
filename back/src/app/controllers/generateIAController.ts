@@ -77,15 +77,23 @@ export const updatedJSONWordExamples = async (req: Request, res: Response) => {
   if (!prompt) {
     return res.status(400).json({ error: "Prompt is required." });
   }
-  // const IDWord = req.params.id
+  const IDWord = req.params.idword;
   try {
-    const json = await generateWordExamplesJson(prompt, language, oldExamples);
+    const { examples } = await generateWordExamplesJson(
+      prompt,
+      language,
+      oldExamples
+    );
 
-    // const newWord = await wordService.createWord(wordStructurefinal);
+    const updateExamples = await wordService.updateWordExamples(
+      IDWord,
+      examples
+    );
+
     return res.status(201).json({
       success: true,
       message: "Word examples generated successfully",
-      data: json,
+      data: updateExamples,
     });
   } catch (error) {
     res.status(500).json({

@@ -69,7 +69,7 @@ export class WordService {
     return await Word.findByIdAndUpdate(id, { examples }, { new: true })
       .select("examples updatedAt")
       .lean();
-  }updatedAt
+  }
 
   // Update only codeSwitching
   async updateWordCodeSwitching(
