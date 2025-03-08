@@ -10,11 +10,14 @@ import {
 
 const router = Router();
 
-router.post("/", createLecture);
 router.get("/", getAllLectures);
 router.get("/:id", getLectureById);
+
+router.post("/", createLecture);
+
 router.put("/:id", updateLecture);
 router.put("/image/:id", updateImageLecureById);
+
 router.delete("/:id", deleteLecture);
 
 export default router;

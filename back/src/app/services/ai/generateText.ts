@@ -20,7 +20,7 @@ export const generateText = async (prompt: string) => {
         content: prompt,
       },
     ],
-    model: "gpt-4o",
+    model: "o3-mini-2025-01-31",
     temperature: 0.3,
     max_tokens: 150,
     response_format: {
