@@ -193,6 +193,8 @@ router.put("/:id/level", updateWordLevel);
  *                 type: string
  *             required:
  *               - img
+ *           example:
+ *             img: "https://res.cloudinary.com/dv8wurqdp/image/upload/languagesai/words/IDHERE"
  *     responses:
  *       200:
  *         description: Word image updated
@@ -205,6 +207,31 @@ router.put("/:id/image", updateWordImg);
  *   put:
  *     summary: Update the examples of a word
  *     tags: [Words]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Word ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               examples:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *             required:
+ *               - examples
+ *           example:
+ *             examples: ["This is an example sentence.", "Another example here."]
+ *     responses:
+ *       200:
+ *         description: Word examples updated
  */
 router.put("/:id/examples", updateWordExamples);
 
@@ -214,6 +241,29 @@ router.put("/:id/examples", updateWordExamples);
  *   put:
  *     summary: Update the code-switching property of a word
  *     tags: [Words]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Word ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               codeSwitching:
+ *                 type: boolean
+ *             required:
+ *               - codeSwitching
+ *           example:
+ *             codeSwitching: ["This is an example sentence.", "Another example here."]
+ *     responses:
+ *       200:
+ *         description: Word code-switching property updated
  */
 router.put("/:id/code-switching", updateWordCodeSwitching);
 
@@ -223,6 +273,31 @@ router.put("/:id/code-switching", updateWordCodeSwitching);
  *   put:
  *     summary: Update the synonyms of a word
  *     tags: [Words]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Word ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               synonyms:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *             required:
+ *               - synonyms
+ *           example:
+ *             synonyms: ["similar", "alike", "equivalent"]
+ *     responses:
+ *       200:
+ *         description: Word synonyms updated
  */
 router.put("/:id/synonyms", updateWordSynonyms);
 
@@ -232,6 +307,31 @@ router.put("/:id/synonyms", updateWordSynonyms);
  *   put:
  *     summary: Update the types of a word
  *     tags: [Words]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Word ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               types:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *             required:
+ *               - type
+ *           example:
+ *             type: ["noun", "verb"]
+ *     responses:
+ *       200:
+ *         description: Word types updated
  */
 router.put("/:id/types", updateWordType);
 

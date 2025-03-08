@@ -43,7 +43,7 @@ export class WordService {
     return { data, total, page, pages };
   }
 
-  // Update a word by ID
+  // Update a word by ID (full update)
   async updateWord(
     id: string,
     updateData: Partial<IWord>
@@ -51,56 +51,79 @@ export class WordService {
     return await Word.findByIdAndUpdate(id, updateData, { new: true });
   }
 
-  // Update only the level of a word
-  async updateWordLevel(id: string, level: string): Promise<IWord | null> {
-    return await Word.findByIdAndUpdate(id, { level }, { new: true });
+  // Update only the level of a word and return only the "level" field
+  async updateWordLevel(
+    id: string,
+    level: string
+  ): Promise<{ level?: string } | null> {
+    return await Word.findByIdAndUpdate(id, { level }, { new: true })
+      .select("level")
+      .lean();
   }
 
   // Update only examples
   async updateWordExamples(
     id: string,
     examples: string[]
-  ): Promise<IWord | null> {
-    return await Word.findByIdAndUpdate(id, { examples }, { new: true });
+  ): Promise<{ examples?: string[] } | null> {
+    return await Word.findByIdAndUpdate(id, { examples }, { new: true })
+      .select("examples")
+      .lean();
   }
 
   // Update only codeSwitching
   async updateWordCodeSwitching(
     id: string,
     codeSwitching: string[]
-  ): Promise<IWord | null> {
-    return await Word.findByIdAndUpdate(id, { codeSwitching }, { new: true });
+  ): Promise<{ codeSwitching?: string[] } | null> {
+    return await Word.findByIdAndUpdate(id, { codeSwitching }, { new: true })
+      .select("codeSwitching")
+      .lean();
   }
 
   // Update only synonyms
   async updateWordSynonyms(
     id: string,
     synonyms: string[]
-  ): Promise<IWord | null> {
+  ): Promise<{ sinonyms?: string[] } | null> {
     return await Word.findByIdAndUpdate(
       id,
       { sinonyms: synonyms },
       { new: true }
-    );
+    )
+      .select("sinonyms")
+      .lean();
   }
 
   // Update only type
-  async updateWordType(id: string, type: string[]): Promise<IWord | null> {
-    return await Word.findByIdAndUpdate(id, { type }, { new: true });
+  async updateWordType(
+    id: string,
+    type: string[]
+  ): Promise<{ type?: string[] } | null> {
+    return await Word.findByIdAndUpdate(id, { type }, { new: true })
+      .select("type")
+      .lean();
   }
 
   // Update only img
-  async updateWordImg(id: string, img: string): Promise<IWord | null> {
-    return await Word.findByIdAndUpdate(id, { img }, { new: true });
+  async updateWordImg(
+    id: string,
+    img: string
+  ): Promise<{ img?: string } | null> {
+    return await Word.findByIdAndUpdate(id, { img }, { new: true })
+      .select("img")
+      .lean();
   }
 
   // Increment seen count by 1
-  async incrementWordSeen(id: string): Promise<IWord | null> {
+  async incrementWordSeen(id: string): Promise<{ seen?: number } | null> {
     return await Word.findByIdAndUpdate(
       id,
       { $inc: { seen: 1 } },
       { new: true }
-    );
+    )
+      .select("seen")
+      .lean();
   }
 
   // Delete a word by ID
@@ -116,7 +139,7 @@ export class WordService {
     });
   }
 
-  // Get the last 20 words with level "hard" or "medium"
+  // Get the last 60 words with level "hard" or "medium"
   async getRecentHardOrMediumWords(): Promise<IWord[]> {
     return await Word.find({ level: { $in: ["hard", "medium"] } })
       .sort({ createdAt: -1 })
