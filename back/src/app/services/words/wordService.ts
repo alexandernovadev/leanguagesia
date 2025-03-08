@@ -8,19 +8,18 @@ interface PaginatedResult<T> {
 }
 
 export class WordService {
-  // Crear una palabra
+  // Create a new word
   async createWord(wordData: IWord): Promise<IWord> {
     const word = new Word(wordData);
     return await word.save();
   }
 
-  // Obtener una palabra por ID
+  // Get a word by ID
   async getWordById(id: string): Promise<IWord | null> {
     return await Word.findById(id);
   }
 
-  // Obtener todas las palabras con paginación, ordenadas por fecha de creación y
-  // filtro opcional por 'wordUser'
+  // Get all words with pagination, ordered by creation date
   async getWords(
     page: number = 1,
     limit: number = 10,
@@ -28,10 +27,8 @@ export class WordService {
   ): Promise<PaginatedResult<IWord>> {
     const filter: Record<string, unknown> = {};
 
-    // Añadir filtro por palabra si 'wordUser' está definido
     if (wordUser) {
-      filter.word = { $regex: wordUser, $options: "i" }; 
-      // Búsqueda parcial, insensible a mayúsculas
+      filter.word = { $regex: wordUser, $options: "i" };
     }
 
     const total = await Word.countDocuments(filter);
@@ -46,7 +43,7 @@ export class WordService {
     return { data, total, page, pages };
   }
 
-  // Actualizar una palabra por ID
+  // Update a word by ID
   async updateWord(
     id: string,
     updateData: Partial<IWord>
@@ -54,17 +51,64 @@ export class WordService {
     return await Word.findByIdAndUpdate(id, updateData, { new: true });
   }
 
-  // Update level of a word by ID
+  // Update only the level of a word
   async updateWordLevel(id: string, level: string): Promise<IWord | null> {
     return await Word.findByIdAndUpdate(id, { level }, { new: true });
   }
 
-  // Eliminar una palabra por ID
+  // Update only examples
+  async updateWordExamples(
+    id: string,
+    examples: string[]
+  ): Promise<IWord | null> {
+    return await Word.findByIdAndUpdate(id, { examples }, { new: true });
+  }
+
+  // Update only codeSwitching
+  async updateWordCodeSwitching(
+    id: string,
+    codeSwitching: string[]
+  ): Promise<IWord | null> {
+    return await Word.findByIdAndUpdate(id, { codeSwitching }, { new: true });
+  }
+
+  // Update only synonyms
+  async updateWordSynonyms(
+    id: string,
+    synonyms: string[]
+  ): Promise<IWord | null> {
+    return await Word.findByIdAndUpdate(
+      id,
+      { sinonyms: synonyms },
+      { new: true }
+    );
+  }
+
+  // Update only type
+  async updateWordType(id: string, type: string[]): Promise<IWord | null> {
+    return await Word.findByIdAndUpdate(id, { type }, { new: true });
+  }
+
+  // Update only img
+  async updateWordImg(id: string, img: string): Promise<IWord | null> {
+    return await Word.findByIdAndUpdate(id, { img }, { new: true });
+  }
+
+  // Increment seen count by 1
+  async incrementWordSeen(id: string): Promise<IWord | null> {
+    return await Word.findByIdAndUpdate(
+      id,
+      { $inc: { seen: 1 } },
+      { new: true }
+    );
+  }
+
+  // Delete a word by ID
   async deleteWord(id: string): Promise<IWord | null> {
     return await Word.findByIdAndDelete(id);
   }
 
-  // Método para buscar una palabra ignorando mayúsculas y minúsculas
+  // Search for a word ignoring case sensitivity
   async findWordByWord(word: string): Promise<IWord | null> {
     const lowercaseWord = word.toLowerCase();
     return await Word.findOne({
@@ -72,8 +116,7 @@ export class WordService {
     });
   }
 
-  // Obtener las últimas 20 palabras donde el nivel sea "hard" o "medium",
-  // ordenadas por fecha de creación
+  // Get the last 20 words with level "hard" or "medium"
   async getRecentHardOrMediumWords(): Promise<IWord[]> {
     return await Word.find({ level: { $in: ["hard", "medium"] } })
       .sort({ createdAt: -1 })

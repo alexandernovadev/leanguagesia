@@ -106,7 +106,7 @@ export const getWords = async (
     const page = parseInt(req.query.page as string) || 1;
     const limit = parseInt(req.query.limit as string) || 10;
     const wordUser = req.query.wordUser as string;
-    const result = await wordService.getWords(page, limit,wordUser);
+    const result = await wordService.getWords(page, limit, wordUser);
     return res.status(200).json({
       success: true,
       data: result.data,
@@ -220,7 +220,7 @@ export const getRecentHardOrMediumWords = async (
     const words = await wordService.getRecentHardOrMediumWords();
 
     const shuffledWords = shuffleArray(words);
-    
+
     return res.status(200).json({
       success: true,
       data: shuffledWords,
@@ -231,5 +231,168 @@ export const getRecentHardOrMediumWords = async (
       success: false,
       message: "An error occurred while retrieving recent hard or medium words",
     });
+  }
+};
+
+// Actualizar solo ejemplos de una palabra por ID
+export const updateWordExamples = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  try {
+    const { id } = req.params;
+    const { examples } = req.body;
+    const updatedWord = await wordService.updateWordExamples(id, examples);
+
+    if (!updatedWord) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Word not found" });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Word examples updated successfully",
+      data: updatedWord,
+    });
+  } catch (error) {
+    console.error("Error updating word examples:", error);
+    return res
+      .status(500)
+      .json({
+        success: false,
+        message: "An error occurred while updating the word examples",
+      });
+  }
+};
+
+// Actualizar solo codeSwitching de una palabra por ID
+export const updateWordCodeSwitching = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  try {
+    const { id } = req.params;
+    const { codeSwitching } = req.body;
+    const updatedWord = await wordService.updateWordCodeSwitching(
+      id,
+      codeSwitching
+    );
+
+    if (!updatedWord) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Word not found" });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Word codeSwitching updated successfully",
+      data: updatedWord,
+    });
+  } catch (error) {
+    console.error("Error updating word codeSwitching:", error);
+    return res
+      .status(500)
+      .json({
+        success: false,
+        message: "An error occurred while updating the word codeSwitching",
+      });
+  }
+};
+
+// Actualizar solo sinónimos de una palabra por ID
+export const updateWordSynonyms = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  try {
+    const { id } = req.params;
+    const { synonyms } = req.body;
+    const updatedWord = await wordService.updateWordSynonyms(id, synonyms);
+
+    if (!updatedWord) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Word not found" });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Word synonyms updated successfully",
+      data: updatedWord,
+    });
+  } catch (error) {
+    console.error("Error updating word synonyms:", error);
+    return res
+      .status(500)
+      .json({
+        success: false,
+        message: "An error occurred while updating the word synonyms",
+      });
+  }
+};
+
+// Actualizar solo tipo de una palabra por ID
+export const updateWordType = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  try {
+    const { id } = req.params;
+    const { type } = req.body;
+    const updatedWord = await wordService.updateWordType(id, type);
+
+    if (!updatedWord) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Word not found" });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Word type updated successfully",
+      data: updatedWord,
+    });
+  } catch (error) {
+    console.error("Error updating word type:", error);
+    return res
+      .status(500)
+      .json({
+        success: false,
+        message: "An error occurred while updating the word type",
+      });
+  }
+};
+
+// Actualizar solo imagen de una palabra por ID
+export const updateWordImg = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  try {
+    const { id } = req.params;
+    const { img } = req.body;
+    const updatedWord = await wordService.updateWordImg(id, img);
+
+    if (!updatedWord) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Word not found" });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Word image updated successfully",
+      data: updatedWord,
+    });
+  } catch (error) {
+    console.error("Error updating word image:", error);
+    return res
+      .status(500)
+      .json({
+        success: false,
+        message: "An error occurred while updating the word image",
+      });
   }
 };

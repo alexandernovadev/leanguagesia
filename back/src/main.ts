@@ -8,6 +8,7 @@ import { generateRoutes } from "./app/routes/generatorIARoutes";
 import LectureRoutes from "./app/routes/lectureRoutes";
 import WordsRoutes from "./app/routes/wordsRoutes";
 import Arreglosquick from "./app/routes/arreglosquick";
+import { setupSwagger } from "../swaggerConfig";
 
 dotenv.config();
 
@@ -19,6 +20,9 @@ app.use(express.json());
 
 // Middleware to handle CORS
 app.use(cors());
+
+// Swagger Conf
+setupSwagger(app);
 
 // Connection to MongoDB
 connectDB()
