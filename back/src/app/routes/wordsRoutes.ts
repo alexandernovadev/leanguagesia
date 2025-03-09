@@ -26,6 +26,20 @@ const router = Router();
 
 /**
  * @swagger
+ * /api/words/get-cards-anki:
+ *   get:
+ *     summary: Retrieve recent hard or medium words for Anki cards
+ *     tags: [Words]
+ *     responses:
+ *       200:
+ *         description: A shuffled list of recent hard or medium words
+ *       500:
+ *         description: Internal server error
+ */
+router.get("/get-cards-anki", getRecentHardOrMediumWords);
+
+/**
+ * @swagger
  * /api/words:
  *   get:
  *     summary: Retrieve a list of words with pagination
@@ -390,27 +404,5 @@ router.put("/:id", updateWord);
  *         description: Word not found
  */
 router.delete("/:id", deleteWord);
-
-
-/**
- * @swagger
- * tags:
- *   name: Words
- *   description: Endpoints related to word management
- */
-
-/**
- * @swagger
- * /api/words/get-cards-anki:
- *   get:
- *     summary: Retrieve recent hard or medium words for Anki cards
- *     tags: [Words]
- *     responses:
- *       200:
- *         description: A shuffled list of recent hard or medium words
- *       500:
- *         description: Internal server error
- */
-router.get("/get-cards-anki", getRecentHardOrMediumWords);
 
 export default router;
