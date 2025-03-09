@@ -176,7 +176,7 @@ export const updatedJSONWordExamples = async (req: Request, res: Response) => {
   const { word, language, oldExamples } = req.body;
 
   if (!word) {
-    return res.status(400).json({ error: "Prompt is required." });
+    return res.status(400).json({ error: "Word is required." });
   }
   const IDWord = req.params.idword;
   try {
