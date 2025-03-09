@@ -173,15 +173,15 @@ export const generateJSONword = async (req: Request, res: Response) => {
 };
 
 export const updatedJSONWordExamples = async (req: Request, res: Response) => {
-  const { prompt, language, oldExamples } = req.body;
+  const { word, language, oldExamples } = req.body;
 
-  if (!prompt) {
+  if (!word) {
     return res.status(400).json({ error: "Prompt is required." });
   }
   const IDWord = req.params.idword;
   try {
     const { examples } = await generateWordExamplesJson(
-      prompt,
+      word,
       language,
       oldExamples
     );
