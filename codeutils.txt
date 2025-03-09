@@ -1,8 +1,0 @@
-Code to backup
-
-
-mongodump --db leanguagesia --out /root/novalabs/leanguagesia/labs_nova/backupsdb
-
-Restart sever
-
-sudo systemctl restart nginx
