@@ -1,5 +1,6 @@
 import { Router } from "express";
 import {
+  generateImageDalleFS,
   generateJSONword,
   generateTextStream,
   updatedJSONWordExamples,
@@ -446,5 +447,62 @@ generateRoutes.put("/generate-word-wordtypes/:idword", updatedJSONWordTypes);
 generateRoutes.put("/generate-code-synonyms/:idword", updatedJSONWordSynonyms);
 
 
-// ToDo: update Image
-// generateRoutes.post("generate-image", generateImage);
+/**
+ * @swagger
+ * tags:
+ *   name: AI Generation
+ *   description: Endpoints for AI-generated content
+ */
+
+/**
+ * @swagger
+ * /api/ai/generate-image:
+ *   post:
+ *     summary: Generate an AI-generated image based on a given prompt
+ *     tags: [AI Generation]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               prompt:
+ *                 type: string
+ *                 example: "A futuristic city skyline at sunset"
+ *               style:
+ *                 type: string
+ *                 example: "cyberpunk"
+ *               resolution:
+ *                 type: string
+ *                 enum: ["1024x1024", "1792x1024", "1024x1792"]
+ *                 default: "1024x1024"
+ *                 example: "1024x1024"
+ *             required:
+ *               - prompt
+ *     responses:
+ *       201:
+ *         description: Returns the URL of the generated image
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: "Image generated successfully"
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     imageUrl:
+ *                       type: string
+ *                       example: "/images/generated/image123.png"
+ *       400:
+ *         description: Bad request, missing required fields
+ *       500:
+ *         description: Internal server error
+ */
+generateRoutes.post("/generate-image", generateImageDalleFS);
