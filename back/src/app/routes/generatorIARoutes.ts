@@ -1,12 +1,12 @@
 import { Router } from "express";
 import {
-  generateImageDalleFS,
   generateJSONword,
   generateTextStream,
   updatedJSONWordExamples,
   updatedJSONWordExamplesCodeSwitching,
   updatedJSONWordSynonyms,
-  updatedJSONWordTypes
+  updatedJSONWordTypes,
+  updateImageWord
 } from "../controllers/generateIAController";
 
 export const generateRoutes = Router();
@@ -449,17 +449,17 @@ generateRoutes.put("/generate-code-synonyms/:idword", updatedJSONWordSynonyms);
 
 /**
  * @swagger
- * tags:
- *   name: AI Generation
- *   description: Endpoints for AI-generated content
- */
-
-/**
- * @swagger
- * /api/ai/generate-image:
+ * /api/ai/generate-image/{idword}:
  *   post:
- *     summary: Generate an AI-generated image based on a given prompt
+ *     summary: Generate an AI image and update the word entry
  *     tags: [AI Generation]
+ *     parameters:
+ *       - in: path
+ *         name: idword
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the word to update with the AI-generated image
  *     requestBody:
  *       required: true
  *       content:
@@ -467,22 +467,14 @@ generateRoutes.put("/generate-code-synonyms/:idword", updatedJSONWordSynonyms);
  *           schema:
  *             type: object
  *             properties:
- *               prompt:
+ *               word:
  *                 type: string
- *                 example: "A futuristic city skyline at sunset"
- *               style:
- *                 type: string
- *                 example: "cyberpunk"
- *               resolution:
- *                 type: string
- *                 enum: ["1024x1024", "1792x1024", "1024x1792"]
- *                 default: "1024x1024"
- *                 example: "1024x1024"
+ *                 example: "An artistic representation of the word 'challenge'"
  *             required:
- *               - prompt
+ *               - word
  *     responses:
- *       201:
- *         description: Returns the URL of the generated image
+ *       200:
+ *         description: Returns the updated word with the generated image
  *         content:
  *           application/json:
  *             schema:
@@ -493,16 +485,19 @@ generateRoutes.put("/generate-code-synonyms/:idword", updatedJSONWordSynonyms);
  *                   example: true
  *                 message:
  *                   type: string
- *                   example: "Image generated successfully"
+ *                   example: "Image generated and updated successfully"
  *                 data:
  *                   type: object
  *                   properties:
+ *                     word:
+ *                       type: string
+ *                       example: "challenge"
  *                     imageUrl:
  *                       type: string
- *                       example: "/images/generated/image123.png"
+ *                       example: "https://cloudinary.com/image123.jpg"
  *       400:
- *         description: Bad request, missing required fields
+ *         description: Bad request, missing required fields (word)
  *       500:
  *         description: Internal server error
  */
-generateRoutes.post("/generate-image", generateImageDalleFS);
+generateRoutes.post("/generate-image/:idword", updateImageWord);

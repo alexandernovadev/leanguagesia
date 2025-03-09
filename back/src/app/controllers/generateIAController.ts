@@ -1,4 +1,7 @@
 import { Request, Response } from "express";
+import path from "path";
+import fs from "fs";
+
 import { generateTextStreamService } from "../services/ai/generateTextStream";
 import { generateWordJson } from "../services/ai/generateWordJson";
 import { WordService } from "../services/words/wordService";
@@ -7,15 +10,61 @@ import { generateWordExamplesCodeSwithcingJson } from "../services/ai/generateWo
 import { generateWordTypesJson } from "../services/ai/generateWordTypesJson";
 import { generateWordSynomymsJson } from "../services/ai/generateWordSynomymsJson";
 import { generateImage } from "../services/ai/generateImage";
-import path from "path";
-import fs from "fs";
+import { uploadImageToCloudinary } from "../services/cloudinary/cloudinaryService";
+// import { BASE65imgDEMO } from "../../drafts/imgs/base64Demo";
 
 const wordService = new WordService();
 
+/**
+ * Generate Image with AI Save in cloudinary and update Word
+ */
+export const updateImageWord = async (req: Request, res: Response) => {
+  const { word } = req.body;
+
+  const IDWord = req.params.idword;
+
+  if (!word) {
+    return res.status(400).json({ error: "Prompt is required." });
+  }
+
+  const prompt = `
+    A highly descriptive and visually clear illustration of the meaning of the word {${word}}. 
+    The image should strongly convey the concept in an easy-to-understand way, using vivid and detailed
+    elements that represent its definition. 
+    The scene should be intuitive, making the meaning obvious even without text.
+  `.trim();
+
+  try {
+    // Generate Image with Dalle 3
+    const imageBase64 = await generateImage(prompt);
+    if (!imageBase64) {
+      return res
+        .status(500)
+        .json({ success: false, error: "Failed to generate image." });
+    }
+
+    // Save Image on cloudinary
+    const urlImage = await uploadImageToCloudinary(imageBase64, "words");
+
+    const updateImageWord = await wordService.updateWordImg(IDWord, urlImage);
+    // Update image field
+
+    return res.status(201).json({
+      success: true,
+      message: "Word Image generated successfully",
+      data: updateImageWord,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error generating image",
+      error: error.message || error,
+    });
+  }
+};
 
 /**
  * @Deprecated
- * Save imagen on server is not good 
+ * Save imagen on server is inefficient
  */
 export const generateImageDalleFS = async (req: Request, res: Response) => {
   const { prompt } = req.body;
