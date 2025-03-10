@@ -22,7 +22,7 @@ yarn install
 
 # 2. Get package.json version and current date + time
 PACKAGE_VERSION=$(jq -r .version package.json)
-DATE_FORMAT=$(date +"V. %B %d(%A) ⏰ %I:%M:%S %p - %Y - $PACKAGE_VERSION")
+DATE_FORMAT=$(TZ="America/Bogota" date +"Date 1 %B %d(%A) ⏰ %I:%M:%S %p - %Y 1  - V.$PACKAGE_VERSION")
 
 # 2.1 Update VERSION in .env
 echo "✍️  Updating VERSION in .env..."

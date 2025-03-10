@@ -1,6 +1,6 @@
 {
   "name": "back",
-  "version": "2.90.10",
+  "version": "2.777.777",
   "main": "dist/main.js",
   "scripts": {
     "build": "tsc",
