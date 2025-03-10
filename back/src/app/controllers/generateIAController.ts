@@ -34,6 +34,8 @@ export const updateImageWord = async (req, res) => {
     The image should strongly convey the concept in an easy-to-understand way, using vivid and detailed
     elements that represent its definition. 
     The scene should be intuitive, making the meaning obvious even without text.
+    Trata de NO usar nada de imagenes abstractas, tiene que ser simple y descriptica, 
+    segun " categorías gramaticales o clases de palabras
   `.trim();
 
   try {
