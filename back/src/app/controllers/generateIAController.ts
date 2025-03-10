@@ -10,7 +10,10 @@ import { generateWordExamplesCodeSwithcingJson } from "../services/ai/generateWo
 import { generateWordTypesJson } from "../services/ai/generateWordTypesJson";
 import { generateWordSynomymsJson } from "../services/ai/generateWordSynomymsJson";
 import { generateImage } from "../services/ai/generateImage";
-import { uploadImageToCloudinary } from "../services/cloudinary/cloudinaryService";
+import {
+  deleteImageFromCloudinary,
+  uploadImageToCloudinary,
+} from "../services/cloudinary/cloudinaryService";
 // import { BASE65imgDEMO } from "../../drafts/imgs/base64Demo";
 
 const wordService = new WordService();
@@ -18,9 +21,8 @@ const wordService = new WordService();
 /**
  * Generate Image with AI Save in cloudinary and update Word
  */
-export const updateImageWord = async (req: Request, res: Response) => {
-  const { word } = req.body;
-
+export const updateImageWord = async (req, res) => {
+  const { word, imgOld } = req.body;
   const IDWord = req.params.idword;
 
   if (!word) {
@@ -35,7 +37,7 @@ export const updateImageWord = async (req: Request, res: Response) => {
   `.trim();
 
   try {
-    // Generate Image with Dalle 3
+    // Generar la imagen con DALL·E 3
     const imageBase64 = await generateImage(prompt);
     if (!imageBase64) {
       return res
@@ -43,11 +45,31 @@ export const updateImageWord = async (req: Request, res: Response) => {
         .json({ success: false, error: "Failed to generate image." });
     }
 
-    // Save Image on cloudinary
-    const urlImage = await uploadImageToCloudinary(imageBase64, "words");
+    let deleteOldImagePromise: Promise<void> = Promise.resolve(); // Inicializar como una promesa vacía
 
+    if (imgOld && imgOld.includes("res.cloudinary.com")) {
+      const parts = imgOld.split("/");
+      let publicId = parts.pop(); // Última parte de la URL
+
+      // Manejar casos donde no haya extensión
+      if (publicId.includes(".")) {
+        publicId = publicId.split(".")[0]; // Remover extensión si existe
+      }
+
+      // Asegurarse de que deleteImageFromCloudinary devuelva una promesa de tipo void
+      deleteOldImagePromise = deleteImageFromCloudinary(publicId).then(
+        () => {}
+      );
+    }
+
+    // Subir nueva imagen en paralelo con la eliminación de la anterior
+    const [_, urlImage] = await Promise.all([
+      deleteOldImagePromise,
+      uploadImageToCloudinary(imageBase64, "words"),
+    ]);
+
+    // Actualizar la imagen de la palabra en la base de datos
     const updateImageWord = await wordService.updateWordImg(IDWord, urlImage);
-    // Update image field
 
     return res.status(201).json({
       success: true,

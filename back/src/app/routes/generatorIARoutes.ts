@@ -470,10 +470,13 @@ generateRoutes.put("/generate-code-synonyms/:idword", updatedJSONWordSynonyms);
  *               word:
  *                 type: string
  *                 example: "An artistic representation of the word 'challenge'"
+ *               imgOld:
+ *                 type: string
+ *                 example: "https://res.cloudinary.com/example/image/upload/v1234567890/oldimage.png"
  *             required:
  *               - word
  *     responses:
- *       200:
+ *       201:
  *         description: Returns the updated word with the generated image
  *         content:
  *           application/json:
