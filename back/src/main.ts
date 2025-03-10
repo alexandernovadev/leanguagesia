@@ -29,7 +29,7 @@ setupSwagger(app);
 // Connection to MongoDB
 connectDB()
   .then(() => {
-    console.log("Connection to MongoDB established successfully");
+    console.info("Connection to MongoDB established successfully");
   })
   .catch((error) => {
     console.error("Error connecting to MongoDB:", error);
@@ -59,5 +59,5 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction): void => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.info(`Server running on port ${PORT}`);
 });

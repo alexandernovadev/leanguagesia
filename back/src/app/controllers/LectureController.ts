@@ -11,7 +11,7 @@ export const createLecture = async (
     const lecture = await lectureService.createLecture(req.body);
     return res.status(201).json(lecture);
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.status(500).json({ error: "Error creating lecture" });
   }
 };
@@ -27,7 +27,7 @@ export const getLectureById = async (
     }
     return res.json(lecture);
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.status(500).json({ error: "Error retrieving lecture" });
   }
 };
@@ -43,7 +43,7 @@ export const updateLecture = async (
     }
     return res.json(lecture);
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.status(500).json({ error: "Error updating lecture" });
   }
 };
@@ -59,7 +59,7 @@ export const deleteLecture = async (
     }
     return res.json({ message: "Lecture deleted successfully" });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.status(500).json({ error: "Error deleting lecture" });
   }
 };
@@ -75,7 +75,7 @@ export const updateImageLecureById = async (req: Request, res: Response) => {
     }
     return res.json(updatedLecture);
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.status(500).json({ error: "Error updating lecture" });
   }
 };
@@ -90,7 +90,7 @@ export const getAllLectures = async (
     const lectures = await lectureService.getAllLectures(page, limit);
     return res.json(lectures);
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.status(500).json({ error: "Error fetching lectures" });
   }
 };

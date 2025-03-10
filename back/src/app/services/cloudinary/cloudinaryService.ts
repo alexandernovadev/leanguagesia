@@ -35,10 +35,10 @@ export const deleteImageFromCloudinary = async (
     const result = await cloudinary.v2.uploader.destroy(publicId);
 
     if (result.result === "ok") {
-      console.log(`Imagen eliminada correctamente: ${publicId}`);
+      console.info(`Imagen eliminada correctamente: ${publicId}`);
       return true;
     } else {
-      console.log(`No se pudo eliminar la imagen: ${publicId}`);
+      console.error(`No se pudo eliminar la imagen: ${publicId}`);
       return false;
     }
   } catch (error) {

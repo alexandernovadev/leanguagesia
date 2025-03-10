@@ -29,7 +29,6 @@ export const SidePanelModalWord: React.FC<SidePanelProps> = ({
   };
 
   const generateWord = async () => {
-    console.log("Generate Word with AI");
     setLoadingGetWord(true);
     try {
       const response = await fetch(`${BACKURL}/api/ai/generate-wordJson`, {

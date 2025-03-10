@@ -14,7 +14,6 @@ export const GenerateWord = () => {
       console.error("Word to search cannot be empty.");
       return;
     }
-    console.log("Generating Word with AI:", wordToSearch);
     setLoadingGetWord(true);
 
     try {
@@ -32,7 +31,6 @@ export const GenerateWord = () => {
 
       const { data } = await response.json();
       setWordDb(data);
-      console.log("Generated Word:", data);
     } catch (error) {
       console.error("Failed to generate word:", error);
       setWordDb(undefined); // Reset the state if there's an error

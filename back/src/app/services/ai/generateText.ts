@@ -28,7 +28,6 @@ export const generateText = async (prompt: string) => {
     },
   });
 
-  // console.log(completion);
   const content = completion.choices[0].message.content;
   if (content === null) {
     throw new Error("Completion content is null");

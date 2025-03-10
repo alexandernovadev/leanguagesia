@@ -66,7 +66,7 @@ export const WordPage = () => {
         throw new Error("Failed to update word");
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error("Error updating word.");
     }
   };
@@ -84,7 +84,7 @@ export const WordPage = () => {
         throw new Error("Failed to delete word");
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error("Error deleting word.");
     }
   };

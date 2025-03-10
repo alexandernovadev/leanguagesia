@@ -66,7 +66,6 @@ export const GeneratorPage = () => {
       });
 
       if (response.ok) {
-        console.log("Lecture saved successfully.");
         toast.success("Lecture saved successfully!");
         navigate(`/`);
       } else {
@@ -126,7 +125,6 @@ export const GeneratorPage = () => {
     prompt: string;
   }) => {
     handleGenerateText();
-    console.log(data);
   };
 
   return (

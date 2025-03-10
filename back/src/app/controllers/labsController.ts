@@ -14,7 +14,7 @@ export const arreglosmaricasrapidos = async (
       message: "FIxed quick done",
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.status(500).json({ error: "Error updating words level" });
   }
 };

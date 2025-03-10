@@ -11,7 +11,6 @@ export const FormFilters = () => {
   });
 
   const onSubmit = (data: Filters) => {
-    console.log("Applied filters:", data);
     // Aquí puedes manejar los filtros aplicados
   };
 

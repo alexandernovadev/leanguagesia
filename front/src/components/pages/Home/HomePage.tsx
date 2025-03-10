@@ -18,7 +18,6 @@ export default function HomePage() {
   const toggleModal = () => setIsModalOpen(!isModalOpen);
 
   const onSubmit = (data: FormData) => {
-    console.log(data);
   };
 
   return (

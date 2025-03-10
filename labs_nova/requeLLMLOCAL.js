@@ -89,7 +89,6 @@ async function makeRequest() {
   const rta = await response.json();
 
   // parse to json
-  console.log(JSON.parse(rta.choices[0].message.content));
 }
 
 makeRequest().catch(console.error);

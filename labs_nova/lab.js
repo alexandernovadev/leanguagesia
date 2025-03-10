@@ -801,5 +801,4 @@ const basicEnglishWords400 = [
   "young"
 ]
 
-console.log(basicEnglishWords400.length);
 

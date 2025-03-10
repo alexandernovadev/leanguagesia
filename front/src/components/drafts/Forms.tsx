@@ -18,7 +18,6 @@ export const Forms = () => {
   const { handleSubmit, control } = useForm<FormData>();
 
   const onSubmit: SubmitHandler<FormData> = (data) => {
-    console.log(data);
   };
 
   // Opciones para los Select
