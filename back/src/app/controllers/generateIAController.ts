@@ -57,9 +57,9 @@ export const updateImageWord = async (req, res) => {
       }
 
       // Asegurarse de que deleteImageFromCloudinary devuelva una promesa de tipo void
-      deleteOldImagePromise = deleteImageFromCloudinary(publicId).then(
-        () => {}
-      );
+      deleteOldImagePromise = deleteImageFromCloudinary(
+        "languagesai/words/" + publicId
+      ).then(() => {});
     }
 
     // Subir nueva imagen en paralelo con la eliminación de la anterior

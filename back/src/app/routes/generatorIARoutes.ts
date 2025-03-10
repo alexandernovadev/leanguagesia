@@ -469,7 +469,7 @@ generateRoutes.put("/generate-code-synonyms/:idword", updatedJSONWordSynonyms);
  *             properties:
  *               word:
  *                 type: string
- *                 example: "An artistic representation of the word 'challenge'"
+ *                 example: "challenge"
  *               imgOld:
  *                 type: string
  *                 example: "https://res.cloudinary.com/example/image/upload/v1234567890/oldimage.png"
