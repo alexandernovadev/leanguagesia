@@ -1,38 +1,49 @@
 #!/bin/bash
+set -e  # Detener el script si hay un error
 
-# Configuración
-FRONTEND_DIR="/root/novalabs/leanguagesia/front"
-BUILD_DIR="$FRONTEND_DIR/dist"
-DEPLOY_DIR="/var/www/languages-ai"
+# Verificar si Yarn está instalado
+if ! command -v yarn &> /dev/null; then
+    echo "❌ Error: Yarn no está instalado. Instálalo con 'npm install -g yarn'"
+    exit 1
+fi
 
-echo "🚀 Iniciando despliegue del frontend..."
+# Navegar al directorio del frontend
+cd "$(dirname "$0")/front"
 
-# 1️⃣ Entrar al directorio del frontend
-cd $FRONTEND_DIR || { echo "❌ No se pudo acceder al directorio del frontend"; exit 1; }
+# Hacer un hard reset de Git para evitar cambios no deseados
+echo "🔄 Restaurando la rama a su estado original..."
+git reset --hard
+git clean -fd  # Elimina archivos no versionados
 
-# 2️⃣ Instalar dependencias
+# Eliminar archivos que puedan causar conflictos
+echo "🧹 Eliminando node_modules y lock files..."
+rm -rf node_modules package-lock.json yarn.lock
+
+# Instalar dependencias
 echo "📦 Instalando dependencias..."
-yarn install --silent || { echo "❌ Error al instalar dependencias"; exit 1; }
+yarn install
 
-# 3️⃣ Construir el proyecto
-echo "⚙️  Generando nueva versión..."
-yarn build || { echo "❌ Error al construir el frontend"; exit 1; }
+# Construir el proyecto
+echo "⚙️  Generando build de producción..."
+yarn build
 
-# 4️⃣ Eliminar archivos anteriores
-echo "🗑️  Eliminando versión anterior..."
-rm -rf $DEPLOY_DIR/*
+# Mover archivos de build al servidor web
+echo "🚀 Desplegando en /var/www/languages-ai..."
+sudo rm -rf /var/www/languages-ai/*
+sudo cp -r dist/* /var/www/languages-ai/
 
-# 5️⃣ Copiar nuevos archivos al directorio de producción
-echo "📂 Copiando nueva versión..."
-cp -r $BUILD_DIR/* $DEPLOY_DIR/
-
-# 6️⃣ Ajustar permisos
+# Asegurar permisos correctos
 echo "🔧 Ajustando permisos..."
-chown -R www-data:www-data $DEPLOY_DIR
-chmod -R 755 $DEPLOY_DIR
+sudo chown -R www-data:www-data /var/www/languages-ai
+sudo chmod -R 755 /var/www/languages-ai
 
-# 7️⃣ Reiniciar Nginx
+# Reiniciar Nginx para aplicar cambios
 echo "🔄 Reiniciando Nginx..."
-systemctl reload nginx
+sudo systemctl restart nginx
 
-echo "✅ Despliegue completado con éxito 🚀"
+# Hacer un hard reset nuevamente por seguridad
+echo "🔄 Restaurando nuevamente el estado del repositorio..."
+git reset --hard
+git clean -fd
+
+echo "✅ Despliegue del frontend completado con éxito!"
