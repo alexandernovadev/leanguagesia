@@ -10,7 +10,7 @@ export const FormFilters = () => {
     },
   });
 
-  const onSubmit = (data: Filters) => {
+  const onSubmit = () => {
     // Aquí puedes manejar los filtros aplicados
   };
 

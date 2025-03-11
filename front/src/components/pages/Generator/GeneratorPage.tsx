@@ -121,11 +121,7 @@ export const GeneratorPage = () => {
       setIsLoaded(false);
     }
   };
-  const onSubmit = (data: {
-    typeWrite: string;
-    level: string;
-    prompt: string;
-  }) => {
+  const onSubmit = () => {
     handleGenerateText();
   };
   return (
