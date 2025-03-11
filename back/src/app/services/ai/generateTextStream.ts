@@ -5,6 +5,7 @@ interface Options {
   level: string;
   typeWrite: string;
   language?: "es" | "en" | "pt"; // ISO 639-1
+  promptAddEasyWords: string;
 }
 
 export const generateTextStreamService = async ({
@@ -12,6 +13,7 @@ export const generateTextStreamService = async ({
   level = "A1",
   typeWrite = "Engaging Article",
   language = "en",
+  promptAddEasyWords = "",
 }: Options) => {
   const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY || "",
@@ -36,18 +38,18 @@ export const generateTextStreamService = async ({
 
           Content guidelines:
           - Avoid using rare, uncommon words or special symbols, as each word should be clickable and easily searchable in a dictionary.
-          - Length should be between 4000 and 500 characters.
+          - Length should be between 4200 and 5300 characters.
           - For ${level} level:
             - **A1-A2:** Use simple words, basic sentences, and give short, clear examples. Define complex words as needed.
             - **B1-B2:** Use intermediate vocabulary, compound sentences, and provide real-world examples.
             - **C1-C2:** Use advanced vocabulary, complex sentence structures, and offer deeper analysis or insights.
           - Include quotes or examples to enrich the content where relevant.
+          ${promptAddEasyWords}
     
 
           Learning aids:
-          - For alllevels, add a glossary of key terms at the end.
           - For C1-C2 levels, include a brief summary of the main points.
-             `,
+             `.trim(),
       },
       {
         role: "user",

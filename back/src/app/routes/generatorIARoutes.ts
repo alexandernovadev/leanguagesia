@@ -40,7 +40,10 @@ export const generateRoutes = Router();
  *                 example: "B2"
  *               typeWrite:
  *                 type: string
- *                 example: "Academic Article"
+ *                 example: "Academic Article" 
+ *               addEasyWords:
+ *                 type: boolean
+ *                 example: true
  *             required:
  *               - prompt
  *     responses:

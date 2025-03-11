@@ -7,7 +7,7 @@ export const arreglosmaricasrapidos = async (
 ): Promise<Response> => {
   try {
     // Actualizar el campo `level` de todos los documentos a "hard"
-    // const result = await Word.updateMany({}, { level: "hard" });
+    // const result = await Word.updateMany({}, { level: "easy" });
 
     return res.status(200).json({
       success: true,

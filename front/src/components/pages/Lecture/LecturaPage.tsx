@@ -77,7 +77,7 @@ export const LecturaPage = () => {
       </div>
 
       {/* Contenido principal */}
-      <div className="overflow-y-auto mb-4 px-3 rounded-lg border border-gray-700">
+      <div className="overflow-y-auto mb-4 px-3 rounded-lg border border-gray-700 h-[92vh]">
         <div className="clearfix">
           <img
             src={

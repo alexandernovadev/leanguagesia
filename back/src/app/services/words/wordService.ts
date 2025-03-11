@@ -146,6 +146,15 @@ export class WordService {
       .limit(60)
       .exec();
   }
+
+  // Get the last 30 words with level "easy" 
+  async getLastEasyWords(): Promise<IWord[]> {
+    return await Word.find({ level: { $in: ["easy"] } })
+      .sort({ createdAt: -1 })
+      .limit(30)
+      .select("word")
+      .lean()
+  }
 }
 
 export default new WordService();

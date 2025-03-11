@@ -132,17 +132,29 @@ export const generateImageDalleFS = async (req: Request, res: Response) => {
 };
 
 export const generateTextStream = async (req: Request, res: Response) => {
-  const { prompt, level, typeWrite } = req.body;
+  const { prompt, level, typeWrite, addEasyWords } = req.body;
 
   if (!prompt) {
     return res.status(400).json({ error: "Prompt is required." });
   }
 
   try {
+    let promptAddEasyWords = "";
+
+    if (addEasyWords) {
+      const getEasyWords = await wordService.getLastEasyWords();
+      const wordsArray = getEasyWords.map((item) => item.word);
+      promptAddEasyWords = `- Its' IMPORTANT that add these words | ${wordsArray.join(
+        ", "
+      )}|  to the lecture 
+      because the user needs to remember those ones.`.trim();
+    }
+
     const stream = await generateTextStreamService({
       prompt,
       level,
       typeWrite,
+      promptAddEasyWords,
     });
 
     res.setHeader("Content-Type", "application/json");
@@ -153,6 +165,11 @@ export const generateTextStream = async (req: Request, res: Response) => {
       const piece = chunk.choices[0].delta.content || "";
       res.write(piece);
     }
+
+    // res.status(200).json({
+    //   message: "Testing it ",
+    //   data:promptAddEasyWords
+    // });
 
     // Close the stream when done
     res.end();
