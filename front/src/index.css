@@ -8,13 +8,33 @@ html {
   -webkit-font-smoothing: antialiased;
   overflow-y: hidden;
   overflow-x: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  @apply bg-gradient-to-b from-black-800 via-customGreen-100 to-customBlack-100
 }
 
 #root {
-  display: flex;
   flex-direction: column;
   height: 100vh;
-  overflow-y: auto;
+  overflow-y: none;
+  width: 1024px;
+}
+
+.navbarNova {
+  width: 1024px;
+
+}
+
+@media (max-width: 1024px) {
+  #root {
+    width: 100%;
+  }
+
+  .navbarNova {
+    width: 100%;
+
+  }
 }
 
 span {
