@@ -15,6 +15,14 @@ echo "🔄 Restaurando la rama a su estado original..."
 git reset --hard
 git clean -fd  # Elimina archivos no versionados
 
+# Obtener versión desde package.json y formatear la fecha
+PACKAGE_VERSION=$(jq -r .version package.json)
+DATE_FORMAT=$(TZ="America/Bogota" date +"Date 1 %B %d(%A) ⏰ %I:%M:%S %p - %Y 1 - V.$PACKAGE_VERSION")
+
+# Sobrescribir VITE_VERSION en .env
+echo "✍️  Actualizando VITE_VERSION en .env..."
+sed -i "s/^VITE_VERSION=.*/VITE_VERSION=\"$DATE_FORMAT\"/" .env
+
 # Eliminar archivos que puedan causar conflictos
 echo "🧹 Eliminando node_modules y lock files..."
 rm -rf node_modules package-lock.json yarn.lock
