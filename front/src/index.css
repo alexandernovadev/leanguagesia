@@ -6,39 +6,18 @@
 html {
   background: #1A1A1A;
   -webkit-font-smoothing: antialiased;
-  overflow-y: hidden;
-  overflow-x: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  @apply bg-gradient-to-b from-black-800 via-customGreen-100 to-customBlack-100
+  overflow: hidden;
+
 }
 
-#root {
-  flex-direction: column;
+#root{
+  overflow: scroll;
+  overflow: hidden;
   height: 100vh;
-  overflow-y: none;
-  width: 1024px;
-}
-
-.navbarNova {
-  width: 1024px;
-
-}
-
-@media (max-width: 1024px) {
-  #root {
-    width: 100%;
-  }
-
-  .navbarNova {
-    width: 100%;
-
-  }
-}
-
-span {
-  transition: background-color 0.2s ease;
+  width: 100vw;
+  max-width: 1024px;
+  margin: 0 auto;
+  padding-bottom: 120px;
 }
 
 input,
