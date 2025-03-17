@@ -6,7 +6,7 @@ import { WordTable } from "./WordTable";
 import { Word } from "../Lecture/types/Word";
 import { toast } from "react-toastify";
 import { BACKURL } from "../../../api/backConf";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Modal } from "../../shared/Modal";
 import { GenerateWord } from "./generateWord/GenerateWord";
 import { CirclePlus, Search } from "lucide-react";
