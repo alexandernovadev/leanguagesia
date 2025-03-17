@@ -91,22 +91,23 @@ export const WordPage = () => {
 
 
 
-  const [viewportHeight, setViewportHeight] = useState(window.innerHeight);
+  // const [viewportHeight, setViewportHeight] = useState(window.innerHeight);
   
-  useEffect(() => {
-    // Function to update viewport height
-    const handleResize = () => {
-      setViewportHeight(window.innerHeight);
-    };
+  // useEffect(() => {
+  //   // Function to update viewport height
+  //   const handleResize = () => {
+  //     setViewportHeight(window.innerHeight);
+  //   };
 
-    // Add event listener for window resize
-    window.addEventListener('resize', handleResize);
+  //   // Add event listener for window resize
+  //   window.addEventListener('resize', handleResize);
 
-    // Cleanup the event listener on component unmount
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
+  //   // Cleanup the event listener on component unmount
+  //   return () => {
+  //     window.removeEventListener('resize', handleResize);
+  //   };
+  // }, []);
+  // {viewportHeight}
 
   
 
@@ -118,7 +119,6 @@ export const WordPage = () => {
         {!loading && !error && (
           <>
             <div className="flex justify-between items-center w-full pb-4">
-              {viewportHeight}
               <button
                 type="button"
                 onClick={() => setIsModalOpen(true)}

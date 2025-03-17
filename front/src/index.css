@@ -20,7 +20,7 @@ html {
 }
 
 /*By Default all browser have url navbar*/
-@media (max-height: 700px) {
+@media (max-height: 780px) {
   .customHeightApp {
     height: 60vh !important;
   }
