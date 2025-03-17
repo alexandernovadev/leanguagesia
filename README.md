@@ -22,4 +22,5 @@ Esto mostrará una lista de contenedores en ejecución. Asegúrate de que el con
 
 https://res.cloudinary.com/dv8wurqdp/image/upload/mqiuh1evictwkjysyzcr
 
-sudo systemctl restart nginx
+- sudo systemctl restart nginx
+- chmod 755 deploy_front.sh
