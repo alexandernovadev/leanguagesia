@@ -44,7 +44,7 @@ export const WordTable = ({
   };
 
   return (
-    <div className="overflow-y-auto max-h-[70vh] w-full">
+    <div className="overflow-y-auto w-full h-[70vh] sm:h-[60vh]">
       <table className="min-w-full text-gray-100 table-auto">
         <tbody>
           {words.map((word) => (
@@ -53,13 +53,12 @@ export const WordTable = ({
               <td className="px-1">
                 <div className="flex items-center justify-start gap-2">
                   <div>
-
-                  <p className="text-base font-bold text-green-700">
-                    {word.word}
-                  </p>
-                  <span className="text-green-900">{word.IPA}</span>
+                    <p className="text-base font-bold text-green-700">
+                      {word.word}
+                    </p>
+                    <span className="text-green-900">{word.IPA}</span>
                   </div>
-                  
+
                   <button
                     className="flex justify-center items-center"
                     onClick={() => listenWord(word.word)}

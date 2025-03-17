@@ -11,7 +11,7 @@ interface CardProps {
 export const Card: React.FC<CardProps> = ({ card, flipped, onFlip }) => {
   return (
     <div
-      className="relative w-full h-[76vh] bg-opacity-50 rounded-lg overflow-hidden"
+      className="relative w-full h-[66vh] bg-opacity-50 rounded-lg overflow-hidden"
       style={{ perspective: "1000px" }}
     >
       {/* Flip Button */}
