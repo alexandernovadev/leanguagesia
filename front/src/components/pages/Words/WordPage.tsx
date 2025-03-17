@@ -6,7 +6,7 @@ import { WordTable } from "./WordTable";
 import { Word } from "../Lecture/types/Word";
 import { toast } from "react-toastify";
 import { BACKURL } from "../../../api/backConf";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Modal } from "../../shared/Modal";
 import { GenerateWord } from "./generateWord/GenerateWord";
 import { CirclePlus, Search } from "lucide-react";
@@ -89,6 +89,27 @@ export const WordPage = () => {
     }
   };
 
+
+
+  const [viewportHeight, setViewportHeight] = useState(window.innerHeight);
+  
+  useEffect(() => {
+    // Function to update viewport height
+    const handleResize = () => {
+      setViewportHeight(window.innerHeight);
+    };
+
+    // Add event listener for window resize
+    window.addEventListener('resize', handleResize);
+
+    // Cleanup the event listener on component unmount
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  
+
   return (
     <MainLayout>
       <div className="text-customGreen-100 p-6 h-auto">
@@ -97,6 +118,7 @@ export const WordPage = () => {
         {!loading && !error && (
           <>
             <div className="flex justify-between items-center w-full pb-4">
+              {viewportHeight}
               <button
                 type="button"
                 onClick={() => setIsModalOpen(true)}
