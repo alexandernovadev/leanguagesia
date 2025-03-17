@@ -10,14 +10,25 @@ html {
 
 }
 
-#root{
+#root {
   overflow: scroll;
   overflow: hidden;
   height: 100vh;
   width: 100vw;
   max-width: 1024px;
   margin: 0 auto;
-  padding-bottom: 120px;
+}
+
+/*By Default all browser have url navbar*/
+@media (max-height: 620px) {
+  .customHeightApp {
+    height: 60vh !important;
+  }
+
+  #root {
+    padding-bottom: 120px;
+  }
+
 }
 
 input,
