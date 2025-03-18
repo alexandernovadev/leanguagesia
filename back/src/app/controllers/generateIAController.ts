@@ -35,7 +35,9 @@ export const updateImageWord = async (req, res) => {
     elements that represent its definition. 
     The scene should be intuitive, making the meaning obvious even without text.
     Trata de NO usar nada de imagenes abstractas, tiene que ser simple y descriptica, 
-    segun " categorías gramaticales o clases de palabras
+    segun " categorías gramaticales o clases de palabras,
+
+    Try to dont use any words or letters on the image
   `.trim();
 
   try {
