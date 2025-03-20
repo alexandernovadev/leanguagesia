@@ -13,6 +13,7 @@ import {
   updateWordSynonyms,
   updateWordType,
   getRecentHardOrMediumWords,
+  incrementWordSeen,
 } from "../controllers/wordController";
 
 const router = Router();
@@ -88,6 +89,29 @@ router.get("/", getWords);
  *         description: Word not found
  */
 router.get("/:id", getWordById);
+
+/**
+ * @swagger
+ * /api/words/{id}/increment-seen:
+ *   put:
+ *     summary: Increment the 'seen' count of a word
+ *     tags: [Words]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Word ID
+ *     responses:
+ *       200:
+ *         description: Word seen count incremented successfully
+ *       404:
+ *         description: Word not found
+ *       500:
+ *         description: Internal server error
+ */
+router.put("/:id/increment-seen", incrementWordSeen);
 
 /**
  * @swagger

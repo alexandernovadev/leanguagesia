@@ -257,12 +257,10 @@ export const updateWordExamples = async (
     });
   } catch (error) {
     console.error("Error updating word examples:", error);
-    return res
-      .status(500)
-      .json({
-        success: false,
-        message: "An error occurred while updating the word examples",
-      });
+    return res.status(500).json({
+      success: false,
+      message: "An error occurred while updating the word examples",
+    });
   }
 };
 
@@ -292,12 +290,10 @@ export const updateWordCodeSwitching = async (
     });
   } catch (error) {
     console.error("Error updating word codeSwitching:", error);
-    return res
-      .status(500)
-      .json({
-        success: false,
-        message: "An error occurred while updating the word codeSwitching",
-      });
+    return res.status(500).json({
+      success: false,
+      message: "An error occurred while updating the word codeSwitching",
+    });
   }
 };
 
@@ -324,12 +320,10 @@ export const updateWordSynonyms = async (
     });
   } catch (error) {
     console.error("Error updating word synonyms:", error);
-    return res
-      .status(500)
-      .json({
-        success: false,
-        message: "An error occurred while updating the word synonyms",
-      });
+    return res.status(500).json({
+      success: false,
+      message: "An error occurred while updating the word synonyms",
+    });
   }
 };
 
@@ -356,12 +350,10 @@ export const updateWordType = async (
     });
   } catch (error) {
     console.error("Error updating word type:", error);
-    return res
-      .status(500)
-      .json({
-        success: false,
-        message: "An error occurred while updating the word type",
-      });
+    return res.status(500).json({
+      success: false,
+      message: "An error occurred while updating the word type",
+    });
   }
 };
 
@@ -388,11 +380,39 @@ export const updateWordImg = async (
     });
   } catch (error) {
     console.error("Error updating word image:", error);
-    return res
-      .status(500)
-      .json({
+    return res.status(500).json({
+      success: false,
+      message: "An error occurred while updating the word image",
+    });
+  }
+};
+
+// Incrementar el contador de "seen" de una palabra por ID
+export const incrementWordSeen = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  try {
+    const { id } = req.params;
+    const updatedWord = await wordService.incrementWordSeen(id);
+
+    if (!updatedWord) {
+      return res.status(404).json({
         success: false,
-        message: "An error occurred while updating the word image",
+        message: "Word not found",
       });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Word seen count incremented successfully",
+      data: updatedWord,
+    });
+  } catch (error) {
+    console.error("Error incrementing word seen count:", error);
+    return res.status(500).json({
+      success: false,
+      message: "An error occurred while incrementing the word seen count",
+    });
   }
 };
