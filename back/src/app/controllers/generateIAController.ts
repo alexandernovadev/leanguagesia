@@ -30,14 +30,12 @@ export const updateImageWord = async (req, res) => {
   }
 
   const prompt = `
-    A highly descriptive and visually clear illustration of the meaning of the word {${word}}. 
-    The image should strongly convey the concept in an easy-to-understand way, using vivid and detailed
-    elements that represent its definition. 
-    The scene should be intuitive, making the meaning obvious even without text.
-    Trata de NO usar nada de imagenes abstractas, tiene que ser simple y descriptica, 
-    segun " categorías gramaticales o clases de palabras,
-
-    Try to dont use any words or letters on the image
+   Create a highly descriptive and visually clear illustration of the meaning of the word {${word}}. 
+   The image should vividly convey the concept in an intuitive, easy-to-understand way, using detailed
+    and realistic elements that directly represent the word's definition. The scene must be straightforward 
+    and clear, avoiding any abstract or symbolic visuals. 
+    
+    Do not include any text, letters, or symbols — the image should rely solely on visuals to communicate the word’s meaning
   `.trim();
 
   try {
@@ -146,9 +144,10 @@ export const generateTextStream = async (req: Request, res: Response) => {
     if (addEasyWords) {
       const getEasyWords = await wordService.getLastEasyWords();
       const wordsArray = getEasyWords.map((item) => item.word);
-      promptAddEasyWords = `- Its' IMPORTANT that add these words | ${wordsArray.join(
-        ", "
-      )}|  to the lecture 
+      promptAddEasyWords =
+        `- Its' IMPORTANT that add these words | ${wordsArray.join(
+          ", "
+        )}|  to the lecture 
       because the user needs to remember those ones.`.trim();
     }
 
