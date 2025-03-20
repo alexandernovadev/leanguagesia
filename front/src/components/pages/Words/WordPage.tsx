@@ -6,12 +6,18 @@ import { WordTable } from "./WordTable";
 import { Word } from "../Lecture/types/Word";
 import { toast } from "react-toastify";
 import { BACKURL } from "../../../api/backConf";
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Modal } from "../../shared/Modal";
 import { GenerateWord } from "./generateWord/GenerateWord";
-import { CirclePlus, Search } from "lucide-react";
+import { CirclePlus } from "lucide-react";
 import Input from "../../ui/Input";
 import { useForm } from "react-hook-form";
+
+// Debounce function type
+type DebounceFunction<T extends (...args: any[]) => void> = (
+  func: T,
+  delay: number
+) => (...args: Parameters<T>) => void;
 
 export const WordPage = () => {
   const {
@@ -24,7 +30,7 @@ export const WordPage = () => {
     setSearchQuery,
     retry,
   } = useGetWords();
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const { control, watch } = useForm({
     defaultValues: {
@@ -32,13 +38,25 @@ export const WordPage = () => {
     },
   });
 
-  // Watch for changes in the searchQuery input
   const searchQuery = watch("searchQuery");
 
-  // Update the query dynamically
-  const handleSearch = () => {
-    setSearchQuery(searchQuery);
+  // Debounce function to delay search execution
+  const debounce: DebounceFunction<(query: string) => void> = (func, delay) => {
+    let timer: ReturnType<typeof setTimeout>;
+    return (...args) => {
+      clearTimeout(timer);
+      timer = setTimeout(() => func(...args), delay);
+    };
   };
+
+  const handleSearchDebounced = useCallback(
+    debounce((query: string) => setSearchQuery(query), 500),
+    []
+  );
+
+  useEffect(() => {
+    handleSearchDebounced(searchQuery);
+  }, [searchQuery, handleSearchDebounced]);
 
   const handleNextPage = () => {
     if (page < totalPages) setPage(page + 1);
@@ -89,93 +107,65 @@ export const WordPage = () => {
     }
   };
 
-
-
-  // const [viewportHeight, setViewportHeight] = useState(window.innerHeight);
-  
-  // useEffect(() => {
-  //   // Function to update viewport height
-  //   const handleResize = () => {
-  //     setViewportHeight(window.innerHeight);
-  //   };
-
-  //   // Add event listener for window resize
-  //   window.addEventListener('resize', handleResize);
-
-  //   // Cleanup the event listener on component unmount
-  //   return () => {
-  //     window.removeEventListener('resize', handleResize);
-  //   };
-  // }, []);
-  // {viewportHeight}
-
-  
-
   return (
     <MainLayout>
       <div className="text-customGreen-100 p-6 h-auto">
-        {loading && <Loading />}
         {error && <ErrorMessage retry={retry} />}
-        {!loading && !error && (
-          <>
-            <div className="flex justify-between items-center w-full pb-4">
-              <button
-                type="button"
-                onClick={() => setIsModalOpen(true)}
-                className="px-4 py-2 border mx-2 border-green-600 rounded-lg text-white bg-green-600"
-              >
-                <CirclePlus />
-              </button>
+        <div className="flex justify-between items-center w-full pb-4">
+          <button
+            type="button"
+            onClick={() => setIsModalOpen(true)}
+            className="px-4 py-2 border mx-2 border-green-600 rounded-lg text-white bg-green-600"
+          >
+            <CirclePlus />
+          </button>
 
-              <Input
-                name="searchQuery"
-                control={control}
-                placeholder="Search..."
-              />
-              <button
-                onClick={handleSearch}
-                type="submit"
-                className="px-4 py-2 ml-2 border border-green-600 rounded-lg text-white bg-green-600"
-              >
-                <Search />
-              </button>
+          <Input
+            name="searchQuery"
+            control={control}
+            placeholder="Search..."
+          />
 
-              <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-                <GenerateWord />
-              </Modal>
-            </div>
-            <WordTable
-              words={words}
-              onEdit={handleEdit}
-              onRemove={handleRemove}
-            />
-            <div className="flex justify-between items-center mt-4">
-              <button
-                onClick={handlePreviousPage}
-                disabled={page === 1}
-                className={`px-4 py-2 border border-green-600 rounded-lg text-white ${
-                  page === 1 ? "bg-gray-800 opacity-50 cursor-not-allowed" : ""
-                }`}
-              >
-                Previous
-              </button>
-              <span className="text-black-200">
-                Page {page} of {totalPages}
-              </span>
-              <button
-                onClick={handleNextPage}
-                disabled={page === totalPages}
-                className={`px-4 py-2 border border-green-600 rounded-lg text-white ${
-                  page === totalPages
-                    ? "bg-gray-800 opacity-50 cursor-not-allowed"
-                    : ""
-                }`}
-              >
-                Next
-              </button>
-            </div>
-          </>
+          <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+            <GenerateWord />
+          </Modal>
+        </div>
+        {loading ? (
+          <Loading />
+        ) : (
+          <WordTable
+            words={words.filter((word) =>
+              word.word.toLowerCase().includes(searchQuery.toLowerCase())
+            )}
+            onEdit={handleEdit}
+            onRemove={handleRemove}
+          />
         )}
+        <div className="flex justify-between items-center mt-4">
+          <button
+            onClick={handlePreviousPage}
+            disabled={page === 1}
+            className={`px-4 py-2 border border-green-600 rounded-lg text-white ${
+              page === 1 ? "bg-gray-800 opacity-50 cursor-not-allowed" : ""
+            }`}
+          >
+            Previous
+          </button>
+          <span className="text-black-200">
+            Page {page} of {totalPages}
+          </span>
+          <button
+            onClick={handleNextPage}
+            disabled={page === totalPages}
+            className={`px-4 py-2 border border-green-600 rounded-lg text-white ${
+              page === totalPages
+                ? "bg-gray-800 opacity-50 cursor-not-allowed"
+                : ""
+            }`}
+          >
+            Next
+          </button>
+        </div>
       </div>
     </MainLayout>
   );
