@@ -10,7 +10,7 @@ import LectureRoutes from "./app/routes/lectureRoutes";
 import WordsRoutes from "./app/routes/wordsRoutes";
 import Arreglosquick from "./app/routes/arreglosquick";
 import StatisticsRoutes from "./app/routes/statisticsRoutes";
-import { setupSwagger } from "../swaggerConfig";
+import { setupSwagger } from "../swagger/swaggerConfig";
 
 dotenv.config();
 

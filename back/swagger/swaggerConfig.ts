@@ -2,6 +2,8 @@ import swaggerJsdoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 import { Express } from "express";
 
+import { fixesSwagger, statisticsSwagger, wordsSwagger } from "./routes";
+
 const options: swaggerJsdoc.Options = {
   definition: {
     openapi: "3.0.0",
@@ -18,6 +20,11 @@ const options: swaggerJsdoc.Options = {
         url: "http://languages-ai-back.alexandernova.pro",
       },
     ],
+    paths: {
+      ...fixesSwagger["paths"],
+      ...statisticsSwagger["paths"],
+      ...wordsSwagger["paths"],
+    },
   },
   apis: ["./src/app/routes/*.ts"],
 };
@@ -25,5 +32,11 @@ const options: swaggerJsdoc.Options = {
 const swaggerSpec = swaggerJsdoc(options);
 
 export function setupSwagger(app: Express) {
-  app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+  if (process.env.NODE_ENV === "development") {
+    console.info("Swagger enabled in development mode");
+    // @ts-ignore
+    app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+  } else {
+    console.info("Swagger disabled in production mode");
+  }
 }
