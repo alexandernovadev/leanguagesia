@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import Word, { IWord } from "../db/models/Word";
+import { errorResponse, successResponse } from "../utlis/responseHelpers";
 
 export const arreglosmaricasrapidos = async (
   req: Request,
@@ -8,13 +9,10 @@ export const arreglosmaricasrapidos = async (
   try {
     // Actualizar el campo `level` de todos los documentos a "hard"
     // const result = await Word.updateMany({}, { level: "easy" });
-
-    return res.status(200).json({
-      success: true,
-      message: "FIxed quick done",
-    });
+ 
+    return successResponse(res, "FIxed quick done",{});
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ error: "Error updating words level" });
+    return errorResponse(res, "Error updating words level", 404);
   }
 };

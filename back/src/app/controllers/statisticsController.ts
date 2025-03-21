@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
+
 import { LectureService } from "../services/lectures/LectureService";
 import { WordService } from "../services/words/wordService";
+import { errorResponse, successResponse } from "../utlis/responseHelpers";
 
 const lectureService = new LectureService();
 const wordService = new WordService();
@@ -14,15 +16,13 @@ export const BasicInformation = async (
     const countByLevelAndTotalLectures =
       await lectureService.getLectureCountsByLevel();
     const countByLevelAndTotalWords = await wordService.getWordCountsByLevel();
-    return res.status(201).json({
-      success: true,
+
+    return successResponse(res, "Statitics successfully generated", {
       lectures: countByLevelAndTotalLectures,
       words: countByLevelAndTotalWords,
     });
   } catch (error) {
     console.error(error);
-    return res
-      .status(500)
-      .json({ success: false, error: "Error creating lecture" });
+    return errorResponse(res, "Error getting statics \n" + error, 404);
   }
 };
