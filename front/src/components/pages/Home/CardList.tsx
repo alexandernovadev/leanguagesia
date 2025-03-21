@@ -20,7 +20,7 @@ export const CardList = () => {
 
   // TODO : Here goes pagination logic
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 pb-36">
       {lectures?.map((card) => (
         <Card key={card._id} card={card} />
       ))}
