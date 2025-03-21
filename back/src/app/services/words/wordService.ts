@@ -157,6 +157,49 @@ export class WordService {
       { $project: { word: 1, _id: 0 } }, // Only return the "word" field
     ]);
   }
+
+  // Get word counts by level (easy, medium, hard) and the total word count
+  async getWordCountsByLevel(): Promise<{
+    easy: number;
+    medium: number;
+    hard: number;
+    total: number;
+  }> {
+    const result = await Word.aggregate([
+      {
+        // Using $facet to perform multiple operations in parallel
+        $facet: {
+          easy: [
+            { $match: { level: "easy" } }, // Match only words with 'easy' level
+            { $count: "count" }, // Count the number of documents
+          ],
+          medium: [
+            { $match: { level: "medium" } }, // Match only words with 'medium' level
+            { $count: "count" }, // Count the number of documents
+          ],
+          hard: [
+            { $match: { level: "hard" } }, // Match only words with 'hard' level
+            { $count: "count" }, // Count the number of documents
+          ],
+          total: [
+            { $count: "count" }, // Count the total number of words
+          ],
+        },
+      },
+      {
+        // Project the final result, setting default 0 count if not found
+        $project: {
+          easy: { $ifNull: [{ $arrayElemAt: ["$easy.count", 0] }, 0] },
+          medium: { $ifNull: [{ $arrayElemAt: ["$medium.count", 0] }, 0] },
+          hard: { $ifNull: [{ $arrayElemAt: ["$hard.count", 0] }, 0] },
+          total: { $ifNull: [{ $arrayElemAt: ["$total.count", 0] }, 0] },
+        },
+      },
+    ]);
+
+    // Return the result with counts for each level and the total word count
+    return result[0];
+  }
 }
 
 export default new WordService();

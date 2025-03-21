@@ -9,6 +9,7 @@ import { generateRoutes } from "./app/routes/generatorIARoutes";
 import LectureRoutes from "./app/routes/lectureRoutes";
 import WordsRoutes from "./app/routes/wordsRoutes";
 import Arreglosquick from "./app/routes/arreglosquick";
+import StatisticsRoutes from "./app/routes/statisticsRoutes";
 import { setupSwagger } from "../swaggerConfig";
 
 dotenv.config();
@@ -39,6 +40,7 @@ connectDB()
 app.use("/api/ai", generateRoutes);
 app.use("/api/lectures", LectureRoutes);
 app.use("/api/words", WordsRoutes);
+app.use("/api/statistics", StatisticsRoutes);
 
 // Just for testing purposes
 app.use("/api/fixes", Arreglosquick);
