@@ -139,7 +139,7 @@ export const GeneratorPage = () => {
           </div>
 
           <div className="flex justify-center items-center gap-2">
-            <div className="max-w-[420px] w-full">
+            <div className="min-w-[140px] w-full">
               <Select
                 label="Style"
                 name="typeWrite"
@@ -148,7 +148,7 @@ export const GeneratorPage = () => {
                 options={writeStyle}
               />
             </div>
-            <div className="max-w-[360px] w-full">
+            <div className="min-w-[70px] w-full">
               <Select
                 label="Level"
                 name="level"

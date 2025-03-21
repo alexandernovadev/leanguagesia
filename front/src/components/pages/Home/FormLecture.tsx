@@ -37,6 +37,7 @@ export const FormLecture: React.FC<FormLectureProps> = ({
 
       const updatedLecture = await response.json();
       onUpdate(updatedLecture);
+      location.replace('/')
     } catch (error) {
       console.error("Error updating lecture:", error);
     } finally {
