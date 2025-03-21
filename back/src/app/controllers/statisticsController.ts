@@ -5,7 +5,7 @@ import { WordService } from "../services/words/wordService";
 const lectureService = new LectureService();
 const wordService = new WordService();
 
-// V1 
+// V1
 export const BasicInformation = async (
   req: Request,
   res: Response
@@ -16,8 +16,8 @@ export const BasicInformation = async (
     const countByLevelAndTotalWords = await wordService.getWordCountsByLevel();
     return res.status(201).json({
       success: true,
-      words:countByLevelAndTotalLectures,
-      lectures:countByLevelAndTotalWords,
+      lectures: countByLevelAndTotalLectures,
+      words: countByLevelAndTotalWords,
     });
   } catch (error) {
     console.error(error);
