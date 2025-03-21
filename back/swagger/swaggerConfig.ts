@@ -2,7 +2,13 @@ import swaggerJsdoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 import { Express } from "express";
 
-import { fixesSwagger, statisticsSwagger, wordsSwagger } from "./routes";
+import {
+  fixesSwagger,
+  statisticsSwagger,
+  wordsSwagger,
+  lectureswagger,
+  generateaiswagger
+} from "./routes";
 
 const options: swaggerJsdoc.Options = {
   definition: {
@@ -24,6 +30,8 @@ const options: swaggerJsdoc.Options = {
       ...fixesSwagger["paths"],
       ...statisticsSwagger["paths"],
       ...wordsSwagger["paths"],
+      ...lectureswagger["paths"],
+      ...generateaiswagger["paths"],
     },
   },
   apis: ["./src/app/routes/*.ts"],
