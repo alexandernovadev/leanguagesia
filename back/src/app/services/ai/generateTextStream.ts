@@ -6,6 +6,8 @@ interface Options {
   typeWrite: string;
   language?: "es" | "en" | "pt"; // ISO 639-1
   promptAddEasyWords: string;
+  rangeMin?: number;
+  rangeMax?: number;
 }
 
 export const generateTextStreamService = async ({
@@ -14,6 +16,8 @@ export const generateTextStreamService = async ({
   typeWrite = "Engaging Article",
   language = "en",
   promptAddEasyWords = "",
+  rangeMin = 1200,
+  rangeMax = 1500,
 }: Options) => {
   const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY || "",
@@ -38,7 +42,7 @@ export const generateTextStreamService = async ({
 
           Content guidelines:
           - Avoid using rare, uncommon words or special symbols, as each word should be clickable and easily searchable in a dictionary.
-          - Length should be between 4200 and 5300 characters.
+          - Length should be between ${rangeMin} and ${rangeMax} characters.
           - For ${level} level:
             - **A1-A2:** Use simple words, basic sentences, and give short, clear examples. Define complex words as needed.
             - **B1-B2:** Use intermediate vocabulary, compound sentences, and provide real-world examples.
@@ -57,6 +61,5 @@ export const generateTextStreamService = async ({
       },
     ],
     temperature: 0.8,
-    // max_tokens: 500,
   });
 };

@@ -35,8 +35,6 @@ export const generateWordJson = async (prompt: string, language = "en") => {
           "sinonyms": [ List of sinonyms in english, minimum 5]
         }
 
-    
-
         // SOME EXAMPLES:
         {
           "word": "challenges",
@@ -105,7 +103,7 @@ export const generateWordJson = async (prompt: string, language = "en") => {
         - Every field contains accurate, B2-appropriate content with correct grammar and relevant contexts.
         - The "IPA" field is in standard format need to be perfect THINK WELL the IPA con ingles de USA.
         - The example and codeSwitching must be different. 
-        `,
+        `.trim(),
       },
       {
         role: "user",
