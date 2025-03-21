@@ -1,6 +1,4 @@
 import { Request, Response } from "express";
-import path from "path";
-import fs from "fs";
 
 import { generateTextStreamService } from "../services/ai/generateTextStream";
 import { generateWordJson } from "../services/ai/generateWordJson";
@@ -14,7 +12,8 @@ import {
   deleteImageFromCloudinary,
   uploadImageToCloudinary,
 } from "../services/cloudinary/cloudinaryService";
-// import { BASE65imgDEMO } from "../../drafts/imgs/base64Demo";
+
+import { errorResponse, successResponse } from "../utlis/responseHelpers";
 
 const wordService = new WordService();
 
@@ -26,7 +25,7 @@ export const updateImageWord = async (req, res) => {
   const IDWord = req.params.idword;
 
   if (!word) {
-    return res.status(400).json({ error: "Prompt is required." });
+    return errorResponse(res, "Prompt is required.", 400);
   }
 
   const prompt = `
@@ -39,95 +38,45 @@ export const updateImageWord = async (req, res) => {
   `.trim();
 
   try {
-    // Generar la imagen con DALL·E 3
+    // Generate image with DALL·E 3
     const imageBase64 = await generateImage(prompt);
     if (!imageBase64) {
-      return res
-        .status(500)
-        .json({ success: false, error: "Failed to generate image." });
+      return errorResponse(res, "Failed to generate image.", 400);
     }
 
-    let deleteOldImagePromise: Promise<void> = Promise.resolve(); // Inicializar como una promesa vacía
+    let deleteOldImagePromise: Promise<void> = Promise.resolve();
 
     if (imgOld && imgOld.includes("res.cloudinary.com")) {
       const parts = imgOld.split("/");
-      let publicId = parts.pop(); // Última parte de la URL
+      let publicId = parts.pop();
 
-      // Manejar casos donde no haya extensión
+      // Handle casoes where there is not extenxion
       if (publicId.includes(".")) {
-        publicId = publicId.split(".")[0]; // Remover extensión si existe
+        publicId = publicId.split(".")[0]; // Remove extenxion if exist
       }
 
-      // Asegurarse de que deleteImageFromCloudinary devuelva una promesa de tipo void
+      // Make sure htat deleteImageFromCloudinary return promise type void
       deleteOldImagePromise = deleteImageFromCloudinary(
         "languagesai/words/" + publicId
       ).then(() => {});
     }
 
-    // Subir nueva imagen en paralelo con la eliminación de la anterior
+    // Upload new image on parallel whithin removig image
     const [_, urlImage] = await Promise.all([
       deleteOldImagePromise,
       uploadImageToCloudinary(imageBase64, "words"),
     ]);
 
-    // Actualizar la imagen de la palabra en la base de datos
+    // Update image
     const updateImageWord = await wordService.updateWordImg(IDWord, urlImage);
 
-    return res.status(201).json({
-      success: true,
-      message: "Word Image generated successfully",
-      data: updateImageWord,
-    });
+    return successResponse(
+      res,
+      "Word Image generated successfully",
+      updateImageWord
+    );
   } catch (error) {
-    res.status(500).json({
-      message: "Error generating image",
-      error: error.message || error,
-    });
-  }
-};
-
-/**
- * @Deprecated
- * Save imagen on server is inefficient
- */
-export const generateImageDalleFS = async (req: Request, res: Response) => {
-  const { prompt } = req.body;
-
-  if (!prompt) {
-    return res.status(400).json({ error: "Prompt is required." });
-  }
-
-  // Spend  0.8 Token por 1024x1024 con dalle -3
-  // "prompt": "an imagen so descriptive of meaninig of the word {witness},
-  // y should described a lot the meaning , vey easy to understand",
-
-  try {
-    const imageBase64 = await generateImage(prompt);
-    if (!imageBase64) {
-      return res.status(500).json({ error: "Failed to generate image." });
-    }
-
-    const imageBuffer = Buffer.from(imageBase64, "base64");
-    const imagesDir = path.join(__dirname, "../public/images");
-    const imagePath = path.join(imagesDir, `${Date.now()}.png`);
-
-    // Make dir if no exists
-    if (!fs.existsSync(imagesDir)) {
-      fs.mkdirSync(imagesDir, { recursive: true });
-    }
-
-    fs.writeFileSync(imagePath, imageBuffer);
-
-    return res.status(201).json({
-      success: true,
-      message: "Image generated successfully",
-      imagePath: imagePath.replace(/^.*\/public\//, ""),
-    });
-  } catch (error) {
-    res.status(500).json({
-      message: "Error generating image",
-      error: error.message || error,
-    });
+    return errorResponse(res, "Error generating image \n" + error);
   }
 };
 
@@ -135,7 +84,7 @@ export const generateTextStream = async (req: Request, res: Response) => {
   const { prompt, level, typeWrite, addEasyWords } = req.body;
 
   if (!prompt) {
-    return res.status(400).json({ error: "Prompt is required." });
+    return errorResponse(res, "Prompt is required.", 400);
   }
 
   try {
@@ -167,18 +116,14 @@ export const generateTextStream = async (req: Request, res: Response) => {
       res.write(piece);
     }
 
-    // res.status(200).json({
-    //   message: "Testing it ",
-    //   data:promptAddEasyWords
-    // });
-
     // Close the stream when done
     res.end();
   } catch (error) {
-    res.status(500).json({
-      message: "Error trying to generate text stream",
-      error,
-    });
+    return errorResponse(
+      res,
+      "Error trying to generate text stream \n" + error,
+      500
+    );
   }
 };
 
@@ -186,7 +131,7 @@ export const generateJSONword = async (req: Request, res: Response) => {
   const { prompt, language } = req.body;
 
   if (!prompt) {
-    return res.status(400).json({ error: "Prompt is required." });
+    return errorResponse(res, "Prompt is required.", 400);
   }
 
   try {
@@ -201,16 +146,14 @@ export const generateJSONword = async (req: Request, res: Response) => {
     };
 
     const newWord = await wordService.createWord(wordStructurefinal);
-    return res.status(201).json({
-      success: true,
-      message: "Word created successfully",
-      data: newWord,
-    });
+
+    return successResponse(res, "Generate word JSON successfully", newWord);
   } catch (error) {
-    res.status(500).json({
-      message: "Error trying to generate JSON word",
-      error: error.message || error,
-    });
+    return errorResponse(
+      res,
+      "Error trying to generate JSON word \n" + error,
+      500
+    );
   }
 };
 
@@ -218,7 +161,7 @@ export const updatedJSONWordExamples = async (req: Request, res: Response) => {
   const { word, language, oldExamples } = req.body;
 
   if (!word) {
-    return res.status(400).json({ error: "Word is required." });
+    return errorResponse(res, "Word is required.", 400);
   }
   const IDWord = req.params.idword;
   try {
@@ -233,18 +176,21 @@ export const updatedJSONWordExamples = async (req: Request, res: Response) => {
       examples
     );
 
-    return res.status(201).json({
-      success: true,
-      message: "Word examples generated successfully",
-      data: updateExamples,
-    });
+    return successResponse(
+      res,
+      "updated JSON Word Examples word JSON successfully",
+      updateExamples,
+      201
+    );
   } catch (error) {
-    res.status(500).json({
-      message: "Error trying to generate JSON examples word",
-      error: error.message || error,
-    });
+    return errorResponse(
+      res,
+      "Error trying to Update JSON Word \n" + error,
+      500
+    );
   }
 };
+
 export const updatedJSONWordExamplesCodeSwitching = async (
   req: Request,
   res: Response
@@ -252,7 +198,7 @@ export const updatedJSONWordExamplesCodeSwitching = async (
   const { word, language, oldExamples } = req.body;
 
   if (!word) {
-    return res.status(400).json({ error: "Word is required." });
+    return errorResponse(res, "Word is required.", 400);
   }
   const IDWord = req.params.idword;
   try {
@@ -267,16 +213,18 @@ export const updatedJSONWordExamplesCodeSwitching = async (
       codeSwitching
     );
 
-    return res.status(201).json({
-      success: true,
-      message: "Word CodeSwiching examples generated successfully",
-      data: updateExamples,
-    });
+    return successResponse(
+      res,
+      "updated JSON Code Swithing JSON successfully",
+      updateExamples,
+      201
+    );
   } catch (error) {
-    res.status(500).json({
-      message: "Error trying to generate JSON  CodeSwiching word",
-      error: error.message || error,
-    });
+    return errorResponse(
+      res,
+      "Error trying to Update JSON Word Examples \n" + error,
+      500
+    );
   }
 };
 
@@ -284,7 +232,7 @@ export const updatedJSONWordTypes = async (req: Request, res: Response) => {
   const { word, language, oldExamples } = req.body;
 
   if (!word) {
-    return res.status(400).json({ error: "Word is required." });
+    return errorResponse(res, "Word is required.", 400);
   }
   const IDWord = req.params.idword;
   try {
@@ -292,16 +240,18 @@ export const updatedJSONWordTypes = async (req: Request, res: Response) => {
 
     const updateExamples = await wordService.updateWordType(IDWord, type);
 
-    return res.status(201).json({
-      success: true,
-      message: "Word Types generated successfully",
-      data: updateExamples,
-    });
+    return successResponse(
+      res,
+      "updated JSON Types successfully",
+      updateExamples,
+      201
+    );
   } catch (error) {
-    res.status(500).json({
-      message: "Error trying to generate JSON Types word",
-      error: error.message || error,
-    });
+    return errorResponse(
+      res,
+      "Error trying to Update JSON Word Types \n" + error,
+      500
+    );
   }
 };
 
@@ -309,7 +259,7 @@ export const updatedJSONWordSynonyms = async (req: Request, res: Response) => {
   const { word, language, oldExamples } = req.body;
 
   if (!word) {
-    return res.status(400).json({ error: "Word is required." });
+    return errorResponse(res, "Word is required.", 400);
   }
   const IDWord = req.params.idword;
   try {
@@ -324,15 +274,17 @@ export const updatedJSONWordSynonyms = async (req: Request, res: Response) => {
       sinonyms
     );
 
-    return res.status(201).json({
-      success: true,
-      message: "Word Sinonyms generated successfully",
-      data: updateExamples,
-    });
+    return successResponse(
+      res,
+      "Word Sinonyms generated successfully",
+      updateExamples,
+      201
+    );
   } catch (error) {
-    res.status(500).json({
-      message: "Error trying to generate JSON Sinonyms word",
-      error: error.message || error,
-    });
+    return errorResponse(
+      res,
+      "Error trying to Update JSON Word Synonyms \n" + error,
+      500
+    );
   }
 };
