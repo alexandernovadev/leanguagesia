@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
+
 import { LectureService } from "../services/lectures/LectureService";
+import { successResponse, errorResponse } from "../utlis/responseHelpers";
 
 const lectureService = new LectureService();
 
@@ -9,10 +11,11 @@ export const createLecture = async (
 ): Promise<Response> => {
   try {
     const lecture = await lectureService.createLecture(req.body);
-    return res.status(201).json(lecture);
+
+    return successResponse(res, "Lecture created successfully", lecture, 201);
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ error: "Error creating lecture" });
+    return errorResponse(res, "Error creating lecture");
   }
 };
 
@@ -25,10 +28,11 @@ export const getLectureById = async (
     if (!lecture) {
       return res.status(404).json({ error: "Lecture not found" });
     }
-    return res.json(lecture);
+
+    return successResponse(res, "Lecture Listed by ID successfully", lecture);
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ error: "Error retrieving lecture" });
+    return errorResponse(res, "Error retrieving lecture");
   }
 };
 
@@ -41,10 +45,11 @@ export const updateLecture = async (
     if (!lecture) {
       return res.status(404).json({ error: "Lecture not found" });
     }
-    return res.json(lecture);
+
+    return successResponse(res, "Lecture Updated successfully", lecture);
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ error: "Error updating lecture" });
+    return errorResponse(res, "Error updating lecture");
   }
 };
 
@@ -57,10 +62,11 @@ export const deleteLecture = async (
     if (!lecture) {
       return res.status(404).json({ error: "Lecture not found" });
     }
-    return res.json({ message: "Lecture deleted successfully" });
+
+    return successResponse(res, "Lecture deleted successfully", {});
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ error: "Error deleting lecture" });
+    return errorResponse(res, "Error deleting lecture");
   }
 };
 
@@ -71,12 +77,16 @@ export const updateImageLecureById = async (req: Request, res: Response) => {
   try {
     const updatedLecture = await lectureService.updateImage(ID, image);
     if (!updatedLecture) {
-      return res.status(404).json({ error: "Lecture not found" });
+      return errorResponse(res, "Lecture not found", 404);
     }
-    return res.json(updatedLecture);
+    return successResponse(
+      res,
+      "Lecture Update Image Lectue ById successfully",
+      updatedLecture
+    );
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ error: "Error updating lecture" });
+    return errorResponse(res, "Error updating Image lecture");
   }
 };
 
@@ -88,9 +98,10 @@ export const getAllLectures = async (
     const page = parseInt(req.query.page as string) || 1;
     const limit = parseInt(req.query.limit as string) || 1000;
     const lectures = await lectureService.getAllLectures(page, limit);
-    return res.json(lectures);
+
+    return successResponse(res, "Lecture listed successfully", lectures);
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ error: "Error fetching lectures" });
+    return errorResponse(res, "Error fetching lectures");
   }
 };

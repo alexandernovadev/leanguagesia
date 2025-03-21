@@ -1,4 +1,3 @@
-// LectureService.ts
 import Lecture, { ILecture } from "../../db/models/Lecture";
 
 interface PaginatedResult<T> {
