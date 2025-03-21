@@ -6,9 +6,8 @@ import { BACKURL } from "../../../api/backConf";
 
 export const Statistics = () => {
   const [data, setData] = useState<StatisticsData | null>(null);
-  const [loading, setLoading] = useState(true); // Start loading as true
+  const [loading, setLoading] = useState(true); 
 
-  // Fetch the data when the component mounts
   useEffect(() => {
     const fetchStatistics = async () => {
       try {
@@ -16,14 +15,14 @@ export const Statistics = () => {
         const result = await response.json();
 
         if (result.success) {
-          setData(result); // Set the data to state if the fetch is successful
+          setData(result.data); 
         } else {
           console.error("Failed to fetch statistics");
         }
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
-        setLoading(false); // Stop loading when fetch is complete
+        setLoading(false); 
       }
     };
 
