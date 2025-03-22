@@ -4,6 +4,7 @@ import { Edit2, Eye } from "lucide-react";
 import { useState } from "react";
 import { Modal } from "../../shared/Modal";
 import { FormLecture } from "./FormLecture";
+import { getTitleFromMD } from "../../../utils/getTitleFromMD";
 
 interface CardProps {
   card: CardType;
@@ -11,13 +12,6 @@ interface CardProps {
 
 export const Card = ({ card }: CardProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const getTitle = (title: string) => {
-    // Usamos una expresión regular para encontrar el primer título (# Title)
-    const match = title.match(/^#\s(.+)/m);
-    // Si se encuentra un título, devolvemos el texto; si no, devolvemos una cadena vacía
-    return match ? match[1].trim() : "Sin título";
-  };
 
   return (
     <div
@@ -86,10 +80,10 @@ export const Card = ({ card }: CardProps) => {
       </div>
       <p
         id={`card-title-${card._id}`}
-        title={getTitle(card.content)}
+        title={getTitleFromMD(card.content)}
         className="mt-2 text-sm font-medium py-2 line-clamp-2 px-2"
       >
-        {getTitle(card.content)}
+        {getTitleFromMD(card.content)}
       </p>
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <FormLecture lecture={card} onClose={() => setIsModalOpen(false)} />

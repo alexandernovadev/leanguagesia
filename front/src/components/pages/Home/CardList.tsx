@@ -42,7 +42,7 @@ export const CardList = () => {
         </div>
       )}
 
-      {currentPage < totalPages && (
+      {lectures.length > 0 && currentPage < totalPages && (
         <button
           onClick={loadMore}
           className={`mt-4 px-4 py-2 text-white rounded-lg flex items-center gap-2 ${

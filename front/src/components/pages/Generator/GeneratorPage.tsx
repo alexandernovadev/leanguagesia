@@ -15,10 +15,16 @@ import { levels } from "./data/levels";
 import "../../../styles/buttonanimatiocss.css";
 import { useNavigate } from "react-router-dom";
 import Checkbox from "../../ui/Checkbox";
+import { calculateReadingTime } from "../../../utils/calculateReadingTime";
+import { escapeMarkdown } from "../../../utils/escapeMarkdown";
+import { useLectureStore } from "../../../store/useLectureStore";
+import { Lecture } from "../Lecture/types/Lecture";
 
 export const GeneratorPage = () => {
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const [isLoadedSaveWord, setIsLoadedSaveWord] = useState<boolean>(false);
+
+  const { postLecture } = useLectureStore();
 
   const [text, setText] = useState("");
 
@@ -33,17 +39,7 @@ export const GeneratorPage = () => {
       addEasyWords: false,
     },
   });
-  const escapeMarkdown = (text: string) => {
-    return text.replace(/```/g, "\\`\\`\\`").replace(/`/g, "\\`");
-  };
 
-  // TODO Improve the calculation of the reading time
-  const calculateReadingTime = (text: string) => {
-    const wordsPerMinute = 225; // Puedes ajustar este valor según el nivel de los estudiantes
-    const words = text.split(/\s+/).length; // Contar el número de palabras
-    const minutes = Math.ceil(words / wordsPerMinute); // Calcular el tiempo y redondear al entero más cercano
-    return minutes;
-  };
   const saveLecture = async () => {
     setIsLoadedSaveWord(true);
     const { typeWrite, level } = getValues();
@@ -55,27 +51,16 @@ export const GeneratorPage = () => {
       language: "en",
       img: "",
       content: text,
-    };
+    } as Lecture;
 
     try {
-      const response = await fetch(`${BACKURL}/api/lectures`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(lecture),
-      });
-
-      if (response.ok) {
-        toast.success("Lecture saved successfully!");
-        navigate(`/`);
-      } else {
-        console.error("Failed to save the lecture.");
-      }
+      await postLecture(lecture);
+      toast.success("Lecture saved successfully!");
+      navigate(`/`);
     } catch (err) {
-      console.error("Failed to save the lecture.");
+      console.error("Failed to save the lecture.", err);
     } finally {
-      setIsLoadedSaveWord(true);
+      setIsLoadedSaveWord(false);
     }
   };
 
@@ -121,9 +106,11 @@ export const GeneratorPage = () => {
       setIsLoaded(false);
     }
   };
+
   const onSubmit = () => {
     handleGenerateText();
   };
+
   return (
     <MainLayout>
       <section className="flex flex-col h-[93%]">
@@ -172,7 +159,6 @@ export const GeneratorPage = () => {
                 <SendHorizontal />
               </span>
             </button>
-            {/* Conditionally render the SAVE button only if there's generated text */}
             {!isLoaded && text.length > 0 && (
               <button
                 type="button"
@@ -189,7 +175,8 @@ export const GeneratorPage = () => {
               >
                 <Save />
               </button>
-            )}{" "}
+            )}
+            {}
           </div>
         </form>
 
