@@ -38,7 +38,7 @@ export const AnkiGamePage = () => {
   return (
     <MainLayout>
       <section className="flex flex-col mt-12 w-full overflow-hidden">
-        {!loading ? (
+        {loading ? (
           <Loading />
         ) : errors ? (
           <p className="text-red-600">
