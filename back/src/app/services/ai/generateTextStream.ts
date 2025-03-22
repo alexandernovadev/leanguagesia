@@ -16,8 +16,8 @@ export const generateTextStreamService = async ({
   typeWrite = "Engaging Article",
   language = "en",
   promptAddEasyWords = "",
-  rangeMin = 1200,
-  rangeMax = 1500,
+  rangeMin = 5200,
+  rangeMax = 6500,
 }: Options) => {
   const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY || "",

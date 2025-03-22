@@ -4,28 +4,30 @@ import { CirclePlus } from "lucide-react";
 import { useForm } from "react-hook-form";
 
 import { MainLayout } from "../../shared/Layouts/MainLayout";
-import { useGetWords } from "../../../hooks/serviceshooks/useGetWords";
 import { Loading } from "./Loading";
 import { ErrorMessage } from "./ErrorMessage";
 import { WordTable } from "./WordTable";
-import { BACKURL } from "../../../api/backConf";
 import { Modal } from "../../shared/Modal";
 import { GenerateWord } from "./generateWord/GenerateWord";
 import Input from "../../ui/Input";
 import { Word } from "../../../models/Word";
 import { debounce } from "../../../utils/debounce";
+import { useWordStore } from "../../../store/useWordStore";
 
 export const WordPage = () => {
   const {
     words,
     loading,
-    error,
-    page,
+    errors, // Assuming you kept the granular errors object; adjust if it’s a string
+    currentPage: page,
     totalPages,
     setPage,
     setSearchQuery,
     retry,
-  } = useGetWords();
+    updateWord,
+    deleteWord,
+  } = useWordStore();
+
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const { control, watch } = useForm({
@@ -56,20 +58,8 @@ export const WordPage = () => {
   const handleEdit = async (word: Word) => {
     try {
       const { _id, __v, ...rest } = word;
-      const edit = await fetch(`${BACKURL}/api/words/${_id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(rest),
-      });
-
-      if (edit.ok) {
-        toast.success("Word updated successfully!");
-        retry();
-      } else {
-        throw new Error("Failed to update word");
-      }
+      await updateWord(_id, rest); // Use store’s updateWord method
+      toast.success("Word updated successfully!");
     } catch (error) {
       console.error(error);
       toast.error("Error updating word.");
@@ -78,16 +68,8 @@ export const WordPage = () => {
 
   const handleRemove = async (id: string) => {
     try {
-      const response = await fetch(`${BACKURL}/api/words/${id}`, {
-        method: "DELETE",
-      });
-
-      if (response.ok) {
-        toast.success("Word removed successfully!");
-        retry();
-      } else {
-        throw new Error("Failed to delete word");
-      }
+      await deleteWord(id); // Use store’s deleteWord method
+      toast.success("Word removed successfully!");
     } catch (error) {
       console.error(error);
       toast.error("Error deleting word.");
@@ -97,7 +79,7 @@ export const WordPage = () => {
   return (
     <MainLayout>
       <div className="text-customGreen-100 p-6 h-auto">
-        {error && <ErrorMessage retry={retry} />}
+        {errors && <ErrorMessage retry={retry} />}
         <div className="flex justify-between items-center w-full pb-4">
           <button
             type="button"

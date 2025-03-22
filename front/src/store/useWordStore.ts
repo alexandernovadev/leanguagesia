@@ -2,17 +2,20 @@ import { create } from "zustand";
 import { BACKURL } from "../api/backConf";
 import { Word } from "../models/Word";
 
-// Define the store's state and actions
 interface WordStore {
   words: Word[];
   activeWord: Word | null;
   loading: boolean;
   actionLoading: { [key: string]: boolean };
-  errors: { [key: string]: string | null };
+  errors: { [key: string]: string | null } | string | null; 
   totalPages: number;
   currentPage: number;
+  searchQuery: string; 
 
   getWords: (page?: number, limit?: number, wordUser?: string) => Promise<void>;
+  setPage: (page: number) => void; 
+  setSearchQuery: (query: string) => void; 
+  retry: () => void; 
   getWordById: (id: string) => Promise<void>;
   getWordByName: (word: string) => Promise<void>;
   createWord: (wordData: Omit<Word, "_id">) => Promise<void>;
@@ -24,7 +27,6 @@ interface WordStore {
   clearErrors: () => void;
 }
 
-// Helper function to handle API responses
 const handleResponse = async (response: Response) => {
   const data = await response.json();
   if (!response.ok || !data.success) {
@@ -33,21 +35,24 @@ const handleResponse = async (response: Response) => {
   return data;
 };
 
-// Create the Zustand store
 export const useWordStore = create<WordStore>((set, get) => ({
   words: [],
   activeWord: null,
   loading: false,
   actionLoading: {},
-  errors: {},
+  errors: null, 
   totalPages: 1,
   currentPage: 1,
+  searchQuery: "", 
 
-  // Fetch all words with pagination and optional wordUser filter
-  getWords: async (page = 1, limit = 10, wordUser?: string) => {
+  getWords: async (
+    page = get().currentPage,
+    limit = 7,
+    wordUser = get().searchQuery
+  ) => {
     set({
       loading: true,
-      errors: { ...get().errors, get: null },
+      errors: null, 
       currentPage: page,
       ...(page === 1 ? { words: [] } : {}), // Reset on first page
     });
@@ -58,51 +63,57 @@ export const useWordStore = create<WordStore>((set, get) => ({
       const response = await fetch(url);
       const { data } = await handleResponse(response);
 
-      set((state) => ({
-        words: [...state.words, ...data.data],
+      set({
+        words: data.data, 
         totalPages: data.pages,
         loading: false,
-      }));
+      });
     } catch (error: any) {
-      set({ errors: { ...get().errors, get: error.message }, loading: false });
+      set({ errors: error.message, loading: false });
     }
   },
 
-  // Fetch a word by ID
+  setPage: (page: number) => {
+    set({ currentPage: page });
+    get().getWords(page); 
+  },
+
+  setSearchQuery: (query: string) => {
+    set({ searchQuery: query, currentPage: 1 }); // Reset to page 1 on new search
+    get().getWords(1, 7, query); // Trigger fetch with new query
+  },
+
+  retry: () => {
+    get().getWords(); // Re-fetch with current page and searchQuery
+  },
+
+  // Rest of the methods remain unchanged
   getWordById: async (id: string) => {
-    set({ loading: true, errors: { ...get().errors, getById: null } });
+    set({ loading: true, errors: null });
     try {
       const response = await fetch(`${BACKURL}/api/words/${id}`);
       const data = await handleResponse(response);
       set({ activeWord: data.data, loading: false });
     } catch (error: any) {
-      set({
-        errors: { ...get().errors, getById: error.message },
-        loading: false,
-      });
+      set({ errors: error.message, loading: false });
     }
   },
 
-  // Fetch a word by name
   getWordByName: async (word: string) => {
-    set({ loading: true, errors: { ...get().errors, getByName: null } });
+    set({ loading: true, errors: null });
     try {
       const response = await fetch(`${BACKURL}/api/words/word/${word}`);
       const data = await handleResponse(response);
       set({ activeWord: data.data, loading: false });
     } catch (error: any) {
-      set({
-        errors: { ...get().errors, getByName: error.message },
-        loading: false,
-      });
+      set({ errors: error.message, loading: false });
     }
   },
 
-  // Create a new word
   createWord: async (wordData: Omit<Word, "_id">) => {
     set({
       actionLoading: { ...get().actionLoading, create: true },
-      errors: { ...get().errors, create: null },
+      errors: null,
     });
     try {
       const response = await fetch(`${BACKURL}/api/words`, {
@@ -117,17 +128,16 @@ export const useWordStore = create<WordStore>((set, get) => ({
       }));
     } catch (error: any) {
       set({
-        errors: { ...get().errors, create: error.message },
+        errors: error.message,
         actionLoading: { ...get().actionLoading, create: false },
       });
     }
   },
 
-  // Update an existing word
   updateWord: async (id: string, wordData: Partial<Word>) => {
     set({
       actionLoading: { ...get().actionLoading, update: true },
-      errors: { ...get().errors, update: null },
+      errors: null,
     });
     try {
       const response = await fetch(`${BACKURL}/api/words/${id}`, {
@@ -143,17 +153,16 @@ export const useWordStore = create<WordStore>((set, get) => ({
       }));
     } catch (error: any) {
       set({
-        errors: { ...get().errors, update: error.message },
+        errors: error.message,
         actionLoading: { ...get().actionLoading, update: false },
       });
     }
   },
 
-  // Update word level
   updateWordLevel: async (id: string, level: string) => {
     set({
       actionLoading: { ...get().actionLoading, updateLevel: true },
-      errors: { ...get().errors, updateLevel: null },
+      errors: null,
     });
     try {
       const response = await fetch(`${BACKURL}/api/words/${id}/level`, {
@@ -169,17 +178,16 @@ export const useWordStore = create<WordStore>((set, get) => ({
       }));
     } catch (error: any) {
       set({
-        errors: { ...get().errors, updateLevel: error.message },
+        errors: error.message,
         actionLoading: { ...get().actionLoading, updateLevel: false },
       });
     }
   },
 
-  // Increment word seen count
   incrementWordSeen: async (id: string) => {
     set({
       actionLoading: { ...get().actionLoading, incrementSeen: true },
-      errors: { ...get().errors, incrementSeen: null },
+      errors: null,
     });
     try {
       const response = await fetch(
@@ -197,17 +205,16 @@ export const useWordStore = create<WordStore>((set, get) => ({
       }));
     } catch (error: any) {
       set({
-        errors: { ...get().errors, incrementSeen: error.message },
+        errors: error.message,
         actionLoading: { ...get().actionLoading, incrementSeen: false },
       });
     }
   },
 
-  // Delete a word
   deleteWord: async (id: string) => {
     set({
-      actionLoading: { ...get().errors, delete: true },
-      errors: { ...get().errors, delete: null },
+      actionLoading: { ...get().actionLoading, delete: true },
+      errors: null,
     });
     try {
       const response = await fetch(`${BACKURL}/api/words/${id}`, {
@@ -221,33 +228,22 @@ export const useWordStore = create<WordStore>((set, get) => ({
       }));
     } catch (error: any) {
       set({
-        errors: { ...get().errors, delete: error.message },
+        errors: error.message,
         actionLoading: { ...get().actionLoading, delete: false },
       });
     }
   },
 
-  // Fetch recent hard or medium words
   getRecentHardOrMediumWords: async () => {
-    set({
-      loading: true,
-      errors: { ...get().errors, getRecentHardOrMedium: null },
-    });
+    set({ loading: true, errors: null });
     try {
       const response = await fetch(`${BACKURL}/api/words/get-cards-anki`);
       const data = await handleResponse(response);
-      set({
-        words: data.data, // Overwrites words with the recent ones
-        loading: false,
-      });
+      set({ words: data.data, loading: false });
     } catch (error: any) {
-      set({
-        errors: { ...get().errors, getRecentHardOrMedium: error.message },
-        loading: false,
-      });
+      set({ errors: error.message, loading: false });
     }
   },
 
-  // Clear all errors
-  clearErrors: () => set({ errors: {} }),
+  clearErrors: () => set({ errors: null }),
 }));
