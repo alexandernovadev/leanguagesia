@@ -135,6 +135,11 @@ code {
   @apply bg-gray-800 text-gray-200 rounded px-1 py-0.5;
 }
 
+label {
+  font-size: 0.875rem;
+  /* Texto más compacto */
+}
+
 .rotate-y-180 {
   transform: rotateY(180deg);
   transition: transform 0.5s;

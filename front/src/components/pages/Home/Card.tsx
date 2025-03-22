@@ -92,7 +92,7 @@ export const Card = ({ card }: CardProps) => {
         {getTitle(card.content)}
       </p>
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <FormLecture lecture={card} onUpdate={() => setIsModalOpen(false)} />
+        <FormLecture lecture={card} onClose={() => setIsModalOpen(false)} />
       </Modal>
     </div>
   );

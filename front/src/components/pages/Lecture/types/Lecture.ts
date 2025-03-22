@@ -1,5 +1,5 @@
 export interface Lecture {
-  _id?: string;
+  _id?: string | number;
   time: number;
   level: string;
   typeWrite: string;

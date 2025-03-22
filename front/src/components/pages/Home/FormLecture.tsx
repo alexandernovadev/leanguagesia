@@ -2,62 +2,46 @@ import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import Input from "../../ui/Input";
 import { TextAreaCustom } from "../../ui/TextArea";
-import { BACKURL } from "../../../api/backConf";
 import { Card as CardType } from "./types/types";
+import { useLectureStore } from "../../../store/useLectureStore";
+import { Loader2 } from "lucide-react";
 
 interface FormLectureProps {
   lecture: CardType;
-  onUpdate: (updatedLecture: CardType) => void;
+  onClose: () => void;
 }
 
 export const FormLecture: React.FC<FormLectureProps> = ({
   lecture,
-  onUpdate,
+  onClose,
 }) => {
   const { control, handleSubmit } = useForm<CardType>({
     defaultValues: lecture,
   });
-
-  const [loading, setLoading] = useState(false);
+  const { putLecture, actionLoading } = useLectureStore();
 
   const onSubmit: SubmitHandler<CardType> = async (data) => {
-    setLoading(true);
-    try {
-      const response = await fetch(`${BACKURL}/api/lectures/${lecture._id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
+    await putLecture(lecture._id! as string, data);
 
-      if (!response.ok) {
-        throw new Error("Failed to update lecture");
-      }
-
-      const updatedLecture = await response.json();
-      onUpdate(updatedLecture);
-      location.replace('/')
-    } catch (error) {
-      console.error("Error updating lecture:", error);
-    } finally {
-      setLoading(false);
-    }
+    onClose();
   };
 
   return (
     <div
-      role="dialog"
       aria-labelledby="edit-lecture"
-      className="bg-customBlack-200 p-6 md:p-8 rounded-lg w-full max-w-3xl mx-auto"
+      className="bg-customBlack-200 p-4 md:p-8 rounded-lg  max-w-[720px] min-w-[520px] overflow-y-auto max-h-[90vh]"
     >
       <h2
         id="edit-lecture"
-        className="text-sm md:text-2xl font-bold text-white mb-6 text-center"
+        className="text-sm md:text-2xl font-bold text-white mb-4 md:mb-6 text-center"
       >
         Edit | {lecture._id}
       </h2>
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="space-y-4 md:space-y-5"
+      >
         {/* Time & Level */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
@@ -102,7 +86,7 @@ export const FormLecture: React.FC<FormLectureProps> = ({
         {/* Image */}
         <div>
           <label htmlFor="img" className="text-white block mb-1">
-            Image (https://res.cloudinary.com/dv8wurqdp/image/upload/)
+            Image 
           </label>
           <Input name="img" control={control} placeholder="Image URL" />
         </div>
@@ -122,10 +106,14 @@ export const FormLecture: React.FC<FormLectureProps> = ({
         {/* Submit Button */}
         <button
           type="submit"
-          className="w-full bg-green-700 text-white py-3 rounded-md hover:bg-green-600 transition"
-          disabled={loading}
+          className="w-full bg-green-700 text-white py-3 rounded-md hover:bg-green-600 transition flex justify-center items-center"
+          disabled={actionLoading.put}
         >
-          {loading ? "Updating..." : "Save Changes"}
+          {actionLoading.put ? (
+            <Loader2 className="animate-spin" />
+          ) : (
+            "Save Changes"
+          )}
         </button>
       </form>
     </div>
