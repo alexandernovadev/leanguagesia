@@ -3,32 +3,22 @@ import { useState, useEffect } from "react";
 import { MainLayout } from "../../shared/Layouts/MainLayout";
 import { Card } from "./Card";
 import { CardNavigation } from "./CardNavigation";
-import { cardsData as exampleCardsData } from "./data/wordsexample";
-import { Word } from "../../../models/Word";
+import { useWordStore } from "../../../store/useWordStore";
 
 export const AnkiGamePage = () => {
-  const [cards, setCards] = useState<Word[]>([]);
+  const {
+    words: cards, 
+    loading,
+    errors, 
+    getRecentHardOrMediumWords,
+  } = useWordStore();
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const [flipped, setFlipped] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  const fetchCards = async () => {
-    try {
-      setLoading(true);
-      const data = exampleCardsData;
-      // @ts-ignore
-      setCards(data);
-      setLoading(false);
-    } catch (err) {
-      setError("Failed to load cards.");
-      setLoading(false);
-    }
-  };
 
   useEffect(() => {
-    fetchCards();
-  }, []);
+    getRecentHardOrMediumWords();
+  }, [getRecentHardOrMediumWords]);
 
   const handleNext = () => {
     if (currentIndex < cards.length - 1) {
@@ -49,21 +39,29 @@ export const AnkiGamePage = () => {
       <section className="flex flex-col mt-12 w-full overflow-hidden">
         {loading ? (
           <p>Loading...</p>
-        ) : error ? (
-          <p className="text-red-600">{error}</p>
+        ) : errors ? (
+          <p className="text-red-600">
+            {typeof errors === "string" ? errors : errors.getRecentHardOrMedium || "Failed to load cards."}
+          </p>
         ) : (
           <div className="mx-3">
-            <Card
-              card={cards[currentIndex]}
-              flipped={flipped}
-              onFlip={() => setFlipped(!flipped)}
-            />
-            <CardNavigation
-              currentIndex={currentIndex}
-              totalCards={cards.length}
-              onNext={handleNext}
-              onPrevious={handlePrevious}
-            />
+            {cards.length > 0 ? (
+              <>
+                <Card
+                  card={cards[currentIndex]}
+                  flipped={flipped}
+                  onFlip={() => setFlipped(!flipped)}
+                />
+                <CardNavigation
+                  currentIndex={currentIndex}
+                  totalCards={cards.length}
+                  onNext={handleNext}
+                  onPrevious={handlePrevious}
+                />
+              </>
+            ) : (
+              <p>No cards available.</p>
+            )}
           </div>
         )}
       </section>
