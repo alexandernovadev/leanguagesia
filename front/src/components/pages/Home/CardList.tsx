@@ -1,8 +1,8 @@
 import { useEffect } from "react";
-import { Loader2 } from "lucide-react";
 
 import { Card } from "./Card";
 import { useLectureStore } from "../../../store/useLectureStore";
+import { Loading } from "../Words/Loading";
 
 export const CardList = () => {
   const {
@@ -55,7 +55,7 @@ export const CardList = () => {
         >
           {actionLoading.get ? (
             <>
-              <Loader2 className="animate-spin" size={18} /> Loading...
+             <Loading />
             </>
           ) : (
             "Load More"

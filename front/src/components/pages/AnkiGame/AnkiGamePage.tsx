@@ -4,12 +4,13 @@ import { MainLayout } from "../../shared/Layouts/MainLayout";
 import { Card } from "./Card";
 import { CardNavigation } from "./CardNavigation";
 import { useWordStore } from "../../../store/useWordStore";
+import { Loading } from "../Words/Loading";
 
 export const AnkiGamePage = () => {
   const {
-    words: cards, 
+    words: cards,
     loading,
-    errors, 
+    errors,
     getRecentHardOrMediumWords,
   } = useWordStore();
 
@@ -37,11 +38,13 @@ export const AnkiGamePage = () => {
   return (
     <MainLayout>
       <section className="flex flex-col mt-12 w-full overflow-hidden">
-        {loading ? (
-          <p>Loading...</p>
+        {!loading ? (
+          <Loading />
         ) : errors ? (
           <p className="text-red-600">
-            {typeof errors === "string" ? errors : errors.getRecentHardOrMedium || "Failed to load cards."}
+            {typeof errors === "string"
+              ? errors
+              : errors.getRecentHardOrMedium || "Failed to load cards."}
           </p>
         ) : (
           <div className="mx-3">

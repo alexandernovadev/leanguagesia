@@ -1,7 +1,8 @@
 import React, { useCallback } from "react";
-import { FlipHorizontal, Volume2 } from "lucide-react";
+import { FlipHorizontal, Turtle, Volume2 } from "lucide-react";
 import { Word } from "../../../models/Word";
 import { useWordStore } from "../../../store/useWordStore";
+import { getLevelColor } from "../../../utils/getLevelColor";
 
 interface CardProps {
   card: Word;
@@ -10,16 +11,19 @@ interface CardProps {
 }
 
 export const Card: React.FC<CardProps> = ({ card, flipped, onFlip }) => {
-  const { updateWordLevel, setActiveWord, actionLoading } =
-    useWordStore();
+  const { updateWordLevel, setActiveWord, actionLoading } = useWordStore();
 
-  const listenWord = useCallback(() => {
-    if (card?.word && "speechSynthesis" in window) {
-      const utterance = new SpeechSynthesisUtterance(card.word);
-      utterance.lang = "en-US";
-      window.speechSynthesis.speak(utterance);
-    }
-  }, [card?.word]);
+  const listenWord = useCallback(
+    (rate = 1) => {
+      if (card?.word && "speechSynthesis" in window) {
+        const utterance = new SpeechSynthesisUtterance(card.word);
+        utterance.lang = "en-US";
+        utterance.rate = rate;
+        window.speechSynthesis.speak(utterance);
+      }
+    },
+    [card?.word]
+  );
 
   const handleLevelUpdate = (level: string) => {
     if (card?._id) {
@@ -56,16 +60,7 @@ export const Card: React.FC<CardProps> = ({ card, flipped, onFlip }) => {
         <span className="font-bold text-gray-300">Flip</span>
       </button>
 
-      {/* Speaker Button (Front Side) */}
-      {!flipped && (
-        <button
-          onClick={listenWord}
-          className="absolute top-4 right-4 p-3 bg-green-500 rounded-full border-2 border-green-400 shadow-md hover:bg-green-600 z-30 transition-colors"
-        >
-          <Volume2 size={32} color="#d1d5db" />
-        </button>
-      )}
-
+ 
       {/* Card Container */}
       <div
         className="w-full h-full border border-green-800 rounded-lg shadow-lg transition-transform duration-500 ease-in-out"
@@ -80,10 +75,26 @@ export const Card: React.FC<CardProps> = ({ card, flipped, onFlip }) => {
           className="absolute inset-0 flex flex-col items-center justify-center p-2 text-center bg-gray-900 rounded-lg "
           style={{ backfaceVisibility: "hidden" }}
         >
-          <div className="flex items-center justify-between w-full px-8">
+          <div className="flex items-center justify-between w-full px-8 mt-4">
             <h2 className="text-4xl font-bold capitalize text-green-600">
               {card.word}
             </h2>
+            <div className="flex gap-3">
+              <button
+                onClick={() => listenWord()}
+                title="Normal Speed"
+                className="border p-2 rounded-full border-green-400"
+              >
+                <Volume2 size={32} />
+              </button>
+              <button
+                onClick={() => listenWord(0.009)}
+                title="Slow Speed"
+                className="border p-2 rounded-full border-green-400"
+              >
+                <Turtle size={32} />
+              </button>
+            </div>
           </div>
           <p className="text-2xl text-purple-500 mt-2 font-bold">{card.IPA}</p>
           {card.img && (
@@ -121,6 +132,22 @@ export const Card: React.FC<CardProps> = ({ card, flipped, onFlip }) => {
               <p className="text-yellow-500 mt-1 text-base font-bold">
                 👀 {card.seen}
               </p>
+            </div>
+            <div className="flex gap-3">
+              <button
+                onClick={() => listenWord()}
+                title="Normal Speed"
+                className="border p-2 rounded-full border-green-400"
+              >
+                <Volume2 size={32} />
+              </button>
+              <button
+                onClick={() => listenWord(0.009)}
+                title="Slow Speed"
+                className="border p-2 rounded-full border-green-400"
+              >
+                <Turtle size={32} />
+              </button>
             </div>
             <p className="text-2xl text-purple-500 mt-2 font-bold">
               {card.IPA}
@@ -207,19 +234,6 @@ export const Card: React.FC<CardProps> = ({ card, flipped, onFlip }) => {
       </div>
     </div>
   );
-};
-
-const getLevelColor = (level: string | undefined) => {
-  switch (level?.toLowerCase()) {
-    case "easy":
-      return "#047857"; // Tailwind green-700
-    case "medium":
-      return "#1d4ed8"; // Tailwind blue-700
-    case "hard":
-      return "#b91c1c"; // Tailwind red-700
-    default:
-      return "#9ca3af"; // Tailwind gray-400
-  }
 };
 
 export default Card;
