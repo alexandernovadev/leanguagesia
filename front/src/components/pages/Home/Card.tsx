@@ -1,11 +1,11 @@
 import { Link } from "react-router-dom";
 import { Card as CardType } from "./types/types";
-import { Edit2, Eye, Trash2 } from "lucide-react"; // Added Trash2 icon for delete
+import { Edit2, Eye, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { Modal } from "../../shared/Modal";
 import { FormLecture } from "./FormLecture";
 import { getTitleFromMD } from "../../../utils/getTitleFromMD";
-import { useLectureStore } from "../../../store/useLectureStore"; // Import the store
+import { useLectureStore } from "../../../store/useLectureStore";
 
 interface CardProps {
   card: CardType;
@@ -13,12 +13,12 @@ interface CardProps {
 
 export const Card = ({ card }: CardProps) => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // State for delete modal
-  const { deleteLecture, actionLoading } = useLectureStore(); // Use delete method from store
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const { deleteLecture, actionLoading } = useLectureStore();
 
   const handleDelete = async () => {
     await deleteLecture(card._id!);
-    setIsDeleteModalOpen(false); // Close modal after deletion
+    setIsDeleteModalOpen(false);
   };
 
   return (
@@ -42,22 +42,22 @@ export const Card = ({ card }: CardProps) => {
           <span>{card.language === "en" ? "🇬🇧" : ""}</span>
           <button
             onClick={() => setIsEditModalOpen(true)}
-            className="bg-gray-700 p-2 rounded-full hover:bg-gray-600" 
+            className="bg-gray-700 p-2 rounded-full hover:bg-gray-600"
           >
-            <Edit2 className="w-4 h-4 text-green-500" /> 
+            <Edit2 className="w-4 h-4 text-green-500" />
           </button>
 
           <Link
-            className="bg-gray-700 p-2 rounded-full hover:bg-gray-600" 
+            className="bg-gray-700 p-2 rounded-full hover:bg-gray-600"
             to={`/lecture/${card._id}`}
             key={card._id}
           >
-            <Eye className="w-4 h-4 text-green-500" /> 
+            <Eye className="w-4 h-4 text-green-500" />
           </Link>
 
           <button
             onClick={() => setIsDeleteModalOpen(true)}
-            className="bg-red-800 p-2 rounded-full hover:bg-red-700" 
+            className="bg-red-800 p-2 rounded-full hover:bg-red-700"
             aria-label={`Delete lecture ${getTitleFromMD(card.content)}`}
           >
             <Trash2 className="w-4 h-4 text-white" />
@@ -65,14 +65,14 @@ export const Card = ({ card }: CardProps) => {
         </div>
         <div className="absolute bottom-2 right-2 flex flex-col space-y-1">
           <span
-            className="text-xs bg-gray-700 text-green-500 w-[29px] rounded-full px-2 py-1 relative left-[35px]" 
+            className="text-xs bg-gray-700 text-green-500 w-[29px] rounded-full px-2 py-1 relative left-[35px]"
             aria-label={`Level: ${card.level}`}
           >
             {card.level}
           </span>
 
           <span
-            className="text-xs bg-gray-900 text-green-500 px-2 py-1 rounded-full flex items-center" 
+            className="text-xs bg-gray-900 text-green-500 px-2 py-1 rounded-full flex items-center"
             aria-label={`Duration: ${card.time} minutes`}
           >
             <svg
@@ -98,7 +98,7 @@ export const Card = ({ card }: CardProps) => {
         <p
           id={`card-title-${card._id}`}
           title={getTitleFromMD(card.content)}
-          className="text-sm font-medium text-gray-200 line-clamp-2" 
+          className="text-sm font-medium text-gray-200 line-clamp-2"
         >
           {getTitleFromMD(card.content)}
         </p>
@@ -114,9 +114,7 @@ export const Card = ({ card }: CardProps) => {
         isOpen={isDeleteModalOpen}
         onClose={() => setIsDeleteModalOpen(false)}
       >
-        <div className="bg-gray-800 text-gray-200 p-6 rounded-lg">
-          {" "}
-          {/* Dark theme */}
+        <div className="bg-gray-800 text-gray-200 p-6 rounded-lg max-w-96">
           <h2 className="text-lg font-semibold mb-4">
             Are you sure you want to delete "{getTitleFromMD(card.content)}"?
           </h2>
@@ -124,16 +122,16 @@ export const Card = ({ card }: CardProps) => {
           <div className="flex justify-end gap-4">
             <button
               onClick={() => setIsDeleteModalOpen(false)}
-              className="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-500" // Dark theme cancel button
+              className="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-500"
             >
               Cancel
             </button>
             <button
               onClick={handleDelete}
-              disabled={actionLoading.delete} 
+              disabled={actionLoading.delete}
               className={`bg-red-600 text-white px-4 py-2 rounded hover:bg-red-600 ${
                 actionLoading.delete ? "opacity-50 cursor-not-allowed" : ""
-              }`} 
+              }`}
             >
               {actionLoading.delete ? "Deleting..." : "Delete"}
             </button>
