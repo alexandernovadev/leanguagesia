@@ -7,15 +7,15 @@ interface WordStore {
   activeWord: Word | null;
   loading: boolean;
   actionLoading: { [key: string]: boolean };
-  errors: { [key: string]: string | null } | string | null; 
+  errors: { [key: string]: string | null } | string | null;
   totalPages: number;
   currentPage: number;
-  searchQuery: string; 
+  searchQuery: string;
 
   getWords: (page?: number, limit?: number, wordUser?: string) => Promise<void>;
-  setPage: (page: number) => void; 
-  setSearchQuery: (query: string) => void; 
-  retry: () => void; 
+  setPage: (page: number) => void;
+  setSearchQuery: (query: string) => void;
+  retry: () => void;
   getWordById: (id: string) => Promise<void>;
   getWordByName: (word: string) => Promise<void>;
   createWord: (wordData: Omit<Word, "_id">) => Promise<void>;
@@ -25,6 +25,7 @@ interface WordStore {
   deleteWord: (id: string) => Promise<void>;
   getRecentHardOrMediumWords: () => Promise<void>;
   clearErrors: () => void;
+  setActiveWord: (word: Word | null) => void;
 }
 
 const handleResponse = async (response: Response) => {
@@ -40,10 +41,10 @@ export const useWordStore = create<WordStore>((set, get) => ({
   activeWord: null,
   loading: false,
   actionLoading: {},
-  errors: null, 
+  errors: null,
   totalPages: 1,
   currentPage: 1,
-  searchQuery: "", 
+  searchQuery: "",
 
   getWords: async (
     page = get().currentPage,
@@ -52,7 +53,7 @@ export const useWordStore = create<WordStore>((set, get) => ({
   ) => {
     set({
       loading: true,
-      errors: null, 
+      errors: null,
       currentPage: page,
       ...(page === 1 ? { words: [] } : {}), // Reset on first page
     });
@@ -64,7 +65,7 @@ export const useWordStore = create<WordStore>((set, get) => ({
       const { data } = await handleResponse(response);
 
       set({
-        words: data.data, 
+        words: data.data,
         totalPages: data.pages,
         loading: false,
       });
@@ -75,12 +76,24 @@ export const useWordStore = create<WordStore>((set, get) => ({
 
   setPage: (page: number) => {
     set({ currentPage: page });
-    get().getWords(page); 
+    get().getWords(page);
   },
 
   setSearchQuery: (query: string) => {
     set({ searchQuery: query, currentPage: 1 }); // Reset to page 1 on new search
     get().getWords(1, 7, query); // Trigger fetch with new query
+  },
+
+  setActiveWord: (word: Word | null) => {
+    const currentActive = get().activeWord;
+    // Si es la misma palabra, no hace nada
+    if (currentActive?._id === word?._id) return;
+
+    set({ activeWord: word });
+
+    if (word?._id) {
+      get().incrementWordSeen(word._id);
+    }
   },
 
   retry: () => {
@@ -189,18 +202,28 @@ export const useWordStore = create<WordStore>((set, get) => ({
       actionLoading: { ...get().actionLoading, incrementSeen: true },
       errors: null,
     });
+
     try {
       const response = await fetch(
         `${BACKURL}/api/words/${id}/increment-seen`,
         {
           method: "PUT",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+          },
         }
       );
-      const data = await handleResponse(response);
+
+      await handleResponse(response);
+
       set((state) => ({
-        words: state.words.map((word) => (word._id === id ? data.data : word)),
-        activeWord: data.data,
+        words: state.words.map((word) =>
+          word._id === id ? { ...word, seen: (word.seen || 0) + 1 } : word
+        ),
+        activeWord:
+          state.activeWord && state.activeWord._id === id
+            ? { ...state.activeWord, seen: (state.activeWord.seen || 0) + 1 }
+            : state.activeWord,
         actionLoading: { ...state.actionLoading, incrementSeen: false },
       }));
     } catch (error: any) {
