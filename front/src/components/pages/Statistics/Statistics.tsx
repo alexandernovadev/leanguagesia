@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { MainLayout } from "../../shared/Layouts/MainLayout";
 import { BarChart, BookOpen } from "lucide-react";
+
+import { MainLayout } from "../../shared/Layouts/MainLayout";
 import { StatisticsData } from "./types";
 import { BACKURL } from "../../../api/backConf";
 

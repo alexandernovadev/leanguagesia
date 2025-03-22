@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { CircleX, Loader, Volume2 } from "lucide-react";
-import { Word } from "./types/Word";
+
 import { BACKURL } from "../../../api/backConf";
+import { Word } from "../../../models/Word";
 
 interface SidePanelProps {
   isVisible: boolean;

@@ -1,6 +1,6 @@
 import React from "react";
 import { useController, Control } from "react-hook-form";
-import { Search } from "lucide-react"; // Default icon
+import { Search } from "lucide-react"; 
 
 interface InputProps {
   name: string;

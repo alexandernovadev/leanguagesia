@@ -1,6 +1,7 @@
 import { Control, useFieldArray } from "react-hook-form";
-import Input from "../../../ui/Input";
 import { PlusCircle, Scroll, Trash2 } from "lucide-react";
+
+import Input from "../../../ui/Input";
 
 interface ArrayInputProps {
   control: Control<any>;

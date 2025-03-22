@@ -1,7 +1,8 @@
-import { Link } from "react-router-dom";
-import { Card as CardType } from "./types/types";
-import { Edit2, Eye, Trash2 } from "lucide-react";
 import { useState } from "react";
+import { Link } from "react-router-dom";
+import { Edit2, Eye, Trash2 } from "lucide-react";
+
+import { Card as CardType } from "./types/types";
 import { Modal } from "../../shared/Modal";
 import { FormLecture } from "./FormLecture";
 import { getTitleFromMD } from "../../../utils/getTitleFromMD";

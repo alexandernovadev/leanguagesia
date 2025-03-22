@@ -1,11 +1,12 @@
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { SlidersHorizontal } from "lucide-react";
+
 import { CardList } from "./CardList";
 import { Modal } from "../../shared/Modal";
 import { FormFilters } from "./FormFilters";
 import { MainLayout } from "../../shared/Layouts/MainLayout";
 import Input from "../../ui/Input";
-import { useForm } from "react-hook-form";
 
 interface FormData {
   searchQuery: string;

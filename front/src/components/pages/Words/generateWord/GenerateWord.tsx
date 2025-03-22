@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { BACKURL } from "../../../../api/backConf";
 import { Loader, Volume2 } from "lucide-react";
+
+import { BACKURL } from "../../../../api/backConf";
 import { Word } from "../../../../models/Word";
 
 export const GenerateWord = () => {

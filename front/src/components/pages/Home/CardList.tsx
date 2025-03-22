@@ -1,7 +1,8 @@
 import { useEffect } from "react";
+import { Loader2 } from "lucide-react";
+
 import { Card } from "./Card";
 import { useLectureStore } from "../../../store/useLectureStore";
-import { Loader2 } from "lucide-react";
 
 export const CardList = () => {
   const {

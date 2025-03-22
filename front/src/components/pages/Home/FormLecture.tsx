@@ -1,9 +1,10 @@
 import { useForm, SubmitHandler } from "react-hook-form";
+import { Loader2 } from "lucide-react";
+
 import Input from "../../ui/Input";
 import { TextAreaCustom } from "../../ui/TextArea";
 import { Card as CardType } from "./types/types";
 import { useLectureStore } from "../../../store/useLectureStore";
-import { Loader2 } from "lucide-react";
 
 interface FormLectureProps {
   lecture: CardType;

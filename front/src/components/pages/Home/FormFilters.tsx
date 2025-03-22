@@ -1,4 +1,5 @@
 import { useForm, Controller } from "react-hook-form";
+
 import { Filters } from "./types/types";
 import Checkbox from "../../ui/Checkbox";
 

@@ -1,16 +1,13 @@
+import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import {
   ChevronLeft,
-  // SkipBack,
-  // Play,
-  // Pause,
-  // SkipForward,
   Timer,
   BookOpen,
 } from "lucide-react";
-import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
+
 import { useCustomMarkdownRenderer } from "./procesatorMarkdown";
 import { BACKURL } from "../../../api/backConf";
 import { SidePanelModalWord } from "./SidePanelModalWord";
