@@ -16,7 +16,7 @@ interface LectureStore {
   postLecture: (lectureData: Lecture) => Promise<void>;
   putLecture: (id: string, lectureData: Lecture) => Promise<void>;
   putLectureImage: (id: string, image: string) => Promise<void>;
-  deleteLecture: (id: string) => Promise<void>;
+  deleteLecture: (id: string | number) => Promise<void>;
   clearErrors: () => void;
 }
 
@@ -151,7 +151,7 @@ export const useLectureStore = create<LectureStore>((set, get) => ({
     }
   },
 
-  deleteLecture: async (id: string) => {
+  deleteLecture: async (id: string | number) => {
     set({
       actionLoading: { ...get().actionLoading, delete: true },
       errors: { ...get().errors, delete: null },
