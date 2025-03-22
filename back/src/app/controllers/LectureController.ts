@@ -26,7 +26,7 @@ export const getLectureById = async (
   try {
     const lecture = await lectureService.getLectureById(req.params.id);
     if (!lecture) {
-      return res.status(404).json({ error: "Lecture not found" });
+      return errorResponse(res, "Lecture not found" ,404);
     }
 
     return successResponse(res, "Lecture Listed by ID successfully", lecture);
@@ -43,7 +43,7 @@ export const updateLecture = async (
   try {
     const lecture = await lectureService.updateLecture(req.params.id, req.body);
     if (!lecture) {
-      return res.status(404).json({ error: "Lecture not found" });
+      return errorResponse(res, "Lecture not found" ,404);
     }
 
     return successResponse(res, "Lecture Updated successfully", lecture);
@@ -60,7 +60,7 @@ export const deleteLecture = async (
   try {
     const lecture = await lectureService.deleteLecture(req.params.id);
     if (!lecture) {
-      return res.status(404).json({ error: "Lecture not found" });
+      return errorResponse(res, "Lecture not found" ,404);
     }
 
     return successResponse(res, "Lecture deleted successfully", {});

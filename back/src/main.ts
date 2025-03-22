@@ -10,7 +10,9 @@ import LectureRoutes from "./app/routes/lectureRoutes";
 import WordsRoutes from "./app/routes/wordsRoutes";
 import Arreglosquick from "./app/routes/arreglosquick";
 import StatisticsRoutes from "./app/routes/statisticsRoutes";
+
 import { setupSwagger } from "../swagger/swaggerConfig";
+import { errorResponse, successResponse } from "./app/utlis/responseHelpers";
 
 dotenv.config();
 
@@ -46,9 +48,7 @@ app.use("/api/statistics", StatisticsRoutes);
 app.use("/api/fixes", Arreglosquick);
 
 app.use("/", (req, res) => {
-  // send json saying that the server is running
-  res.json({
-    message: "Server is running",
+  successResponse(res, "Server is running", {
     date: new Date().toISOString(),
     version: VERSION,
   });
@@ -57,7 +57,7 @@ app.use("/", (req, res) => {
 // Error-handling middleware
 app.use((err: Error, req: Request, res: Response, next: NextFunction): void => {
   console.error(err.stack);
-  res.status(500).send("Something went wrong: " + err.message);
+  errorResponse(res, "Something went wrong: " + err.message, 500);
 });
 
 app.listen(PORT, () => {

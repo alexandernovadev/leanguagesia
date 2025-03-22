@@ -1,11 +1,13 @@
 import { Request, Response } from "express";
 import { WordService } from "../services/words/wordService";
+
+// Todo Remove this funtipn Mongo has mehtos to do it
 import { shuffleArray } from "../utlis/shuffle";
+import { errorResponse, successResponse } from "../utlis/responseHelpers";
 
 const wordService = new WordService();
 
-// Obtener una palabra por nombre (ignorando mayúsculas y minúsculas)
-export const findWordByName = async (
+export const getWordByName = async (
   req: Request,
   res: Response
 ): Promise<Response> => {
@@ -15,30 +17,22 @@ export const findWordByName = async (
 
     // Verificamos que `word` sea un `string` y no esté vacío.
     if (!word || Array.isArray(word)) {
-      return res.status(400).json({
-        success: false,
-        message: "A single word parameter is required",
-      });
+      return errorResponse(res, "A single word parameter is required");
     }
 
     const foundWord = await wordService.findWordByWord(word);
     if (!foundWord) {
-      return res.status(404).json({
-        success: false,
-        message: "Word not found",
-      });
+      return errorResponse(res, "Word not found", 404);
     }
 
-    return res.status(200).json({
-      success: true,
-      data: foundWord,
-    });
+    return successResponse(res, "Get Word successFully", foundWord);
   } catch (error) {
     console.error("Error finding word:", error);
-    return res.status(500).json({
-      success: false,
-      message: "An error occurred while finding the word",
-    });
+    return errorResponse(
+      res,
+      "An error occurred while getting the word \n" + error,
+      500
+    );
   }
 };
 
@@ -49,28 +43,21 @@ export const createWord = async (
   try {
     const wordData = req.body;
     const newWord = await wordService.createWord(wordData);
-    return res.status(201).json({
-      success: true,
-      message: "Word created successfully",
-      data: newWord,
-    });
+
+    return successResponse(res, "Word created successfully", newWord, 201);
   } catch (error) {
     console.error("Error creating word:", error);
     if (error.name === "ValidationError") {
-      return res.status(400).json({
-        success: false,
-        message: "Validation error",
-        errors: error.errors,
-      });
+      return errorResponse(res, "Validation error" + error);
     }
-    return res.status(500).json({
-      success: false,
-      message: "An error occurred while creating the word",
-    });
+    return errorResponse(
+      res,
+      "An error occurred while creating the word \n" + error,
+      500
+    );
   }
 };
 
-// Obtener una palabra por ID
 export const getWordById = async (
   req: Request,
   res: Response
@@ -79,25 +66,21 @@ export const getWordById = async (
     const { id } = req.params;
     const word = await wordService.getWordById(id);
     if (!word) {
-      return res.status(404).json({
-        success: false,
-        message: "Word not found",
-      });
+      return errorResponse(res, "Word not found", 404);
     }
-    return res.status(200).json({
-      success: true,
-      data: word,
-    });
+
+    return successResponse(res, "Word listed by Id successfully", word);
   } catch (error) {
     console.error("Error retrieving word:", error);
-    return res.status(500).json({
-      success: false,
-      message: "An error occurred while retrieving the word",
-    });
+
+    return errorResponse(
+      res,
+      "An error occurred while retrieving the word \n" + error,
+      500
+    );
   }
 };
 
-// Obtener todas las palabras con paginación
 export const getWords = async (
   req: Request,
   res: Response
@@ -106,26 +89,19 @@ export const getWords = async (
     const page = parseInt(req.query.page as string) || 1;
     const limit = parseInt(req.query.limit as string) || 10;
     const wordUser = req.query.wordUser as string;
-    const result = await wordService.getWords(page, limit, wordUser);
-    return res.status(200).json({
-      success: true,
-      data: result.data,
-      pagination: {
-        total: result.total,
-        page: result.page,
-        pages: result.pages,
-      },
-    });
+    const wordList = await wordService.getWords(page, limit, wordUser);
+
+    return successResponse(res, "Words sucessfully listed", wordList);
   } catch (error) {
     console.error("Error retrieving words:", error);
-    return res.status(500).json({
-      success: false,
-      message: "An error occurred while retrieving words",
-    });
+    return errorResponse(
+      res,
+      "An error occurred while retrieving the word \n" + error,
+      500
+    );
   }
 };
 
-// Actualizar una palabra por ID
 export const updateWord = async (
   req: Request,
   res: Response
@@ -135,26 +111,19 @@ export const updateWord = async (
     const updateData = req.body;
     const updatedWord = await wordService.updateWord(id, updateData);
     if (!updatedWord) {
-      return res.status(404).json({
-        success: false,
-        message: "Word not found",
-      });
+      return errorResponse(res, "Word not found", 404);
     }
-    return res.status(200).json({
-      success: true,
-      message: "Word updated successfully",
-      data: updatedWord,
-    });
+    return successResponse(res, "Word updated successfully", updatedWord);
   } catch (error) {
     console.error("Error updating word:", error);
-    return res.status(500).json({
-      success: false,
-      message: "An error occurred while updating the word",
-    });
+    return errorResponse(
+      res,
+      "An error occurred while updating the word \n" + error,
+      500
+    );
   }
 };
 
-// Update level of a word by ID
 export const updateWordLevel = async (
   req: Request,
   res: Response
@@ -165,26 +134,20 @@ export const updateWordLevel = async (
 
     const updatedWord = await wordService.updateWordLevel(id, level);
     if (!updatedWord) {
-      return res.status(404).json({
-        success: false,
-        message: "Word not found",
-      });
+      return errorResponse(res, "Word not found", 404);
     }
-    return res.status(200).json({
-      success: true,
-      message: "Word level updated successfully",
-      data: updatedWord,
-    });
+
+    return successResponse(res, "Word level updated successfully", updatedWord);
   } catch (error) {
     console.error("Error updating word level:", error);
-    return res.status(500).json({
-      success: false,
-      message: "An error occurred while updating the word level",
-    });
+    return errorResponse(
+      res,
+      "An error occurred while updating level the word \n" + error,
+      500
+    );
   }
 };
 
-// Eliminar una palabra por ID
 export const deleteWord = async (
   req: Request,
   res: Response
@@ -193,25 +156,20 @@ export const deleteWord = async (
     const { id } = req.params;
     const deletedWord = await wordService.deleteWord(id);
     if (!deletedWord) {
-      return res.status(404).json({
-        success: false,
-        message: "Word not found",
-      });
+      return errorResponse(res, "Word no found by ID: " + id, 403);
     }
-    return res.status(200).json({
-      success: true,
-      message: "Word deleted successfully",
-    });
+
+    return successResponse(res, "Word deleted successfully", {});
   } catch (error) {
     console.error("Error deleting word:", error);
-    return res.status(500).json({
-      success: false,
-      message: "An error occurred while deleting the word",
-    });
+    return errorResponse(
+      res,
+      "An error occurred while deleting the word \n" + error,
+      500
+    );
   }
 };
 
-// Obtener las últimas 20 palabras con nivel "hard" o "medium" ordenadas por fecha de creación
 export const getRecentHardOrMediumWords = async (
   req: Request,
   res: Response
@@ -221,174 +179,23 @@ export const getRecentHardOrMediumWords = async (
 
     const shuffledWords = shuffleArray(words);
 
-    return res.status(200).json({
-      success: true,
-      data: shuffledWords,
-    });
+    return successResponse(
+      res,
+      "List Recent Hard Or Medium Words successfully",
+      shuffledWords
+    );
   } catch (error) {
     console.error("Error retrieving recent hard or medium words:", error);
-    return res.status(500).json({
-      success: false,
-      message: "An error occurred while retrieving recent hard or medium words",
-    });
-  }
-};
-
-// Actualizar solo ejemplos de una palabra por ID
-export const updateWordExamples = async (
-  req: Request,
-  res: Response
-): Promise<Response> => {
-  try {
-    const { id } = req.params;
-    const { examples } = req.body;
-    const updatedWord = await wordService.updateWordExamples(id, examples);
-
-    if (!updatedWord) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Word not found" });
-    }
-
-    return res.status(200).json({
-      success: true,
-      message: "Word examples updated successfully",
-      data: updatedWord,
-    });
-  } catch (error) {
-    console.error("Error updating word examples:", error);
-    return res.status(500).json({
-      success: false,
-      message: "An error occurred while updating the word examples",
-    });
-  }
-};
-
-// Actualizar solo codeSwitching de una palabra por ID
-export const updateWordCodeSwitching = async (
-  req: Request,
-  res: Response
-): Promise<Response> => {
-  try {
-    const { id } = req.params;
-    const { codeSwitching } = req.body;
-    const updatedWord = await wordService.updateWordCodeSwitching(
-      id,
-      codeSwitching
+    return errorResponse(
+      res,
+      "An error occurred while retrieving recent hard or medium words \n" +
+        error,
+      500
     );
-
-    if (!updatedWord) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Word not found" });
-    }
-
-    return res.status(200).json({
-      success: true,
-      message: "Word codeSwitching updated successfully",
-      data: updatedWord,
-    });
-  } catch (error) {
-    console.error("Error updating word codeSwitching:", error);
-    return res.status(500).json({
-      success: false,
-      message: "An error occurred while updating the word codeSwitching",
-    });
   }
 };
 
-// Actualizar solo sinónimos de una palabra por ID
-export const updateWordSynonyms = async (
-  req: Request,
-  res: Response
-): Promise<Response> => {
-  try {
-    const { id } = req.params;
-    const { synonyms } = req.body;
-    const updatedWord = await wordService.updateWordSynonyms(id, synonyms);
-
-    if (!updatedWord) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Word not found" });
-    }
-
-    return res.status(200).json({
-      success: true,
-      message: "Word synonyms updated successfully",
-      data: updatedWord,
-    });
-  } catch (error) {
-    console.error("Error updating word synonyms:", error);
-    return res.status(500).json({
-      success: false,
-      message: "An error occurred while updating the word synonyms",
-    });
-  }
-};
-
-// Actualizar solo tipo de una palabra por ID
-export const updateWordType = async (
-  req: Request,
-  res: Response
-): Promise<Response> => {
-  try {
-    const { id } = req.params;
-    const { type } = req.body;
-    const updatedWord = await wordService.updateWordType(id, type);
-
-    if (!updatedWord) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Word not found" });
-    }
-
-    return res.status(200).json({
-      success: true,
-      message: "Word type updated successfully",
-      data: updatedWord,
-    });
-  } catch (error) {
-    console.error("Error updating word type:", error);
-    return res.status(500).json({
-      success: false,
-      message: "An error occurred while updating the word type",
-    });
-  }
-};
-
-// Actualizar solo imagen de una palabra por ID
-export const updateWordImg = async (
-  req: Request,
-  res: Response
-): Promise<Response> => {
-  try {
-    const { id } = req.params;
-    const { img } = req.body;
-    const updatedWord = await wordService.updateWordImg(id, img);
-
-    if (!updatedWord) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Word not found" });
-    }
-
-    return res.status(200).json({
-      success: true,
-      message: "Word image updated successfully",
-      data: updatedWord,
-    });
-  } catch (error) {
-    console.error("Error updating word image:", error);
-    return res.status(500).json({
-      success: false,
-      message: "An error occurred while updating the word image",
-    });
-  }
-};
-
-// Incrementar el contador de "seen" de una palabra por ID
-export const incrementWordSeen = async (
+export const updateIncrementWordSeens = async (
   req: Request,
   res: Response
 ): Promise<Response> => {
@@ -397,22 +204,21 @@ export const incrementWordSeen = async (
     const updatedWord = await wordService.incrementWordSeen(id);
 
     if (!updatedWord) {
-      return res.status(404).json({
-        success: false,
-        message: "Word not found",
-      });
+      return errorResponse(res, "Word Not Found ", 404);
     }
 
-    return res.status(200).json({
-      success: true,
-      message: "Word seen count incremented successfully",
-      data: updatedWord,
-    });
+    return successResponse(
+      res,
+      "Word seen count incremented successfully",
+      updatedWord
+    );
   } catch (error) {
     console.error("Error incrementing word seen count:", error);
-    return res.status(500).json({
-      success: false,
-      message: "An error occurred while incrementing the word seen count",
-    });
+
+    return errorResponse(
+      res,
+      "An error occurred while incrementing the word seen count \n" + error,
+      500
+    );
   }
 };
