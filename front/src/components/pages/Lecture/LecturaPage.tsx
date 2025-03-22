@@ -13,8 +13,8 @@ import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import { useCustomMarkdownRenderer } from "./procesatorMarkdown";
 import { BACKURL } from "../../../api/backConf";
-import { Lecture } from "./types/Lecture";
 import { SidePanelModalWord } from "./SidePanelModalWord";
+import { Lecture } from "../../../models/Lecture";
 
 // LecturaPage.tsx (actualizado)
 

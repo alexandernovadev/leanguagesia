@@ -3,7 +3,7 @@ import { MainLayout } from "../../shared/Layouts/MainLayout";
 import { Card } from "./Card";
 import { CardNavigation } from "./CardNavigation";
 import { cardsData as exampleCardsData } from "./data/wordsexample";
-import { Word } from "../Lecture/types/Word";
+import { Word } from "../../../models/Word";
 
 export const AnkiGamePage = () => {
   const [cards, setCards] = useState<Word[]>([]);

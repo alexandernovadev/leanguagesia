@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { BACKURL } from "../../../../api/backConf";
-import { Word } from "../../Lecture/types/Word";
 import { Loader, Volume2 } from "lucide-react";
+import { Word } from "../../../../models/Word";
 
 export const GenerateWord = () => {
   const [loadingGetWord, setLoadingGetWord] = useState(false);

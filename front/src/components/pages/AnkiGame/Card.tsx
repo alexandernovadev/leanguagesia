@@ -1,6 +1,6 @@
 import React from "react";
 import { FlipHorizontal } from "lucide-react";
-import { Word } from "../Lecture/types/Word";
+import { Word } from "../../../models/Word";
 
 interface CardProps {
   card: Word;

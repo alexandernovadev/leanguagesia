@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { BACKURL } from "../../api/backConf";
-import { Word } from "../../components/pages/Lecture/types/Word";
+import { Word } from "../../models/Word";
 
 interface UseGetWordsResult {
   words: Word[];

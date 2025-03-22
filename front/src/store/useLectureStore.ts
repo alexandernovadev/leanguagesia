@@ -1,6 +1,6 @@
 import { create } from "zustand";
-import { Lecture } from "../components/pages/Lecture/types/Lecture";
 import { BACKURL } from "../api/backConf";
+import { Lecture } from "../models/Lecture";
 
 interface LectureStore {
   lectures: Lecture[];

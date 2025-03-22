@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { Word } from "../../Lecture/types/Word";
 import { Modal } from "../../../shared/Modal";
 import Input from "../../../ui/Input";
 import Select from "../../../ui/Select";
@@ -8,6 +7,7 @@ import Select from "../../../ui/Select";
 import { Book, Eye, IdCard, Type } from "lucide-react";
 import { TextAreaCustom } from "../../../ui/TextArea";
 import { ArrayInput } from "./ArrayInput";
+import { Word } from "../../../../models/Word";
 
 // Opciones para los selects de nivel y tipo
 const levelOptions = [

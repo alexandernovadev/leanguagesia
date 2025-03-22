@@ -3,7 +3,6 @@ import { useGetWords } from "../../../hooks/serviceshooks/useGetWords";
 import { Loading } from "./Loading";
 import { ErrorMessage } from "./ErrorMessage";
 import { WordTable } from "./WordTable";
-import { Word } from "../Lecture/types/Word";
 import { toast } from "react-toastify";
 import { BACKURL } from "../../../api/backConf";
 import { useState, useEffect, useCallback } from "react";
@@ -12,6 +11,7 @@ import { GenerateWord } from "./generateWord/GenerateWord";
 import { CirclePlus } from "lucide-react";
 import Input from "../../ui/Input";
 import { useForm } from "react-hook-form";
+import { Word } from "../../../models/Word";
 
 // Debounce function type
 type DebounceFunction<T extends (...args: any[]) => void> = (

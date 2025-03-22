@@ -18,7 +18,7 @@ import Checkbox from "../../ui/Checkbox";
 import { calculateReadingTime } from "../../../utils/calculateReadingTime";
 import { escapeMarkdown } from "../../../utils/escapeMarkdown";
 import { useLectureStore } from "../../../store/useLectureStore";
-import { Lecture } from "../Lecture/types/Lecture";
+import { Lecture } from "../../../models/Lecture";
 
 export const GeneratorPage = () => {
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
