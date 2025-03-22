@@ -1,23 +1,19 @@
+import { useState, useEffect, useCallback } from "react";
+import { toast } from "react-toastify";
+import { CirclePlus } from "lucide-react";
+import { useForm } from "react-hook-form";
+
 import { MainLayout } from "../../shared/Layouts/MainLayout";
 import { useGetWords } from "../../../hooks/serviceshooks/useGetWords";
 import { Loading } from "./Loading";
 import { ErrorMessage } from "./ErrorMessage";
 import { WordTable } from "./WordTable";
-import { toast } from "react-toastify";
 import { BACKURL } from "../../../api/backConf";
-import { useState, useEffect, useCallback } from "react";
 import { Modal } from "../../shared/Modal";
 import { GenerateWord } from "./generateWord/GenerateWord";
-import { CirclePlus } from "lucide-react";
 import Input from "../../ui/Input";
-import { useForm } from "react-hook-form";
 import { Word } from "../../../models/Word";
-
-// Debounce function type
-type DebounceFunction<T extends (...args: any[]) => void> = (
-  func: T,
-  delay: number
-) => (...args: Parameters<T>) => void;
+import { debounce } from "../../../utils/debounce";
 
 export const WordPage = () => {
   const {
@@ -39,15 +35,6 @@ export const WordPage = () => {
   });
 
   const searchQuery = watch("searchQuery");
-
-  // Debounce function to delay search execution
-  const debounce: DebounceFunction<(query: string) => void> = (func, delay) => {
-    let timer: ReturnType<typeof setTimeout>;
-    return (...args) => {
-      clearTimeout(timer);
-      timer = setTimeout(() => func(...args), delay);
-    };
-  };
 
   const handleSearchDebounced = useCallback(
     debounce((query: string) => setSearchQuery(query), 500),
@@ -120,11 +107,7 @@ export const WordPage = () => {
             <CirclePlus />
           </button>
 
-          <Input
-            name="searchQuery"
-            control={control}
-            placeholder="Search..."
-          />
+          <Input name="searchQuery" control={control} placeholder="Search..." />
 
           <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
             <GenerateWord />
