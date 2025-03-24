@@ -906,34 +906,10 @@
     "Spanish": "soportar"
   },
   {
-    "Verb": "behold",
-    "Past": "beheld",
-    "Past Participle (PP)": "beheld",
-    "Spanish": "contemplar"
-  },
-  {
-    "Verb": "beseech",
-    "Past": "besought",
-    "Past Participle (PP)": "besought",
-    "Spanish": "suplicar"
-  },
-  {
     "Verb": "bid",
     "Past": "bade/bid",
     "Past Participle (PP)": "bidden/bid",
     "Spanish": "ofrecer"
-  },
-  {
-    "Verb": "chide",
-    "Past": "chid",
-    "Past Participle (PP)": "chidden",
-    "Spanish": "reprender"
-  },
-  {
-    "Verb": "cleave",
-    "Past": "clove/cleft",
-    "Past Participle (PP)": "cloven/cleft",
-    "Spanish": "hender"
   },
   {
     "Verb": "dwell",
@@ -942,28 +918,10 @@
     "Spanish": "habitar"
   },
   {
-    "Verb": "forsake",
-    "Past": "forsook",
-    "Past Participle (PP)": "forsaken",
-    "Spanish": "abandonar"
-  },
-  {
-    "Verb": "gird",
-    "Past": "girded/girt",
-    "Past Participle (PP)": "girded/girt",
-    "Spanish": "ceñir"
-  },
-  {
     "Verb": "heave",
     "Past": "hove/heaved",
     "Past Participle (PP)": "hove/heaved",
     "Spanish": "levantar"
-  },
-  {
-    "Verb": "hew",
-    "Past": "hewed",
-    "Past Participle (PP)": "hewn/hewed",
-    "Spanish": "tallar"
   },
   {
     "Verb": "kneel",
@@ -984,18 +942,6 @@
     "Spanish": "derretir"
   },
   {
-    "Verb": "rend",
-    "Past": "rent",
-    "Past Participle (PP)": "rent",
-    "Spanish": "rasgar"
-  },
-  {
-    "Verb": "rive",
-    "Past": "rived",
-    "Past Participle (PP)": "riven/rived",
-    "Spanish": "partir"
-  },
-  {
     "Verb": "saw",
     "Past": "sawed",
     "Past Participle (PP)": "sawn/sawed",
@@ -1014,12 +960,6 @@
     "Spanish": "calzar"
   },
   {
-    "Verb": "shrive",
-    "Past": "shrove",
-    "Past Participle (PP)": "shriven",
-    "Spanish": "confesar"
-  },
-  {
     "Verb": "slay",
     "Past": "slew",
     "Past Participle (PP)": "slain",
@@ -1030,12 +970,6 @@
     "Past": "slid",
     "Past Participle (PP)": "slid",
     "Spanish": "deslizar"
-  },
-  {
-    "Verb": "smite",
-    "Past": "smote",
-    "Past Participle (PP)": "smitten",
-    "Spanish": "golpear"
   },
   {
     "Verb": "sow",
@@ -1060,12 +994,6 @@
     "Past": "stove/staved",
     "Past Participle (PP)": "stove/staved",
     "Spanish": "aplastar"
-  },
-  {
-    "Verb": "strew",
-    "Past": "strewed",
-    "Past Participle (PP)": "strewn/strewed",
-    "Spanish": "esparcir"
   },
   {
     "Verb": "stride",
@@ -1098,12 +1026,6 @@
     "Spanish": "pisar"
   },
   {
-    "Verb": "wax",
-    "Past": "waxed",
-    "Past Participle (PP)": "waxed/waxen",
-    "Spanish": "crecer (arcaico)"
-  },
-  {
     "Verb": "wed",
     "Past": "wed/wedded",
     "Past Participle (PP)": "wed/wedded",
@@ -1114,12 +1036,6 @@
     "Past": "wept",
     "Past Participle (PP)": "wept",
     "Spanish": "llorar"
-  },
-  {
-    "Verb": "wend",
-    "Past": "wended",
-    "Past Participle (PP)": "wended",
-    "Spanish": "dirigirse"
   },
   {
     "Verb": "work",

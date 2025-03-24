@@ -10,7 +10,7 @@ type Verb = {
   Spanish: string;
 };
 
-const ITEMS_PER_PAGE = 10;
+const ITEMS_PER_PAGE = 9;
 const fields: (keyof Verb)[] = ["Verb", "Past", "Past Participle (PP)"];
 
 // Función para mezclar un array (Fisher-Yates shuffle)
@@ -81,7 +81,7 @@ export const ProfilePage: React.FC = () => {
     <MainLayout>
       <div className="min-h-screen bg-gray-900 text-white p-4 flex flex-col items-center">
         <h1 className="text-2xl mb-6">
-          Verb Game - Página {page + 1} de {totalPages}
+          Verb Game  | {page + 1} / {totalPages}|
         </h1>
         <div className="w-full max-w-4xl overflow-y-auto max-h-[70vh]">
           {currentVerbs.map((verb, i) => (
