@@ -1,8 +1,9 @@
-import React, { useState } from "react";
-import { Loader, Volume2 } from "lucide-react";
+import React, { useCallback, useState } from "react";
+import { Loader, Turtle, Volume2 } from "lucide-react";
 
 import { BACKURL } from "../../../../api/backConf";
 import { Word } from "../../../../models/Word";
+import { getLevelColor } from "../../../../utils/getLevelColor";
 
 export const GenerateWord = () => {
   const [loadingGetWord, setLoadingGetWord] = useState(false);
@@ -33,24 +34,29 @@ export const GenerateWord = () => {
       const { data } = await response.json();
       setWordDb(data);
     } catch (error) {
-      console.error("Failed to generate word:", error);
+      console.error("Failed to generate word:", error)
       setWordDb(undefined); // Reset the state if there's an error
     } finally {
       setLoadingGetWord(false);
     }
   };
 
-  const listenWord = () => {
-    if (wordToSearch) {
-      const audio = new Audio(wordToSearch);
-      audio.play();
-    }
-  };
+  const listenWord = useCallback(
+    (rate = 1) => {
+      if (wordDb?.word && "speechSynthesis" in window) {
+        const utterance = new SpeechSynthesisUtterance(wordDb.word);
+        utterance.lang = "en-US";
+        utterance.rate = rate;
+        window.speechSynthesis.speak(utterance);
+      }
+    },
+    [wordDb?.word]
+  );
 
   return (
     <form
       onSubmit={generateWord}
-      className="h-[620px] bg-black-700 min-w-96 p-5 overflow-y-scroll"
+      className="h-[620px] bg-black-800 min-w-[520px] rounded-xl max-w-[720px] p-5 overflow-y-scroll"
     >
       <input
         type="text"
@@ -59,106 +65,109 @@ export const GenerateWord = () => {
         className="p-2 border border-green-600 rounded-md w-full"
       />
       <div>
-        <div className="p-6 pt-10 space-y-6 overflow-auto h-full">
-          <section className="flex gap-3 justify-start items-center">
+        <div className="pt-2 space-y-6 overflow-auto h-full">
+          <section className="flex gap-2 justify-start items-center">
             <h1 className="text-4xl font-bold text-green-400 capitalize">
               {wordToSearch || "Search for a word"}
             </h1>
-            {wordDb && (
-              <span onClick={listenWord} className="cursor-pointer pt-2">
-                <Volume2 className="w-8 h-8" />
-              </span>
-            )}
           </section>
 
-          {wordDb?.IPA && (
-            <div className="flex gap-3">
-              <span className="text-green-300 font-semibold text-2xl">
-                {wordDb.IPA}
-              </span>
-            </div>
-          )}
-
           {wordDb ? (
-            <div className="space-y-6">
-              <section className="flex gap-3 justify-start items-center">
-                <p className="text-sm font-medium text-green-300">
-                  {wordDb.level ? `Level: ${wordDb.level}` : ""}
+            <div className="flex flex-col justify-between  rounded-lg">
+              <div className="px-2 overflow-scroll">
+                <div className="flex justify-between items-center">
+                  <span
+                    className="text-lg font-bold px-2 py-1 rounded-full border"
+                    style={{
+                      color: getLevelColor(wordDb.level),
+                      borderColor: getLevelColor(wordDb.level),
+                    }}
+                  >
+                    {wordDb.level || "Unknown"}
+                  </span>
+                  <p className="text-yellow-500 mt-1 text-base font-bold">
+                    👀 {wordDb.seen}
+                  </p>
+                </div>
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => listenWord()}
+                    title="Normal Speed"
+                    className="border p-2 rounded-full border-green-400"
+                  >
+                    <Volume2 size={32} color="green"/>
+                  </button>
+                  <button
+                    onClick={() => listenWord(0.009)}
+                    title="Slow Speed"
+                    className="border p-2 rounded-full border-green-400"
+                  >
+                    <Turtle size={32} color="green" />
+                  </button>
+                </div>
+                <p className="text-2xl text-purple-500 mt-2 font-bold">
+                  {wordDb.IPA}
                 </p>
-                {wordDb.type && (
-                  <p className="text-green-200 font-medium text-sm">
-                    Type: {wordDb.type.join(", ")}
-                  </p>
+                <p className="text-gray-400 mt-2 text-lg">
+                  {wordDb.definition}
+                </p>
+
+                {wordDb.spanish && (
+                  <div className="mt-2">
+                    <p className="text-blue-500 text-3xl font-bold capitalize">
+                      {wordDb.spanish.word}
+                    </p>
+                    <p className="text-gray-300 text-base">
+                      {wordDb.spanish.definition}
+                    </p>
+                  </div>
                 )}
-              </section>
-              <p className="text-xl font-semibold">{wordDb.definition}</p>
 
-              {wordDb.img && (
-                <img
-                  src={wordDb.img}
-                  alt={wordDb.word}
-                  className="w-full h-48 object-cover rounded-md border border-green-700"
-                />
-              )}
+                {wordDb.examples && wordDb.examples.length > 0 && (
+                  <div className="mt-2">
+                    <h3 className="text-gray-400 font-bold text-base">
+                      Examples
+                    </h3>
+                    <ul className="text-gray-300 space-y-1 mt-1 text-base">
+                      {wordDb.examples.map((example, index) => (
+                        <li key={index} className="list-disc list-inside">
+                          {example}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
 
-              {wordDb.examples && (
-                <div>
-                  <h2 className="text-lg font-semibold text-green-400 mb-2">
-                    Examples:
-                  </h2>
-                  <ul className="list-disc list-inside space-y-1">
-                    {wordDb.examples.map((example, index) => (
-                      <li key={index} className="text-black-200">
-                        {example}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
+                {wordDb.sinonyms && wordDb.sinonyms.length > 0 && (
+                  <div className="mt-2">
+                    <h3 className="text-gray-400 font-bold text-base">
+                      Synonyms
+                    </h3>
+                    <ul className="text-white space-y-1 mt-1 text-base capitalize">
+                      {wordDb.sinonyms.map((synonym, index) => (
+                        <li key={index} className="list-disc list-inside">
+                          🔹 {synonym}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
 
-              {wordDb.codeSwitching && (
-                <div>
-                  <h2 className="text-lg font-semibold text-green-400 mb-2">
-                    Code-Switching Examples:
-                  </h2>
-                  <ul className="list-disc list-inside space-y-1">
-                    {wordDb.codeSwitching.map((example, index) => (
-                      <li key={index} className="text-black-200">
-                        {example}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-
-              {wordDb.sinonyms && (
-                <div>
-                  <h2 className="text-lg font-semibold text-green-400 mb-2">
-                    Synonyms:
-                  </h2>
-                  <ul className="list-disc list-inside space-y-1">
-                    {wordDb.sinonyms.map((synonym, index) => (
-                      <li key={index} className="text-black-200 capitalize">
-                        {synonym}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-
-              {wordDb.spanish && (
-                <div>
-                  <h2 className="text-lg font-semibold text-green-400 mb-2">
-                    Spanish:
-                  </h2>
-                  <p className="text-black-200 capitalize">
-                    <strong>Word:</strong> {wordDb.spanish.word}
-                  </p>
-                  <p className="text-black-200">
-                    <strong>Definition:</strong> {wordDb.spanish.definition}
-                  </p>
-                </div>
-              )}
+                {wordDb.type && wordDb.type.length > 0 && (
+                  <div className="mt-2">
+                    <h3 className="text-gray-400 font-bold text-base">
+                      Word Types
+                    </h3>
+                    <ul className="text-white space-y-1 mt-1 text-base capitalize">
+                      {wordDb.type.map((type, index) => (
+                        <li key={index} className="list-disc list-inside">
+                          🪹 {type}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
             </div>
           ) : (
             <div className="flex flex-col items-center justify-center h-full space-y-4">

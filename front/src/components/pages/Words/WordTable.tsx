@@ -3,6 +3,7 @@ import { Pencil, Trash2, Volume2 } from "lucide-react";
 
 import EditWordModal from "./Form/FormWordModal";
 import { Word } from "../../../models/Word";
+import { getLevelColor } from "../../../utils/getLevelColor";
 
 export const WordTable = ({
   words,
@@ -54,29 +55,41 @@ export const WordTable = ({
               <td className="px-1">
                 <div className="flex items-center justify-start gap-2">
                   <div>
-                    <p className="text-base font-bold text-green-700">
+                    <p className="text-3xl font-bold text-green-900">
                       {word.word}
                     </p>
-                    <span className="text-green-900">{word.IPA}</span>
+                    <span className="text-blue-500 text-xl font-bold">
+                      {word.IPA}
+                    </span>
                   </div>
 
                   <button
-                    className="flex justify-center items-center"
+                    className="flex justify-center items-center p-2 border border-green-400 rounded-full"
                     onClick={() => listenWord(word.word)}
                   >
-                    <Volume2 className="w-4 h-4" />
+                    <Volume2 className="" size={24} />
                   </button>
                 </div>
               </td>
 
               {/* Traducción y detalles */}
               <td className="px-1 text-center">
-                <p className="capitalize">{word?.spanish.word}</p>
-                <p className="text-xs text-gray-400">Seen: {word.seen}</p>
+                <p className="capitalize text-xl ">{word?.spanish.word}</p>
+                <p className=" text-gray-400 text-xl ">Seen: {word.seen}</p>
               </td>
 
               {/* Nivel de dificultad */}
-              <td className="px-1 py-1 text-center">{word.level}</td>
+              <td className="px-1 py-1 text-center">
+                <span
+                  className="text-lg font-bold px-2 py-1 rounded-full border"
+                  style={{
+                    color: getLevelColor(word.level),
+                    borderColor: getLevelColor(word.level),
+                  }}
+                >
+                  {word.level || "Unknown"}
+                </span>
+              </td>
 
               {/* Íconos de acción */}
               <td className="px-1 py-1">
