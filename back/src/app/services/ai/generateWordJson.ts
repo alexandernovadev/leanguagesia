@@ -17,16 +17,16 @@ export const generateWordJson = async (prompt: string, language = "en") => {
         {
           "word": "[word]",
           "language": "${language}",
-          "definition": "[A clear and concise definition appropriate to B2 English level]",
+          "definition": "[A clear and concise definition appropriate to B2 English level, keep im mind if its homograph or homophone]",
           "examples": [
-              "[5 example sentences in English using the word in realistic contexts that are understandable at B2 level]"
+              "[5 example sentences in English using the word in realistic contexts that are understandable at B2 level, keep im mind if its homograph or homophone]"
           ],
           "type": [
               "[one or more grammatical types, such as 'noun', 'adjective', or 'verb', selected only from the list below]"
           ],
           "IPA": "[IPA notation in standard format]",
           "codeSwitching": [
-              "[5 sentences that use the word in English and rest of the sentence in spanish language]"
+              "[5 sentences that use the word in English and rest of the sentence in spanish language,  keep im mind if its homograph or homophone]"
           ],
           "spanish": {
               "definition": "[Clear and concise Spanish translation of the definition]",
