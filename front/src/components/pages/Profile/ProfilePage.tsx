@@ -93,25 +93,35 @@ export const ProfilePage: React.FC = () => {
                 <div key={j} className="w-1/2 md:w-1/4 px-2">
                   {j === randomFields[i] ? (
                     <section className="flex flex-col md:flex-row items-center space-y-2 md:space-y-0">
-                      <>
+                      <div className="flex flex-col justify-center items-start gap-2">
                         <input
                           type="text"
+                          disabled={validated}
                           value={answers[i][j]}
                           onChange={(e) => handleChange(i, e.target.value)}
-                          className="w-full px-2 py-1 bg-gray-700 mx-1 text-white border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          className={`w-full px-2  bg-gray-700 mx-1 text-white border 
+                            border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500
+                            ${validated && answers[i][j].toLocaleLowerCase() !== verb[field] ? 'text-[12] py-0' :'py-1' }
+                            `}
                         />
                         {validated &&
-                          (answers[i][j].toLocaleLowerCase() === verb[field] ? (
-                            <Check className="text-green-500 inline ml-2" />
-                          ) : j === randomFields[i] ? (
-                            <div className="flex items-center">
-                              <X className="text-red-500 inline mr-2" />
-                              <span className="text-sm font-semibold">
+                          answers[i][j].toLocaleLowerCase() !== verb[field] && (
+                            <div className="flex">
+                            <div className="flex items-center border border-red-500 rounded-full p-1 mx-2">
+                              <X className="text-red-500 " size={16} />
+                            </div>
+                              <span className="text-[14px] font-bold ml-2 text-gray-200">
                                 {verb[field]}
                               </span>
                             </div>
-                          ) : null)}
-                      </>
+                          )}
+                      </div>
+                      {validated &&
+                        (answers[i][j].toLocaleLowerCase() === verb[field] ? (
+                          <div className="flex items-center border border-green-500 rounded-full p-1 mx-2">
+                            <Check className="text-green-500 " size={16} />
+                          </div>
+                        ) : null)}
                     </section>
                   ) : (
                     <span className="block text-center p-2">{verb[field]}</span>
