@@ -48,7 +48,7 @@ export const Card: React.FC<CardProps> = ({ card, flipped, onFlip }) => {
 
   return (
     <div
-      className="relative w-[95%] h-[71vh] rounded-lg overflow-hidden mx-auto"
+      className="relative w-[65%] h-[71vh] rounded-lg overflow-hidden mx-auto"
       style={{ perspective: "1000px" }}
     >
       {/* Flip Button */}

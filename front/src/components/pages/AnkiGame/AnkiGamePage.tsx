@@ -37,7 +37,7 @@ export const AnkiGamePage = () => {
 
   return (
     <MainLayout>
-      <section className="flex flex-col mt-12 w-full overflow-hidden">
+      <section className="flex flex-col mt-12 w-full overflow-hidden justify-center items-center">
         {loading ? (
           <Loading />
         ) : errors ? (
@@ -47,7 +47,7 @@ export const AnkiGamePage = () => {
               : errors.getRecentHardOrMedium || "Failed to load cards."}
           </p>
         ) : (
-          <div className="mx-3">
+          <div className="mx-3 w-[65%]">
             {cards.length > 0 ? (
               <>
                 <Card
