@@ -38,6 +38,7 @@ export const updateImageWord = async (req, res) => {
    and clear, avoiding any abstract or symbolic visuals. 
    Do not include any text, letters, or symbols — the image 
    should rely solely on visuals to communicate the word’s meaning
+   - Keep in mind if its homograph or homophone
   `.trim();
 
   try {
