@@ -30,7 +30,7 @@ export const generateTextStreamService = async ({
       {
         role: "system",
         content: `
-          Generate a Markdown text in laguage "${language}" according with ( ISO 639-1 para los idiomas ) , 
+          Generate a Markdown text in language "${language}" according with ( ISO 639-1 para los idiomas ) , 
           this text is for an educational purpose with a "${typeWrite}" style, using vocabulary and 
           complexity appropriate for a ${level} level. 
 
@@ -39,6 +39,8 @@ export const generateTextStreamService = async ({
           - Use one main subtitle as "## Subtitle".
           - Use additional subtitles as "### Subtitle" if needed.
           - Avoid using additional H1 or H2 headers after the initial title and subtitle.
+          - Don't use h4 or h5 or h6 headers.
+          - Don't USE old fashioned words
 
           Content guidelines:
           - Avoid using rare, uncommon words or special symbols, as each word should be clickable and easily searchable in a dictionary.
