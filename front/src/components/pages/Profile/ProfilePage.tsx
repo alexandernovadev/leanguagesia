@@ -13,14 +13,35 @@ type Verb = {
 const ITEMS_PER_PAGE = 10;
 const fields: (keyof Verb)[] = ["Verb", "Past", "Past Participle (PP)"];
 
-const ProfilePage: React.FC = () => {
+// Función para mezclar un array (Fisher-Yates shuffle)
+const shuffleArray = <T,>(array: T[]): T[] => {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+};
+
+export const ProfilePage: React.FC = () => {
   const [page, setPage] = useState(0);
   const [answers, setAnswers] = useState<string[][]>([]);
   const [randomFields, setRandomFields] = useState<number[]>([]);
   const [validated, setValidated] = useState<boolean>(false);
+  const [shuffledVerbs, setShuffledVerbs] = useState<Verb[]>([]);
+
+  // Mezclar los verbos al montar el componente
+  useEffect(() => {
+    const shuffled = shuffleArray(verbs);
+    setShuffledVerbs(shuffled);
+  }, []); // Solo se ejecuta una vez al montar el componente
+
+  // Calcular el total de páginas basado en el array mezclado
+  const totalPages = Math.ceil(shuffledVerbs.length / ITEMS_PER_PAGE);
 
   useEffect(() => {
-    // Reset answers and pick random fields for each verb on page change
+    if (shuffledVerbs.length === 0) return; // Esperar a que shuffledVerbs esté listo
+
     const initialAnswers = Array.from({ length: ITEMS_PER_PAGE }, () => [
       "",
       "",
@@ -32,7 +53,7 @@ const ProfilePage: React.FC = () => {
     );
     setRandomFields(randoms);
     setValidated(false);
-  }, [page]);
+  }, [page, shuffledVerbs]);
 
   const handleChange = (rowIndex: number, value: string) => {
     const updatedAnswers = answers.map((answer, i) =>
@@ -47,14 +68,11 @@ const ProfilePage: React.FC = () => {
     setValidated(true);
   };
 
-  const nextPage = () =>
-    setPage((prev) =>
-      Math.min(prev + 1, Math.floor(verbs.length / ITEMS_PER_PAGE))
-    );
+  const nextPage = () => setPage((prev) => Math.min(prev + 1, totalPages - 1));
   const prevPage = () => setPage((prev) => Math.max(prev - 1, 0));
 
   const startIndex = page * ITEMS_PER_PAGE;
-  const currentVerbs: Verb[] = verbs.slice(
+  const currentVerbs: Verb[] = shuffledVerbs.slice(
     startIndex,
     startIndex + ITEMS_PER_PAGE
   );
@@ -62,40 +80,48 @@ const ProfilePage: React.FC = () => {
   return (
     <MainLayout>
       <div className="min-h-screen bg-gray-900 text-white p-4 flex flex-col items-center">
-        <h1 className="text-2xl mb-6">Verb Game</h1>
+        <h1 className="text-2xl mb-6">
+          Verb Game - Página {page + 1} de {totalPages}
+        </h1>
         <div className="w-full max-w-4xl overflow-y-auto max-h-[70vh]">
           {currentVerbs.map((verb, i) => (
             <div
               key={i}
-              className="mb-2 p-2 bg-gray-800 rounded-xl shadow-lg flex items-center"
+              className="mb-2 p-2 bg-gray-800 rounded-xl shadow-lg flex flex-wrap items-center"
             >
               {fields.map((field, j) => (
-                <div key={j} className="flex-1 px-2 ">
+                <div key={j} className="w-1/2 md:w-1/4 px-2">
                   {j === randomFields[i] ? (
-                    <section className="flex items-center">
-                      {validated &&
-                        (answers[i][j] === verb[field] ? (
-                          <Check className="text-green-500 inline ml-2" />
-                        ) : j === randomFields[i] ? (
-                          <div className="flex items-center">
-                          <X className="text-red-500 inline ml-2" />
-                          <span className="font-semibold">{verb[field]}</span>
-                          </div>
-                        ) : null)}
-                      <input
-                        type="text"
-                        value={answers[i][j]}
-                        onChange={(e) => handleChange(i, e.target.value)}
-                        className="w-full p-2 bg-gray-700 mx-1 text-white border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      />
+                    <section className="flex flex-col md:flex-row items-center space-y-2 md:space-y-0">
+                      <>
+                        <input
+                          type="text"
+                          value={answers[i][j]}
+                          onChange={(e) => handleChange(i, e.target.value)}
+                          className="w-full px-2 py-1 bg-gray-700 mx-1 text-white border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        />
+                        {validated &&
+                          (answers[i][j].toLocaleLowerCase() === verb[field] ? (
+                            <Check className="text-green-500 inline ml-2" />
+                          ) : j === randomFields[i] ? (
+                            <div className="flex items-center">
+                              <X className="text-red-500 inline mr-2" />
+                              <span className="text-sm font-semibold">
+                                {verb[field]}
+                              </span>
+                            </div>
+                          ) : null)}
+                      </>
                     </section>
                   ) : (
                     <span className="block text-center p-2">{verb[field]}</span>
                   )}
                 </div>
               ))}
-              <div className="flex-1 px-2">
-                <span className="block text-center p-2">{verb["Spanish"]}</span>
+              <div className="w-1/2 md:w-1/4 px-2">
+                <span className="block text-center p-2 font-bold capitalize">
+                  {verb["Spanish"]}
+                </span>
               </div>
             </div>
           ))}
@@ -116,7 +142,7 @@ const ProfilePage: React.FC = () => {
           </button>
           <button
             onClick={nextPage}
-            disabled={startIndex + ITEMS_PER_PAGE >= verbs.length}
+            disabled={page === totalPages - 1}
             className="px-4 py-2 bg-blue-600 rounded-md disabled:bg-gray-700"
           >
             Siguiente
@@ -126,5 +152,3 @@ const ProfilePage: React.FC = () => {
     </MainLayout>
   );
 };
-
-export default ProfilePage;
