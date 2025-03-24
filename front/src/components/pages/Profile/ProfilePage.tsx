@@ -12,7 +12,7 @@ type Verb = {
   Spanish: string;
 };
 
-const ITEMS_PER_PAGE = 9;
+const ITEMS_PER_PAGE = 10;
 const fields: (keyof Verb)[] = ["Verb", "Past", "Past Participle (PP)"];
 
 export const ProfilePage: React.FC = () => {
@@ -71,15 +71,15 @@ export const ProfilePage: React.FC = () => {
 
   return (
     <MainLayout>
-      <div className="min-h-screen bg-gray-900 text-white p-4 flex flex-col items-center">
-        <h1 className="text-2xl mb-6">
+      <div className="min-h-screen text-white flex flex-col items-center">
+        <h1 className="text-xl">
           Verb Game | {page + 1} / {totalPages}|
         </h1>
-        <div className="w-full max-w-4xl overflow-y-auto max-h-[70vh]">
+        <div className="w-full max-w-4xl overflow-y-auto px-4 max-h-[75vh]">
           {currentVerbs.map((verb, i) => (
             <div
               key={i}
-              className="mb-2 p-2 bg-gray-800 rounded-xl shadow-lg flex flex-wrap items-center"
+              className="mb-1 p-2 bg-gray-800 rounded-xl shadow-lg flex flex-wrap items-center"
             >
               {fields.map((field, j) => (
                 <div key={j} className="w-1/2 md:w-1/4 px-2">
