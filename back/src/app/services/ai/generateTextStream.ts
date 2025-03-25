@@ -41,6 +41,7 @@ export const generateTextStreamService = async ({
           - Avoid using additional H1 or H2 headers after the initial title and subtitle.
           - Don't use h4 or h5 or h6 headers.
           - Don't USE old fashioned words
+          - Don’t use nested lists (sub-lists) in the Markdown.
 
           Content guidelines:
           - Avoid using rare, uncommon words or special symbols, as each word should be clickable and easily searchable in a dictionary.
