@@ -9,7 +9,7 @@
  * @returns {(...args: Parameters<T>) => void} A debounced version of the input function that accepts the same arguments as `func`.
  * @example
  * Example usage with a search function
- * const logSearch = (query: string) => console.log("Searching for:", query);
+ * const logSearch = (query: string) => console.info("Searching for:", query);
  * const debouncedSearch = debounce(logSearch, 300);
  * 
  * debouncedSearch("cat"); // Nothing logged yet

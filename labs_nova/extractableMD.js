@@ -48,6 +48,6 @@ fs.readFile(inputPath, "utf8", (err, data) => {
       console.error("Error al escribir el archivo JSON:", err);
       return;
     }
-    console.log(`Archivo JSON creado: ${outputPath}`);
+    console.info(`Archivo JSON creado: ${outputPath}`);
   });
 });

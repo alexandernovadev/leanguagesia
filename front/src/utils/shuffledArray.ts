@@ -10,7 +10,7 @@
  * @example
  * const numbers = [1, 2, 3, 4, 5];
  * const shuffledNumbers = shuffleArray(numbers);
- * console.log(shuffledNumbers); // Example output: [3, 1, 5, 2, 4]
+ * Example output: [3, 1, 5, 2, 4]
  */
 export const shuffleArray = <T,>(array: T[]): T[] => {
   const shuffled = [...array];
