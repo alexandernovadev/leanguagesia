@@ -63,6 +63,13 @@ export const ProfilePage: React.FC = () => {
   const nextPage = () => setPage((prev) => Math.min(prev + 1, totalPages - 1));
   const prevPage = () => setPage((prev) => Math.max(prev - 1, 0));
 
+  const listenWord = (word: string) => {
+    const utterance = new SpeechSynthesisUtterance(word);
+    utterance.lang = "en-US";
+    utterance.rate = 1;
+    window.speechSynthesis.speak(utterance);
+  };
+
   const startIndex = page * ITEMS_PER_PAGE;
   const currentVerbs: Verb[] = shuffledVerbs.slice(
     startIndex,
@@ -75,7 +82,7 @@ export const ProfilePage: React.FC = () => {
         <h1 className="text-xl">
           Verb Game | {page + 1} / {totalPages}|
         </h1>
-        <div className="w-full max-w-4xl overflow-y-auto px-4 max-h-[75vh]">
+        <div className="w-full max-w-4xl overflow-y-auto px-4 h-[60vh] md:h-[75vh]">
           {currentVerbs.map((verb, i) => (
             <div
               key={i}
@@ -105,7 +112,11 @@ export const ProfilePage: React.FC = () => {
                           answers[i][j].toLocaleLowerCase() !== verb[field] && (
                             <div className="flex">
                               <div className="flex items-center border border-red-500 rounded-full p-1 mx-2">
-                                <X className="text-red-500 " size={16} />
+                                <X
+                                  className="text-red-500 "
+                                  size={16}
+                                  onClick={() => listenWord(verb[field])}
+                                />
                               </div>
                               <span className="text-[14px] font-bold ml-2 text-gray-200">
                                 {verb[field]}
@@ -116,12 +127,21 @@ export const ProfilePage: React.FC = () => {
                       {validated &&
                         (answers[i][j].toLocaleLowerCase() === verb[field] ? (
                           <div className="flex items-center border border-green-500 rounded-full p-1 mx-2">
-                            <Check className="text-green-500 " size={16} />
+                            <Check
+                              className="text-green-500 "
+                              size={16}
+                              onClick={() => listenWord(verb[field])}
+                            />
                           </div>
                         ) : null)}
                     </section>
                   ) : (
-                    <span className="block text-center p-2">{verb[field]}</span>
+                    <span
+                      className="block text-center p-2 cursor-pointer"
+                      onClick={() => listenWord(verb[field])}
+                    >
+                      {verb[field]}
+                    </span>
                   )}
                 </div>
               ))}
