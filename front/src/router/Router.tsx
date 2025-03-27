@@ -11,7 +11,8 @@ import { GeneratorPage } from "../components/pages/Generator/GeneratorPage";
 import { LecturaPage } from "../components/pages/Lecture/LecturaPage";
 import { AnkiGamePage } from "../components/pages/AnkiGame/AnkiGamePage";
 import { Statistics } from "../components/pages/Statistics/Statistics";
-import  MatchGame  from "../components/pages/Labs/matchGame";
+import { MatchGame } from "../components/pages/Labs/MatchGame";
+
 
 const RouterP = () => {
   return (
