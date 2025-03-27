@@ -1,165 +1,140 @@
-import { useState, useCallback, useEffect } from "react";
-import ReactFlow, {
-  Controls,
-  Background,
-  Handle,
-  Position,
-  Connection,
-  Edge,
-  addEdge,
-  Node,
-} from "reactflow";
-import "reactflow/dist/style.css";
+import { useState, useRef, useEffect } from "react";
 
-type Pair = { left: string; right: string };
-type DataType = { vocabulary: string; pairs: Pair[] };
+type Pair = { leftId: number; rightId: number };
 
-export const data: DataType = {
-  vocabulary: "Everyday routine",
-  pairs: [
-    { left: "get", right: "home late" },
-    { left: "do", right: "exercise" },
-    { left: "feel", right: "tired" },
-    { left: "fall", right: "asleep" },
-    { left: "take a", right: "break" },
-    { left: "watch", right: "TV" },
-    { left: "work long", right: "hours" },
-    { left: "wake up", right: "early" },
-    { left: "get up about", right: "eight" },
-    { left: "stay up", right: "until midnight" },
-  ],
-};
-
-// 📌 Función para mezclar un array (Shuffle)
-const shuffleArray = <T,>(array: T[]): T[] => {
-  return array.sort(() => Math.random() - 0.5);
-};
-
-// 📌 Generar nodos dinámicamente desde JSON
-const createNodes = (data: DataType): Node[] => {
-  const nodes: Node[] = [];
-
-  // Crear nodos de la izquierda (en orden) y almacenar el índice del par
-  data.pairs.forEach((pair, index) => {
-    nodes.push({
-      id: `left-${index}`,
-      type: "customNode",
-      position: { x: 100, y: index * 80 },
-      data: { label: pair.left, isLeft: true, pairIndex: index },
-    });
-  });
-
-  // Para los nodos de la derecha, conservamos el índice original y se mezclan
-  const rightPairs = data.pairs.map((pair, index) => ({ ...pair, originalIndex: index }));
-  const shuffledRightPairs = shuffleArray(rightPairs);
-
-  shuffledRightPairs.forEach((pair, displayIndex) => {
-    nodes.push({
-      id: `right-${pair.originalIndex}`,
-      type: "customNode",
-      position: { x: 400, y: displayIndex * 80 },
-      data: { label: pair.right, isLeft: false, pairIndex: pair.originalIndex },
-    });
-  });
-
-  return nodes;
-};
-
-type CustomNodeData = {
-  label: string;
-  isLeft: boolean;
-  pairIndex: number;
-};
-
-const CustomNode = ({ data }: { data: CustomNodeData }) => (
-  <div className="bg-white text-black text-xl w-[180px] px-4 py-3 rounded-lg shadow-md text-center">
-    {data.isLeft ? (
-      <Handle
-        type="source"
-        position={Position.Right}
-        className="w-6 h-6 bg-blue-500"
-      />
-    ) : (
-      <Handle
-        type="target"
-        position={Position.Left}
-        className="w-6 h-6 bg-blue-500"
-      />
-    )}
-    <div>{data.label}</div>
-  </div>
-);
-
-const nodeTypes = { customNode: CustomNode };
+const itemsLeft = ["A", "B", "C", "D"];
+const itemsRight = ["1", "2", "3", "4"];
 
 export const MatchGame = () => {
-  const [nodes, setNodes] = useState<Node[]>([]);
-  const [edges, setEdges] = useState<Edge[]>([]);
+  const [pairs, setPairs] = useState<Pair[]>([]);
+  const [dragging, setDragging] = useState<{ x: number; y: number } | null>(
+    null
+  );
+  const [dragStart, setDragStart] = useState<{
+    id: number;
+    x: number;
+    y: number;
+  } | null>(null);
+  const leftRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const rightRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
-    setNodes(createNodes(data));
-  }, []);
+    const handleMouseMove = (e: MouseEvent) => {
+      if (dragStart) {
+        setDragging({ x: e.clientX, y: e.clientY });
+      }
+    };
 
-  const onConnect = useCallback((connection: Connection) => {
-    setEdges((eds) => {
-      const filteredEdges = eds.filter(
-        (edge) => edge.source !== connection.source
-      );
-      return addEdge({ ...connection, animated: true }, filteredEdges);
-    });
-  }, []);
+    const handleMouseUp = () => {
+      setDragging(null);
+      setDragStart(null);
+    };
 
-  const validateConnections = () => {
-    setEdges((prevEdges) =>
-      prevEdges.map((edge) => {
-        // Buscar los nodos conectados según sus id
-        const sourceNode = nodes.find((n) => n.id === edge.source);
-        const targetNode = nodes.find((n) => n.id === edge.target);
-        let isCorrect = false;
-        if (sourceNode && targetNode) {
-          isCorrect =
-            sourceNode.data.pairIndex === targetNode.data.pairIndex;
-        }
-        return {
-          ...edge,
-          animated: false,
-          style: {
-            stroke: isCorrect ? "green" : "red",
-            strokeWidth: 4,
-          },
-        };
-      })
-    );
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mouseup", handleMouseUp);
+
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseup", handleMouseUp);
+    };
+  }, [dragStart]);
+
+  const handleLeftMouseDown = (index: number, event: React.MouseEvent) => {
+    const rect = leftRefs.current[index]?.getBoundingClientRect();
+    if (rect) {
+      setDragStart({ id: index, x: rect.right, y: rect.top + rect.height / 2 });
+    }
+  };
+
+  const handleRightMouseUp = (index: number) => {
+    if (dragStart) {
+      setPairs([...pairs, { leftId: dragStart.id, rightId: index }]);
+      setDragging(null);
+      setDragStart(null);
+    }
   };
 
   return (
-    <div className="h-screen flex items-center justify-center">
-      <div className="w-[600px] h-[700px] rounded-lg p-4">
-        <h2 className="text-white text-center text-2xl mb-4">
-          {data.vocabulary}
-        </h2>
-        <div className="h-[600px] rounded-md relative">
-          <ReactFlow
-            nodes={nodes}
-            edges={edges}
-            onConnect={onConnect}
-            nodeTypes={nodeTypes}
-            fitView
-            panOnDrag={false} // Evita que el tablero se mueva al arrastrar conexiones
-            zoomOnScroll={false}
-            zoomOnPinch={false}
-            zoomOnDoubleClick={false}
+    <div className="relative flex items-center justify-center p-8">
+      {/* SVG para líneas */}
+      <svg className="absolute w-full h-full top-0 left-0 pointer-events-none">
+        {pairs.map(({ leftId, rightId }, i) => {
+          const leftElement = leftRefs.current[leftId];
+          const rightElement = rightRefs.current[rightId];
+
+          if (leftElement && rightElement) {
+            const leftRect = leftElement.getBoundingClientRect();
+            const rightRect = rightElement.getBoundingClientRect();
+            return (
+              <line
+                key={i}
+                x1={leftRect.right}
+                y1={leftRect.top + leftRect.height / 2}
+                x2={rightRect.left}
+                y2={rightRect.top + rightRect.height / 2}
+                stroke="blue"
+                strokeWidth="2"
+                markerEnd="url(#arrowhead)"
+              />
+            );
+          }
+          return null;
+        })}
+        {/* Flecha en tiempo real */}
+        {dragStart && dragging && (
+          <line
+            x1={dragStart.x}
+            y1={dragStart.y}
+            x2={dragging.x}
+            y2={dragging.y}
+            stroke="red"
+            strokeWidth="2"
+            markerEnd="url(#arrowhead)"
+          />
+        )}
+        <defs>
+          <marker
+            id="arrowhead"
+            markerWidth="10"
+            markerHeight="7"
+            refX="10"
+            refY="3.5"
+            orient="auto"
           >
-            <Background color="#444" gap={16} />
-            <Controls showZoom={false} showFitView={false} />
-          </ReactFlow>
-        </div>
-        <button
-          onClick={validateConnections}
-          className="mt-4 bg-blue-500 text-white px-6 py-2 rounded-lg block mx-auto"
-        >
-          Validate
-        </button>
+            <polygon points="0 0, 10 3.5, 0 7" fill="blue" />
+          </marker>
+        </defs>
+      </svg>
+
+      {/* Lista izquierda */}
+      <div className="flex flex-col gap-4">
+        {itemsLeft.map((item, index) => (
+          <div
+            key={index}
+            ref={(el) => (leftRefs.current[index] = el)}
+            className="p-4 bg-blue-500 text-white rounded-md cursor-pointer"
+            onMouseDown={(e) => handleLeftMouseDown(index, e)}
+          >
+            {item}
+          </div>
+        ))}
+      </div>
+
+      {/* Espacio en medio */}
+      <div className="w-20"></div>
+
+      {/* Lista derecha */}
+      <div className="flex flex-col gap-4">
+        {itemsRight.map((item, index) => (
+          <div
+            key={index}
+            ref={(el) => (rightRefs.current[index] = el)}
+            className="p-4 bg-green-500 text-white rounded-md cursor-pointer"
+            onMouseUp={() => handleRightMouseUp(index)}
+          >
+            {item}
+          </div>
+        ))}
       </div>
     </div>
   );
