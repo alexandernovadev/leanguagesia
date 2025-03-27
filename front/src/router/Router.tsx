@@ -11,12 +11,14 @@ import { GeneratorPage } from "../components/pages/Generator/GeneratorPage";
 import { LecturaPage } from "../components/pages/Lecture/LecturaPage";
 import { AnkiGamePage } from "../components/pages/AnkiGame/AnkiGamePage";
 import { Statistics } from "../components/pages/Statistics/Statistics";
+import  MatchGame  from "../components/pages/Labs/matchGame";
 
 const RouterP = () => {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/labs" element={<MatchGame />} />
         <Route path="/words" element={<WordPage />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/generator" element={<GeneratorPage />} />
