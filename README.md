@@ -24,3 +24,13 @@ https://res.cloudinary.com/dv8wurqdp/image/upload/mqiuh1evictwkjysyzcr
 
 - sudo systemctl restart nginx
 - chmod 755 deploy_front.sh
+
+
+# curls
+
+curl -X POST http://localhost:3000/api/auth/login -H "Content-Type: application/json" -d '{"username": "user", "password": "passs"}'
+
+
+curl -H "Authorization: Bearer YOUR_TOKEN_HERE" http://localhost:3000/api/logs
+
+curl "http://localhost:3000/api/logs?tokenAPI=YOUR_TOKEN_HERE"

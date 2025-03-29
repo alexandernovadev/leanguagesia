@@ -11,10 +11,12 @@ import WordsRoutes from "./app/routes/wordsRoutes";
 import Arreglosquick from "./app/routes/arreglosquick";
 import StatisticsRoutes from "./app/routes/statisticsRoutes";
 import LogsRoutes from "./app/routes/logRoutes";
+import AuthRoutes from "./app/routes/authRoutes";
 
 import { setupSwagger } from "../swagger/swaggerConfig";
 import { errorResponse, successResponse } from "./app/utlis/responseHelpers";
-import { requestLogger } from "./app/middlewares/requestLogger";
+import { requestLogger } from "./app/utlis/requestLogger";
+import { authMiddleware } from "./app/middlewares/authMiddleware";
 
 dotenv.config();
 
@@ -44,13 +46,15 @@ connectDB()
   });
 
 // Routes
+app.use("/api/auth", AuthRoutes);
+
 app.use("/api/ai", generateRoutes);
 app.use("/api/lectures", LectureRoutes);
 app.use("/api/words", WordsRoutes);
 app.use("/api/statistics", StatisticsRoutes);
 
 // Logs
-app.use("/api/logs", LogsRoutes);
+app.use("/api/logs", authMiddleware, LogsRoutes);
 
 // Just for testing purposes
 app.use("/api/fixes", Arreglosquick);
