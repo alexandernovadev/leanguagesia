@@ -27,7 +27,7 @@ app.use(express.json());
 // Middleware to handle CORS
 app.use(cors());
 
-// Middleware de logging de peticiones (se ejecuta para todas las rutas)
+// Middleware to loggin requests
 app.use(requestLogger);
 
 // Swagger Conf
