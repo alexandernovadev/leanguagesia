@@ -10,6 +10,7 @@ import LectureRoutes from "./app/routes/lectureRoutes";
 import WordsRoutes from "./app/routes/wordsRoutes";
 import Arreglosquick from "./app/routes/arreglosquick";
 import StatisticsRoutes from "./app/routes/statisticsRoutes";
+import LogsRoutes from "./app/routes/logRoutes";
 
 import { setupSwagger } from "../swagger/swaggerConfig";
 import { errorResponse, successResponse } from "./app/utlis/responseHelpers";
@@ -47,6 +48,9 @@ app.use("/api/ai", generateRoutes);
 app.use("/api/lectures", LectureRoutes);
 app.use("/api/words", WordsRoutes);
 app.use("/api/statistics", StatisticsRoutes);
+
+// Logs
+app.use("/api/logs", LogsRoutes);
 
 // Just for testing purposes
 app.use("/api/fixes", Arreglosquick);
