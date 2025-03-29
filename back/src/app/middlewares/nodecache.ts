@@ -1,1 +1,0 @@
-// ese node cache es un mierda, no lo usen
