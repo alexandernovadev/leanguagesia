@@ -1,69 +1,103 @@
+# MongoDB Database Restoration Using Docker
 
-# Restauración de una Base de Datos MongoDB desde Docker
+This guide provides a detailed step-by-step process for restoring a MongoDB database backup using a Docker container.
 
-Este tutorial explica cómo restaurar una base de datos MongoDB desde un respaldo utilizando un contenedor Docker.
+---
 
-## Paso 1: Identificar el Contenedor de MongoDB
+## Prerequisites: Ensure MongoDB Server is Running (Server-Side)
+Before proceeding with the restoration, make sure the MongoDB server is running on your server machine:
 
-Primero, debes identificar el contenedor Docker donde MongoDB está en ejecución. Usa el siguiente comando para listar los contenedores:
+```bash
+sudo systemctl status mongod
+```
+
+If MongoDB is not active, start it with:
+
+```bash
+sudo systemctl start mongod
+```
+
+---
+
+## 🟢 Creating a Database Backup (Server-Side)
+To create a backup of the database on your server, use the `mongodump` command:
+
+```bash
+mongodump --db leanguagesia --out ~/novalabs/leanguagesia/labs_nova/backupsdb/leanguagesia/
+```
+
+This command backs up the database `leanguagesia` to the specified directory.
+
+---
+
+## Step 1: Identify the MongoDB Docker Container (Local Environment)
+Before restoring the database, identify the MongoDB container name using the following command:
 
 ```bash
 docker ps
 ```
 
-Busca el contenedor de MongoDB en la lista. Supongamos que su nombre es `mongodb`.
+Locate the container running MongoDB, referred to as `mongodb` in this guide.
 
-## Paso 2: Copiar el Respaldo al Contenedor
+---
 
-Para restaurar desde el respaldo, debes copiar los archivos al contenedor usando `docker cp`. 
-
-Ejecuta el siguiente comando para copiar la carpeta de respaldo desde tu máquina local al contenedor:
+## Step 2: Transfer Backup Files to the Docker Container (Local Environment)
+Copy the backup files from your local environment to the Docker container using:
 
 ```bash
-docker cp /Users/alex/Documents/nova/leanguagesia/labs_nova/backupsdb  mongodb:/backupsdb 
+docker cp labs_nova/backupsdb/leanguagesia mongodb:/backupsdb
 ```
 
-Aquí:
-- `/Users/alex/Documents/nova/leanguagesia/labs_nova/backupsdb` es la ruta local donde tienes el respaldo.
-- `mongodb:/backupsdb` es la ubicación de destino dentro del contenedor.
+Explanation:
+- `labs_nova/backupsdb/leanguagesia`: Local backup directory.
+- `mongodb:/backupsdb`: Destination directory inside the container.
 
-## Paso 3: Restaurar la Base de Datos Dentro del Contenedor
+✅ If a backup already exists, consider removing the old one first:
 
-1. Abre una terminal interactiva en el contenedor:
+```bash
+docker exec -it mongodb bash -c "rm -rf /backupsdb/leanguagesia"
+```
 
-   ```bash
-   docker exec -it mongodb bash
-   ```
+---
 
-2. Dentro del contenedor, ejecuta `mongorestore` para restaurar los datos:
+## Step 3: Restore the Database Inside the Docker Container (Local Environment)
+1. Access the MongoDB container:
 
-   ```bash
-   mongorestore --db leanguagesia /backupsdb/leanguagesia
-   ```
+```bash
+docker exec -it mongodb bash
+```
 
-   - Reemplaza `nombre_db_destino` con el nombre que quieres para la base de datos restaurada.
-   - `/backupsdb/leanguagesia` es la ubicación del respaldo dentro del contenedor.
+2. Restore the database using `mongorestore`:
 
-3. Para verificar, usa el cliente `mongosh`:
+```bash
+mongorestore --db leanguagesia /backupsdb/leanguagesia
+```
 
-   ```bash
-   mongosh
-   ```
+This command restores the database from the specified backup folder.
 
-   Luego, cambia a la base de datos y lista las colecciones para confirmar:
+3. Verify the restoration using `mongosh`:
 
-   ```javascript
-   use leanguagesia
-   show collections
+```bash
+mongosh
+```
 
-   use leanguagesia
+Then, switch to the database and check the collections:
 
-   db.words.countDocuments()
-   ```
+```javascript
+use leanguagesia
+show collections
+db.words.countDocuments()
+```
 
-4. Finalmente, sal de `mongosh` y del contenedor:
+4. Exit the MongoDB shell and container:
 
-   ```bash
-   exit  # Salir de mongosh
-   exit  # Salir del contenedor
-   ```
+```bash
+exit  # Exit mongosh
+exit  # Exit container
+```
+
+---
+
+## 🎉 Restoration Complete!
+Your MongoDB database has been successfully restored using Docker. Repeat these steps as needed, ensuring no data is overwritten unintentionally.
+
