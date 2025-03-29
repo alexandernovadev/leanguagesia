@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import fs from "fs";
 import path from "path";
 import { parseAppLog } from "./helpers/parseLogs";
+import { errorResponse, successResponse } from "../utlis/responseHelpers";
 
 export const getLogs = (req: Request, res: Response) => {
   try {
@@ -14,15 +15,34 @@ export const getLogs = (req: Request, res: Response) => {
 
     // Parse app.log
     const formattedAppLog = parseAppLog(appLog);
-
-    res.status(200).json({
-      message: "Logs retrieved successfully",
-      logs: {
-        errorLog,
-        appLog: formattedAppLog,
-      },
+    return successResponse(res, "Logs retrieved successfully", {
+      errorLog,
+      appLog: formattedAppLog,
     });
-  } catch (err) {
-    res.status(500).json({ message: "Failed to retrieve logs", error: err });
+  } catch (error) {
+    return errorResponse(res, "Failed to retrieve log \n" + error, 500);
+  }
+};
+
+export const clearLogs = (req: Request, res: Response) => {
+  try {
+    const logsPath = path.join(__dirname, "../../../logs");
+    const logFiles = [
+      "app.log",
+      "errors.log",
+      "exceptions.log",
+      "rejections.log",
+    ];
+
+    logFiles.forEach((file) => {
+      const filePath = path.join(logsPath, file);
+      if (fs.existsSync(filePath)) {
+        fs.writeFileSync(filePath, ""); // Clean all logs
+      }
+    });
+
+    return successResponse(res, "All logs have been cleared successfully", {});
+  } catch (error) {
+    return errorResponse(res, "Failed to clear logs \n" + error, 500);
   }
 };

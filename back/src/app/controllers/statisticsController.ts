@@ -22,7 +22,6 @@ export const BasicInformation = async (
       words: countByLevelAndTotalWords,
     });
   } catch (error) {
-    console.error(error);
     return errorResponse(res, "Error getting statics \n" + error, 404);
   }
 };
