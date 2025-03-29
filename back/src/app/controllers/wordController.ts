@@ -27,7 +27,6 @@ export const getWordByName = async (
 
     return successResponse(res, "Get Word successFully", foundWord);
   } catch (error) {
-    console.error("Error finding word:", error);
     return errorResponse(
       res,
       "An error occurred while getting the word \n" + error,
@@ -46,7 +45,6 @@ export const createWord = async (
 
     return successResponse(res, "Word created successfully", newWord, 201);
   } catch (error) {
-    console.error("Error creating word:", error);
     if (error.name === "ValidationError") {
       return errorResponse(res, "Validation error" + error);
     }
@@ -71,8 +69,6 @@ export const getWordById = async (
 
     return successResponse(res, "Word listed by Id successfully", word);
   } catch (error) {
-    console.error("Error retrieving word:", error);
-
     return errorResponse(
       res,
       "An error occurred while retrieving the word \n" + error,
@@ -93,7 +89,6 @@ export const getWords = async (
 
     return successResponse(res, "Words sucessfully listed", wordList);
   } catch (error) {
-    console.error("Error retrieving words:", error);
     return errorResponse(
       res,
       "An error occurred while retrieving the word \n" + error,
@@ -115,7 +110,6 @@ export const updateWord = async (
     }
     return successResponse(res, "Word updated successfully", updatedWord);
   } catch (error) {
-    console.error("Error updating word:", error);
     return errorResponse(
       res,
       "An error occurred while updating the word \n" + error,
@@ -139,7 +133,6 @@ export const updateWordLevel = async (
 
     return successResponse(res, "Word level updated successfully", updatedWord);
   } catch (error) {
-    console.error("Error updating word level:", error);
     return errorResponse(
       res,
       "An error occurred while updating level the word \n" + error,
@@ -161,7 +154,6 @@ export const deleteWord = async (
 
     return successResponse(res, "Word deleted successfully", {});
   } catch (error) {
-    console.error("Error deleting word:", error);
     return errorResponse(
       res,
       "An error occurred while deleting the word \n" + error,
@@ -185,7 +177,6 @@ export const getRecentHardOrMediumWords = async (
       shuffledWords
     );
   } catch (error) {
-    console.error("Error retrieving recent hard or medium words:", error);
     return errorResponse(
       res,
       "An error occurred while retrieving recent hard or medium words \n" +
@@ -213,8 +204,6 @@ export const updateIncrementWordSeens = async (
       updatedWord
     );
   } catch (error) {
-    console.error("Error incrementing word seen count:", error);
-
     return errorResponse(
       res,
       "An error occurred while incrementing the word seen count \n" + error,
