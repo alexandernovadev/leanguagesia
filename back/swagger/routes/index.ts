@@ -23,3 +23,12 @@ export const lectureswagger = yaml.load(
 export const generateaiswagger = yaml.load(
   readFileSync(join(__dirname, "./generateai.yaml"), "utf8")
 ) as object;
+
+
+export const authswagger = yaml.load(
+  readFileSync(join(__dirname, "./auth.yaml"), "utf8")
+) as object;
+
+export const logsswagger = yaml.load(
+  readFileSync(join(__dirname, "./logs.yaml"), "utf8")
+) as object;

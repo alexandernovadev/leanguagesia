@@ -7,7 +7,9 @@ import {
   statisticsSwagger,
   wordsSwagger,
   lectureswagger,
-  generateaiswagger
+  generateaiswagger,
+  authswagger,
+  logsswagger
 } from "./routes";
 
 const options: swaggerJsdoc.Options = {
@@ -21,10 +23,7 @@ const options: swaggerJsdoc.Options = {
     servers: [
       {
         url: "http://localhost:3000",
-      },
-      {
-        url: "http://languages-ai-back.alexandernova.pro",
-      },
+      }
     ],
     paths: {
       ...fixesSwagger["paths"],
@@ -32,6 +31,8 @@ const options: swaggerJsdoc.Options = {
       ...wordsSwagger["paths"],
       ...lectureswagger["paths"],
       ...generateaiswagger["paths"],
+      ...authswagger["paths"],
+      ...logsswagger["paths"],
     },
   },
   apis: ["./src/app/routes/*.ts"],
