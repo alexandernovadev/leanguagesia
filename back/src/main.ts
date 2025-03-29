@@ -68,8 +68,7 @@ app.use("/", (req, res) => {
 
 // Error-handling middleware
 app.use((err: Error, req: Request, res: Response, next: NextFunction): void => {
-  console.error(err.stack);
-  errorResponse(res, "Something went wrong: " + err.message, 500);
+  errorResponse(res, "Something went wrong: " + err, 500);
 });
 
 app.listen(PORT, () => {

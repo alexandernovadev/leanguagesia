@@ -21,7 +21,7 @@ export const errorResponse = (
   // Registra el error
   logger.error("Error Response:", {
     message: errorMessage,
-    stack: error.stack || "No stack available",
+    stack: error || "No stack available",
   });
 
   return res.status(statusCode).json({ success: false, error: errorMessage });
