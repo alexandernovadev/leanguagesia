@@ -169,19 +169,15 @@ export const getRecentHardOrMediumWords = async (
 ): Promise<Response> => {
   try {
     const words = await wordService.getRecentHardOrMediumWords();
-
-    const shuffledWords = shuffleArray(words);
-
     return successResponse(
       res,
       "List Recent Hard Or Medium Words successfully",
-      shuffledWords
+      words
     );
   } catch (error) {
     return errorResponse(
       res,
-      "An error occurred while retrieving recent hard or medium words \n" +
-        error,
+      "An error occurred while retrieving recent hard or medium words",
       500
     );
   }

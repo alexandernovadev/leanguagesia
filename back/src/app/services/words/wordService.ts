@@ -139,12 +139,12 @@ export class WordService {
     });
   }
 
-  // Get the last 60 words with level "hard" or "medium"
+  // Get 60 random words with level "hard" or "medium"
   async getRecentHardOrMediumWords(): Promise<IWord[]> {
-    return await Word.find({ level: { $in: ["hard", "medium"] } })
-      .sort({ createdAt: -1 })
-      .limit(60)
-      .exec();
+    return await Word.aggregate([
+      { $match: { level: { $in: ["hard", "medium"] } } },
+      { $sample: { size: 60 } },
+    ]);
   }
 
   // Get the last 30 words with level "easy"
