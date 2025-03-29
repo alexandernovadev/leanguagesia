@@ -1,4 +1,3 @@
-// requestLogger.ts
 import { Request, Response, NextFunction } from "express";
 import logger from "../utlis/logger";
 
@@ -7,7 +6,7 @@ export const requestLogger = (
   res: Response,
   next: NextFunction
 ) => {
-  // Evitar registrar favicon
+  // Avoid logging the favicon request
   if (req.originalUrl === "/favicon.ico") {
     return next();
   }
@@ -19,10 +18,10 @@ export const requestLogger = (
     const responseTime = diff[0] * 1e3 + diff[1] / 1e6;
 
     const dataLog = res.locals.userResponse
-      ? `UserResponser: ${JSON.stringify(res.locals.userResponse, null, 2)}`
-      : `Data: ${JSON.stringify(req.body, null, 2)}`;
+      ? `📝 UserResponser: ${JSON.stringify(res.locals.userResponse, null, 2)}`
+      : `📝 Data: ${JSON.stringify(req.body, null, 2)}`;
 
-    // Log estructurado
+    // Log the request with all the relevant information
     const logMessage = `
 🚀 Incoming Request:
   👉 Method: ${req.method}
@@ -33,7 +32,7 @@ export const requestLogger = (
   ⏳ Response Time: ${responseTime.toFixed(2)} ms
   ✅ Status: ${res.statusCode}
   ${dataLog}
-    `.trim(); // Eliminar espacios innecesarios
+    `.trim();
 
     logger.info(logMessage);
   });
