@@ -13,6 +13,7 @@ import StatisticsRoutes from "./app/routes/statisticsRoutes";
 
 import { setupSwagger } from "../swagger/swaggerConfig";
 import { errorResponse, successResponse } from "./app/utlis/responseHelpers";
+import { requestLogger } from "./app/middlewares/requestLogger";
 
 dotenv.config();
 
@@ -25,6 +26,9 @@ app.use(express.json());
 
 // Middleware to handle CORS
 app.use(cors());
+
+// Middleware de logging de peticiones (se ejecuta para todas las rutas)
+app.use(requestLogger);
 
 // Swagger Conf
 setupSwagger(app);
