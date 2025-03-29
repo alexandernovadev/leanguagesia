@@ -1,9 +1,7 @@
 import { Request, Response } from "express";
 import { WordService } from "../services/words/wordService";
 
-// Todo Remove this funtipn Mongo has mehtos to do it
-import { shuffleArray } from "../utlis/shuffle";
-import { errorResponse, successResponse } from "../utlis/responseHelpers";
+import { errorResponse, successResponse } from "../utils/responseHelpers";
 
 const wordService = new WordService();
 

@@ -14,8 +14,8 @@ import LogsRoutes from "./app/routes/logRoutes";
 import AuthRoutes from "./app/routes/authRoutes";
 
 import { setupSwagger } from "../swagger/swaggerConfig";
-import { errorResponse, successResponse } from "./app/utlis/responseHelpers";
-import { requestLogger } from "./app/utlis/requestLogger";
+import { errorResponse, successResponse } from "./app/utils/responseHelpers";
+import { requestLogger } from "./app/utils/requestLogger";
 import { authMiddleware } from "./app/middlewares/authMiddleware";
 
 dotenv.config();

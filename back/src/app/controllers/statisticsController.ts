@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 
 import { LectureService } from "../services/lectures/LectureService";
 import { WordService } from "../services/words/wordService";
-import { errorResponse, successResponse } from "../utlis/responseHelpers";
+import { errorResponse, successResponse } from "../utils/responseHelpers";
 
 const lectureService = new LectureService();
 const wordService = new WordService();

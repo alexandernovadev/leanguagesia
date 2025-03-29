@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import Word, { IWord } from "../db/models/Word";
-import { errorResponse, successResponse } from "../utlis/responseHelpers";
+import { errorResponse, successResponse } from "../utils/responseHelpers";
 
 export const arreglosmaricasrapidos = async (
   req: Request,

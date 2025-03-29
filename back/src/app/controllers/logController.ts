@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import fs from "fs";
 import path from "path";
 import { parseAppLog } from "./helpers/parseLogs";
-import { errorResponse, successResponse } from "../utlis/responseHelpers";
+import { errorResponse, successResponse } from "../utils/responseHelpers";
 
 export const getLogs = (req: Request, res: Response) => {
   try {

@@ -13,7 +13,7 @@ import {
   uploadImageToCloudinary,
 } from "../services/cloudinary/cloudinaryService";
 
-import { errorResponse, successResponse } from "../utlis/responseHelpers";
+import { errorResponse, successResponse } from "../utils/responseHelpers";
 import { imageWordPrompt } from "./helpers/ImagePrompt";
 
 const wordService = new WordService();

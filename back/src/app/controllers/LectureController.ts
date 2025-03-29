@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 
 import { LectureService } from "../services/lectures/LectureService";
-import { successResponse, errorResponse } from "../utlis/responseHelpers";
+import { successResponse, errorResponse } from "../utils/responseHelpers";
 
 const lectureService = new LectureService();
 

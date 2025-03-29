@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { AuthService } from "../services/auth/authService";
-import { successResponse, errorResponse } from "../utlis/responseHelpers";
+import { errorResponse, successResponse } from "../utils/responseHelpers";
 
 export const AuthController = {
   login: (req: Request, res: Response) => {
