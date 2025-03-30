@@ -1,8 +1,9 @@
 import { Request, Response } from "express";
 import fs from "fs";
 import path from "path";
-import { parseAppLog } from "./helpers/parseLogs";
+import { parseAppLogs } from "./helpers/parseLogsApp";
 import { errorResponse, successResponse } from "../utils/responseHelpers";
+import { parseErrorLog } from "./helpers/parseLogErrors";
 
 export const getLogs = (req: Request, res: Response) => {
   try {
@@ -14,9 +15,11 @@ export const getLogs = (req: Request, res: Response) => {
     const appLog = fs.readFileSync(path.join(logsPath, "app.log"), "utf-8");
 
     // Parse app.log
-    const formattedAppLog = parseAppLog(appLog);
+    const formattedAppLog = parseAppLogs(appLog);
+    const formattedErrorLog = parseErrorLog(errorLog);
+    
     return successResponse(res, "Logs retrieved successfully", {
-      errorLog,
+      errorLog: formattedErrorLog,
       appLog: formattedAppLog,
     });
   } catch (error) {

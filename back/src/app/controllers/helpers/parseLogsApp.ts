@@ -1,4 +1,4 @@
-export const parseAppLog = (logData) => {
+export const parseAppLogs = (logData) => {
   const logEntries = logData
     .split("-----------------------------------")
     .map((entry) => entry.trim())
