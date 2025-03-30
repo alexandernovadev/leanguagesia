@@ -16,13 +16,72 @@ import {
 import { errorResponse, successResponse } from "../utils/responseHelpers";
 import { imageWordPrompt } from "./helpers/ImagePrompt";
 import { promptAddEasyWords } from "./helpers/promptAddEasyWords";
+import { LectureService } from "../services/lectures/LectureService";
 
 const wordService = new WordService();
+const lectureService = new LectureService();
+
+/**
+ * Generate Image with AI, Save in Cloudinary, and Update Lecture
+ */
+export const updateImageLecture = async (req: Request, res: Response) => {
+  const { lecture, imgOld } = req.body;
+  const IDLecture = req.params.idlecture;
+
+  if (!lecture) {
+    return errorResponse(res, "Lecture prompt is required.", 400);
+  }
+
+  try {
+    // Generate image
+    const imageBase64 = await generateImage(lecture);
+    if (!imageBase64) {
+      return errorResponse(res, "Failed to generate image.", 400);
+    }
+
+    let deleteOldImagePromise: Promise<void> = Promise.resolve();
+
+    if (imgOld && imgOld.includes("res.cloudinary.com")) {
+      const parts = imgOld.split("/");
+      let publicId = parts.pop();
+
+      // Remove extension if exists
+      if (publicId.includes(".")) {
+        publicId = publicId.split(".")[0];
+      }
+
+      // Delete old image
+      deleteOldImagePromise = deleteImageFromCloudinary(
+        "languagesai/lectures/" + publicId
+      ).then(() => {});
+    }
+
+    // Upload new image while deleting the old one
+    const [_, urlImage] = await Promise.all([
+      deleteOldImagePromise,
+      uploadImageToCloudinary(imageBase64, "lectures"),
+    ]);
+
+    // Update lecture image
+    const updatedLecture = await lectureService.updateImage(
+      IDLecture,
+      urlImage
+    );
+
+    return successResponse(
+      res,
+      "Lecture image updated successfully",
+      updatedLecture
+    );
+  } catch (error) {
+    return errorResponse(res, "Error generating lecture image", 500, error);
+  }
+};
 
 /**
  * Generate Image with AI Save in cloudinary and update Word
  */
-export const updateImageWord = async (req, res) => {
+export const updateImageWord = async (req: Request, res: Response) => {
   const { word, imgOld } = req.body;
   const IDWord = req.params.idword;
 

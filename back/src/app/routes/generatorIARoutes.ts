@@ -6,6 +6,7 @@ import {
   updatedJSONWordExamplesCodeSwitching,
   updatedJSONWordSynonyms,
   updatedJSONWordTypes,
+  updateImageLecture,
   updateImageWord,
 } from "../controllers/generateIAController";
 
@@ -14,6 +15,7 @@ export const generateRoutes = Router();
 generateRoutes.post("/generate-text", generateTextStream);
 generateRoutes.post("/generate-wordJson", generateJSONword);
 generateRoutes.post("/generate-image/:idword", updateImageWord);
+generateRoutes.post("/generate-image-lecture/:idlecture", updateImageLecture);
 
 generateRoutes.put("/generate-word-examples/:idword", updatedJSONWordExamples);
 generateRoutes.put(
