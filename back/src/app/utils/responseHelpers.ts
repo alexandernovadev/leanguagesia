@@ -12,16 +12,14 @@ export const successResponse = (
 
 export const errorResponse = (
   res: Response,
-  error: any,
-  statusCode = 400
+  errorMessage: any,
+  statusCode = 400,
+  errordata?: any
 ) => {
-  // Si el error es un objeto, imprime el mensaje, si no, imprime el error completo
-  const errorMessage = error instanceof Error ? error.message : error;
-
-  // Registra el error
+  // Register the error in the logs
   logger.error("Error Response:", {
     message: errorMessage,
-    stack: error || "No stack available",
+    stack: errordata || "No stack available",
   });
 
   return res.status(statusCode).json({ success: false, error: errorMessage });
