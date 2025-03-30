@@ -147,13 +147,13 @@ export class WordService {
     ]);
   }
 
-  // Get the last 30 words with level "easy"
+  // Get the last 30 words with level "easy" and seen < 49
   async getLastEasyWords(): Promise<IWord[]> {
     return await Word.aggregate([
-      { $match: { level: "easy" } }, // Filter only words with level "easy"
+      { $match: { level: "easy", seen: { $lt: 49 } } }, // Filter by level and seen
       { $sort: { createdAt: 1 } }, // Sort by oldest first
-      { $limit: 100 }, // Select only the 50 oldest words
-      { $sample: { size: 30 } }, // Randomly pick 30 from those 50
+      { $limit: 100 }, // Select only the 100 oldest words
+      { $sample: { size: 30 } }, // Randomly pick 30 from those 100
       { $project: { word: 1, _id: 0 } }, // Only return the "word" field
     ]);
   }

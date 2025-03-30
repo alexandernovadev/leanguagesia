@@ -5,7 +5,7 @@ interface Options {
   level: string;
   typeWrite: string;
   language?: "es" | "en" | "pt"; // ISO 639-1
-  promptAddEasyWords: string;
+  promptWords: string;
   rangeMin?: number;
   rangeMax?: number;
 }
@@ -15,7 +15,7 @@ export const generateTextStreamService = async ({
   level = "A1",
   typeWrite = "Engaging Article",
   language = "en",
-  promptAddEasyWords = "",
+  promptWords = "",
   rangeMin = 5200,
   rangeMax = 6500,
 }: Options) => {
@@ -51,7 +51,7 @@ export const generateTextStreamService = async ({
             - **B1-B2:** Use intermediate vocabulary, compound sentences, and provide real-world examples.
             - **C1-C2:** Use advanced vocabulary, complex sentence structures, and offer deeper analysis or insights.
           - Include quotes or examples to enrich the content where relevant.
-          ${promptAddEasyWords}
+          ${promptWords}
     
 
           Learning aids:

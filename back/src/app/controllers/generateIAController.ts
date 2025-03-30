@@ -15,6 +15,7 @@ import {
 
 import { errorResponse, successResponse } from "../utils/responseHelpers";
 import { imageWordPrompt } from "./helpers/ImagePrompt";
+import { promptAddEasyWords } from "./helpers/promptAddEasyWords";
 
 const wordService = new WordService();
 
@@ -80,23 +81,19 @@ export const generateTextStream = async (req: Request, res: Response) => {
   }
 
   try {
-    let promptAddEasyWords = "";
+    let promptWords = "";
 
     if (addEasyWords) {
       const getEasyWords = await wordService.getLastEasyWords();
       const wordsArray = getEasyWords.map((item) => item.word);
-      promptAddEasyWords =
-        `- Its' IMPORTANT that add these words | ${wordsArray.join(
-          ", "
-        )}|  to the lecture 
-      because the user needs to remember those ones.`.trim();
+      promptWords = promptAddEasyWords(wordsArray);
     }
 
     const stream = await generateTextStreamService({
       prompt,
       level,
       typeWrite,
-      promptAddEasyWords,
+      promptWords,
     });
 
     res.setHeader("Content-Type", "application/json");
