@@ -27,8 +27,9 @@ export const getWordByName = async (
   } catch (error) {
     return errorResponse(
       res,
-      "An error occurred while getting the word \n" + error,
-      500
+      "An error occurred while getting the word",
+      500,
+      error
     );
   }
 };
@@ -48,8 +49,9 @@ export const createWord = async (
     }
     return errorResponse(
       res,
-      "An error occurred while creating the word \n" + error,
-      500
+      "An error occurred while creating the word ",
+      500,
+      error
     );
   }
 };
@@ -69,8 +71,9 @@ export const getWordById = async (
   } catch (error) {
     return errorResponse(
       res,
-      "An error occurred while retrieving the word \n" + error,
-      500
+      "An error occurred while retrieving the word",
+      500,
+      error
     );
   }
 };
@@ -90,8 +93,9 @@ export const getWords = async (
   } catch (error) {
     return errorResponse(
       res,
-      "An error occurred while retrieving the word \n" + error,
-      500
+      "An error occurred while retrieving the word",
+      500,
+      error
     );
   }
 };
@@ -111,8 +115,9 @@ export const updateWord = async (
   } catch (error) {
     return errorResponse(
       res,
-      "An error occurred while updating the word \n" + error,
-      500
+      "An error occurred while updating the word ",
+      500,
+      error
     );
   }
 };
@@ -134,8 +139,9 @@ export const updateWordLevel = async (
   } catch (error) {
     return errorResponse(
       res,
-      "An error occurred while updating level the word \n" + error,
-      500
+      "An error occurred while updating level the word ",
+      500,
+      error
     );
   }
 };
@@ -155,8 +161,9 @@ export const deleteWord = async (
   } catch (error) {
     return errorResponse(
       res,
-      "An error occurred while deleting the word \n" + error,
-      500
+      "An error occurred while deleting the word",
+      500,
+      error
     );
   }
 };
@@ -176,7 +183,8 @@ export const getRecentHardOrMediumWords = async (
     return errorResponse(
       res,
       "An error occurred while retrieving recent hard or medium words",
-      500
+      500,
+      error
     );
   }
 };
@@ -201,8 +209,9 @@ export const updateIncrementWordSeens = async (
   } catch (error) {
     return errorResponse(
       res,
-      "An error occurred while incrementing the word seen count \n" + error,
-      500
+      "An error occurred while incrementing the word seen count",
+      500,
+      error
     );
   }
 };

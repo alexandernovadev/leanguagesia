@@ -68,7 +68,7 @@ export const updateImageWord = async (req, res) => {
       updateImageWord
     );
   } catch (error) {
-    return errorResponse(res, "Error generating image \n" + error);
+    return errorResponse(res, "Error generating image ", 400, error);
   }
 };
 
@@ -113,8 +113,9 @@ export const generateTextStream = async (req: Request, res: Response) => {
   } catch (error) {
     return errorResponse(
       res,
-      "Error trying to generate text stream \n" + error,
-      500
+      "Error trying to generate text stream",
+      500,
+      error
     );
   }
 };
@@ -144,7 +145,8 @@ export const generateJSONword = async (req: Request, res: Response) => {
     return errorResponse(
       res,
       "Error trying to generate JSON word \n" + error,
-      500
+      500,
+      error
     );
   }
 };
@@ -175,11 +177,7 @@ export const updatedJSONWordExamples = async (req: Request, res: Response) => {
       201
     );
   } catch (error) {
-    return errorResponse(
-      res,
-      "Error trying to Update JSON Word \n" + error,
-      500
-    );
+    return errorResponse(res, "Error trying to Update JSON Word", 500, error);
   }
 };
 
@@ -214,8 +212,9 @@ export const updatedJSONWordExamplesCodeSwitching = async (
   } catch (error) {
     return errorResponse(
       res,
-      "Error trying to Update JSON Word Examples \n" + error,
-      500
+      "Error trying to Update JSON Word Examples ",
+      500,
+      error
     );
   }
 };
@@ -241,8 +240,9 @@ export const updatedJSONWordTypes = async (req: Request, res: Response) => {
   } catch (error) {
     return errorResponse(
       res,
-      "Error trying to Update JSON Word Types \n" + error,
-      500
+      "Error trying to Update JSON Word Types ",
+      500,
+      error
     );
   }
 };
@@ -275,8 +275,9 @@ export const updatedJSONWordSynonyms = async (req: Request, res: Response) => {
   } catch (error) {
     return errorResponse(
       res,
-      "Error trying to Update JSON Word Synonyms \n" + error,
-      500
+      "Error trying to Update JSON Word Synonyms ",
+      500,
+      error
     );
   }
 };

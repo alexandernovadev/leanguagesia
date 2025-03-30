@@ -18,7 +18,7 @@ export const AuthController = {
         return errorResponse(res, "Invalid credentials", 401);
       }
     } catch (error) {
-      return errorResponse(res, "Authentication failed", 500);
+      return errorResponse(res, "Authentication failed", 500,error);
     }
   },
 };

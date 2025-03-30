@@ -26,13 +26,12 @@ export const getLectureById = async (
   try {
     const lecture = await lectureService.getLectureById(req.params.id);
     if (!lecture) {
-      return errorResponse(res, "Lecture not found" ,404);
+      return errorResponse(res, "Lecture not found", 404);
     }
 
     return successResponse(res, "Lecture Listed by ID successfully", lecture);
   } catch (error) {
-    console.error(error);
-    return errorResponse(res, "Error retrieving lecture");
+    return errorResponse(res, "Error retrieving lecture", 500, error);
   }
 };
 
@@ -43,13 +42,12 @@ export const updateLecture = async (
   try {
     const lecture = await lectureService.updateLecture(req.params.id, req.body);
     if (!lecture) {
-      return errorResponse(res, "Lecture not found" ,404);
+      return errorResponse(res, "Lecture not found", 404);
     }
 
     return successResponse(res, "Lecture Updated successfully", lecture);
   } catch (error) {
-    console.error(error);
-    return errorResponse(res, "Error updating lecture");
+    return errorResponse(res, "Error updating lecture", 500, error);
   }
 };
 
@@ -60,13 +58,12 @@ export const deleteLecture = async (
   try {
     const lecture = await lectureService.deleteLecture(req.params.id);
     if (!lecture) {
-      return errorResponse(res, "Lecture not found" ,404);
+      return errorResponse(res, "Lecture not found", 404);
     }
 
     return successResponse(res, "Lecture deleted successfully", {});
   } catch (error) {
-    console.error(error);
-    return errorResponse(res, "Error deleting lecture");
+    return errorResponse(res, "Error deleting lecture", 500, error);
   }
 };
 
@@ -86,7 +83,7 @@ export const updateImageLecureById = async (req: Request, res: Response) => {
     );
   } catch (error) {
     console.error(error);
-    return errorResponse(res, "Error updating Image lecture");
+    return errorResponse(res, "Error updating Image lecture", 500, error);
   }
 };
 
@@ -101,7 +98,6 @@ export const getAllLectures = async (
 
     return successResponse(res, "Lecture listed successfully", lectures);
   } catch (error) {
-    console.error(error);
-    return errorResponse(res, "Error fetching lectures");
+    return errorResponse(res, "Error fetching lectures", 500, error);
   }
 };

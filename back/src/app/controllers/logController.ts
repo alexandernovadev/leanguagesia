@@ -17,13 +17,13 @@ export const getLogs = (req: Request, res: Response) => {
     // Parse app.log
     const formattedAppLog = parseAppLogs(appLog);
     const formattedErrorLog = parseErrorLog(errorLog);
-    
+
     return successResponse(res, "Logs retrieved successfully", {
       errorLog: formattedErrorLog,
       appLog: formattedAppLog,
     });
   } catch (error) {
-    return errorResponse(res, "Failed to retrieve log \n" + error, 500);
+    return errorResponse(res, "Failed to retrieve log", 500, error);
   }
 };
 
@@ -46,6 +46,6 @@ export const clearLogs = (req: Request, res: Response) => {
 
     return successResponse(res, "All logs have been cleared successfully", {});
   } catch (error) {
-    return errorResponse(res, "Failed to clear logs \n" + error, 500);
+    return errorResponse(res, "Failed to clear logs ", 500, error);
   }
 };

@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import e, { Request, Response } from "express";
 
 import { LectureService } from "../services/lectures/LectureService";
 import { WordService } from "../services/words/wordService";
@@ -22,6 +22,6 @@ export const BasicInformation = async (
       words: countByLevelAndTotalWords,
     });
   } catch (error) {
-    return errorResponse(res, "Error getting statics \n" + error, 404);
+    return errorResponse(res, "Error getting statics ", 404, error);
   }
 };
