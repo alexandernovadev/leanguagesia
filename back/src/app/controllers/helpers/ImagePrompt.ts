@@ -1,31 +1,25 @@
 export const imageWordPrompt = (word: string) => {
   return `
-  Create a highly descriptive and visually clear illustration that represents the 
-  meaning of the word {${word}} in an intuitive and easy-to-understand way. 
-  The scene should be realistic and detailed, avoiding abstractions, and adapt 
-  to the grammatical category of the word to reinforce its visual interpretation:
+  Create a vivid, contextually accurate, and visually compelling illustration that clearly represents 
+  the meaning of the word "${word}" in a highly intuitive and unmistakable way. 
+  Avoid abstract or ambiguous interpretations, and ensure the scene aligns perfectly with 
+  the grammatical category of the word:
 
-	•	Nouns: Depict objects, people, or abstract concepts directly related to the word, 
-  with clear details that make them instantly recognizable.
-	•	Adjectives: Accompany the main objects with visual elements that highlight 
-  their qualities, such as vibrant colors, contrasting sizes, or noticeable textures.
-	•	Verbs: Show actions in progress, capturing movement and energy with dynamic 
-  poses, speed effects, or expressive gestures.
-	•	Adverbs: Add details that modify the actions represented, like speed lines, 
-  changes in direction, or glows to emphasize intensity.
-	•	Pronouns: Use stylized human figures or silhouettes to represent subjects 
-  in a general way, emphasizing their relationship with other objects in the scene.
-	•	Prepositions: Illustrate spatial or temporal relationships between objects, 
-  such as a ball on top of a table or a person walking towards a door.
-	•	Conjunctions: Represent connections or contrasts between elements, 
-  like paths that merge or split, or hands coming together.
-	•	Articles: Subtly differentiate the main objects to indicate specificity 
-  (a highlighted object) or generality (several similar objects).
-	•	Interjections: Express intense emotions or reactions with exaggerated 
-  facial expressions, bold gestures, or visual effects like bursts of color or impact lines.
+  • Nouns: Depict objects, people, or abstract concepts directly tied to the word. Include distinctive details that make them instantly recognizable in their natural context, using realistic proportions, textures, and lighting.
+  • Adjectives: Illustrate the qualities or characteristics of the subject clearly. Emphasize contrasts, textures, and visual cues that convey the adjective’s essence.
+  • Verbs: Show dynamic actions with clear movement, energy, and intent. Use motion effects, expressive poses, and vivid interactions to capture the essence of the action.
+  • Adverbs: Enhance the depiction of actions by visually representing intensity, speed, manner, or degree. Use elements like motion blur, light trails, or exaggerated gestures.
+  • Pronouns: Stylize figures or silhouettes to represent subjects generically, focusing on relationships and interactions rather than specific identities.
+  • Prepositions: Illustrate spatial or temporal relationships accurately, ensuring clear and logical positioning of objects to convey the meaning.
+  • Conjunctions: Visually represent connections, contrasts, or relationships. Use symbols like paths merging or objects linking logically.
+  • Articles: Subtly differentiate main objects to indicate specificity or generality, using focus effects or grouping similar objects.
+  • Interjections: Express intense emotions or reactions with exaggerated expressions, body language, or impactful visual effects.
 
-The scene should rely solely on visual elements to communicate the meaning, without using text,
- letters, or symbols. Utilize composition, lighting, and color 
- palettes to reinforce clarity and visual impact
+  IMPORTANT RESTRICTIONS:
+  • Do NOT depict people wearing kufiyas, turbans, or culturally sensitive attire.
+  • Use visual storytelling and scene composition to communicate meaning without relying on text, symbols, or labels.
+  • Ensure the scene is clear, contextually accurate, and instantly understandable.
+
+  Use lighting, color, and perspective to create a visually engaging and coherent illustration.
   `.trim();
 };
