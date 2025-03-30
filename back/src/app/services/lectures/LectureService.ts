@@ -24,8 +24,18 @@ export class LectureService {
     return await Lecture.findByIdAndUpdate(id, data, { new: true });
   }
 
-  async updateImage(id: string, img: string): Promise<ILecture | null> {
-    return await Lecture.findByIdAndUpdate(id, { img }, { new: true });
+  async updateImage(
+    id: string,
+    img: string
+  ): Promise<{ _id: string; img: string; updatedAt: Date } | null> {
+    return await Lecture.findByIdAndUpdate(
+      id,
+      { img },
+      {
+        new: true,
+        projection: { _id: 1, img: 1, updatedAt: 1 }, // Return only necessary fields
+      }
+    );
   }
 
   async deleteLecture(id: string): Promise<ILecture | null> {

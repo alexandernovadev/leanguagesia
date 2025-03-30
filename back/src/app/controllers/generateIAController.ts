@@ -25,16 +25,18 @@ const lectureService = new LectureService();
  * Generate Image with AI, Save in Cloudinary, and Update Lecture
  */
 export const updateImageLecture = async (req: Request, res: Response) => {
-  const { lecture, imgOld } = req.body;
+  const { lectureString, imgOld } = req.body;
   const IDLecture = req.params.idlecture;
 
-  if (!lecture) {
+  if (!lectureString) {
     return errorResponse(res, "Lecture prompt is required.", 400);
   }
 
   try {
     // Generate image
-    const imageBase64 = await generateImage(lecture);
+    const imageBase64 = await generateImage(
+      "Make an image that represents this lecture : \n" + lectureString
+    );
     if (!imageBase64) {
       return errorResponse(res, "Failed to generate image.", 400);
     }
