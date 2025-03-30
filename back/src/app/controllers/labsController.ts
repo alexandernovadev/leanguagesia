@@ -10,9 +10,9 @@ export const arreglosmaricasrapidos = async (
     // Actualizar el campo `level` de todos los documentos a "hard"
     // const result = await Word.updateMany({}, { level: "easy" });
 
-    const result = await Word.updateMany({}, { seen: 1 });
+    // const result = await Word.updateMany({}, { seen: 1 });
 
-    return successResponse(res, "FIxed quick done", result);
+    return successResponse(res, "FIxed quick done", {});
   } catch (error) {
     console.error(error);
     return errorResponse(res, "Error updating words level", 404);
