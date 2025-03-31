@@ -5,6 +5,7 @@ interface TextAreaCustomProps {
   name: string;
   placeholder?: string;
   className?: string;
+  disabled?: boolean;
 }
 
 export const TextAreaCustom: React.FC<TextAreaCustomProps> = ({
@@ -12,6 +13,7 @@ export const TextAreaCustom: React.FC<TextAreaCustomProps> = ({
   name,
   placeholder,
   className,
+  disabled,
 }) => {
   const {
     field: { value, onChange, onBlur },
@@ -28,6 +30,7 @@ export const TextAreaCustom: React.FC<TextAreaCustomProps> = ({
       onBlur={onBlur}
       placeholder={placeholder}
       rows={4}
+      disabled={disabled}
       className={`w-full p-2 border border-gray-700 rounded-md bg-gray-800 text-white resize-none ${className}`}
     />
   );

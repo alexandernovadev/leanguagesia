@@ -1,5 +1,5 @@
 import { useForm, SubmitHandler } from "react-hook-form";
-import { Loader2 } from "lucide-react";
+import { Loader2, RotateCcw, Sparkles } from "lucide-react";
 
 import Input from "../../ui/Input";
 import { TextAreaCustom } from "../../ui/TextArea";
@@ -15,21 +15,36 @@ export const FormLecture: React.FC<FormLectureProps> = ({
   lecture,
   onClose,
 }) => {
-  const { control, handleSubmit } = useForm<CardType>({
+  const { control, handleSubmit, getValues } = useForm<CardType>({
     defaultValues: lecture,
   });
-  const { putLecture, actionLoading } = useLectureStore();
+
+  const { actionLoading, putLectureImage, putLecture } = useLectureStore();
 
   const onSubmit: SubmitHandler<CardType> = async (data) => {
     await putLecture(lecture._id! as string, data);
-
     onClose();
   };
+
+  // 🚀 Generate Image Handler
+  const handleGenerateImage = async () => {
+    const { content, img } = getValues(); // Get lecture content and existing image
+
+    if (!content) {
+      alert("Lecture content is required to generate an image.");
+      return;
+    }
+
+    await putLectureImage(lecture._id! as string, content, img || "");
+  };
+
+  // Disable all fields when loading
+  const isDisabled = actionLoading.putImage;
 
   return (
     <div
       aria-labelledby="edit-lecture"
-      className="bg-customBlack-200 p-4 md:p-8 rounded-lg  max-w-[720px] min-w-[520px] overflow-y-auto max-h-[90vh]"
+      className="bg-customBlack-200 p-4 md:p-8 rounded-lg max-w-[720px] min-w-[520px] overflow-y-auto max-h-[90vh]"
     >
       <h2
         id="edit-lecture"
@@ -83,12 +98,32 @@ export const FormLecture: React.FC<FormLectureProps> = ({
           />
         </div>
 
-        {/* Image */}
+        {/* Image with Generate Button */}
         <div>
-          <label htmlFor="img" className="text-white block mb-1">
-            Image 
+          <label
+            htmlFor="img"
+            className="text-white mb-1 flex justify-between items-center"
+          >
+            Image
+            <button
+              type="button"
+              onClick={handleGenerateImage}
+              className=" text-white p-1 m-1 rounded-full border border-white  transition flex items-center gap-2"
+              disabled={isDisabled}
+            >
+              {isDisabled ? (
+                <Sparkles className="animate-pulse" />
+              ) : (
+                <Sparkles />
+              )}
+            </button>
           </label>
-          <Input name="img" control={control} placeholder="Image URL" />
+          <Input
+            name="img"
+            control={control}
+            placeholder="Image URL"
+            disabled={isDisabled}
+          />
         </div>
 
         {/* Content */}
@@ -100,6 +135,7 @@ export const FormLecture: React.FC<FormLectureProps> = ({
             name="content"
             control={control}
             placeholder="Lecture Content"
+            disabled={isDisabled}
           />
         </div>
 
@@ -107,7 +143,7 @@ export const FormLecture: React.FC<FormLectureProps> = ({
         <button
           type="submit"
           className="w-full bg-green-700 text-white py-3 rounded-md hover:bg-green-600 transition flex justify-center items-center"
-          disabled={actionLoading.put}
+          disabled={actionLoading.put || isDisabled}
         >
           {actionLoading.put ? (
             <Loader2 className="animate-spin" />

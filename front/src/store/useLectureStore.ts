@@ -15,7 +15,11 @@ interface LectureStore {
   getLectureById: (id: string) => Promise<void>;
   postLecture: (lectureData: Lecture) => Promise<void>;
   putLecture: (id: string, lectureData: Lecture) => Promise<void>;
-  putLectureImage: (id: string, image: string) => Promise<void>;
+  putLectureImage: (
+    id: string,
+    lectureString: string,
+    imgOld: string
+  ) => Promise<void>;
   deleteLecture: (id: string | number) => Promise<void>;
   clearErrors: () => void;
 }
@@ -97,6 +101,55 @@ export const useLectureStore = create<LectureStore>((set, get) => ({
     }
   },
 
+  putLectureImage: async (
+    id: string,
+    lectureString: string,
+    imgOld: string
+  ) => {
+    set({
+      actionLoading: { ...get().actionLoading, putImage: true },
+      errors: { ...get().errors, putImage: null },
+    });
+
+    try {
+      // Limitar el contenido a 3500 caracteres para evitar el error
+      const trimmedLectureString = lectureString.slice(0, 3500);
+
+      const response = await fetch(
+        `${BACKURL}/api/ai/generate-image-lecture/${id}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ lectureString: trimmedLectureString, imgOld }),
+        }
+      );
+
+      const data = await handleResponse(response);
+
+      set((state) => ({
+        lectures: state.lectures.map((lecture) =>
+          lecture._id === id
+            ? { ...lecture, img: data.data.img, updatedAt: data.data.updatedAt }
+            : lecture
+        ),
+        activeLecture:
+          state.activeLecture?._id === id
+            ? {
+                ...state.activeLecture,
+                img: data.data.img,
+                updatedAt: data.data.updatedAt,
+              }
+            : state.activeLecture,
+        actionLoading: { ...state.actionLoading, putImage: false },
+      }));
+    } catch (error: any) {
+      set({
+        errors: { ...get().errors, putImage: error.message },
+        actionLoading: { ...get().actionLoading, putImage: false },
+      });
+    }
+  },
+
   putLecture: async (id: string, lectureData: Lecture) => {
     set({
       actionLoading: { ...get().actionLoading, put: true },
@@ -120,33 +173,6 @@ export const useLectureStore = create<LectureStore>((set, get) => ({
       set({
         errors: { ...get().errors, put: error.message },
         actionLoading: { ...get().actionLoading, put: false },
-      });
-    }
-  },
-
-  putLectureImage: async (id: string, image: string) => {
-    set({
-      actionLoading: { ...get().actionLoading, putImage: true },
-      errors: { ...get().errors, putImage: null },
-    });
-    try {
-      const response = await fetch(`${BACKURL}/api/lectures/image/${id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ image }),
-      });
-      const data = await handleResponse(response);
-      set((state) => ({
-        lectures: state.lectures.map((lecture) =>
-          lecture._id === id ? data.data : lecture
-        ),
-        activeLecture: data.data,
-        actionLoading: { ...state.actionLoading, putImage: false },
-      }));
-    } catch (error: any) {
-      set({
-        errors: { ...get().errors, putImage: error.message },
-        actionLoading: { ...get().actionLoading, putImage: false },
       });
     }
   },

@@ -16,10 +16,17 @@ export const errorResponse = (
   statusCode = 400,
   errordata?: any
 ) => {
-  // Register the error in the logs
+  // Si errordata no es un Error, lo convertimos a uno para tener un stack
+  const errorInstance =
+    errordata instanceof Error
+      ? errordata
+      : new Error(
+          typeof errordata === "object" ? JSON.stringify(errordata) : errordata
+        );
+
   logger.error("Error Response:", {
     message: errorMessage,
-    stack: errordata || "No stack available",
+    stack: errorInstance.stack || "No stack available",
   });
 
   return res.status(statusCode).json({ success: false, error: errorMessage });

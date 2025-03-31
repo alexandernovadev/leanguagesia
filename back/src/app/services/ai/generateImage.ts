@@ -19,6 +19,6 @@ export const generateImage = async (prompt: string) => {
     return response.data[0].b64_json || null;
   } catch (error) {
     console.error("Error generando la imagen:", error);
-    return null;
+    throw new Error("Error generando la imagen" + error);
   }
 };
