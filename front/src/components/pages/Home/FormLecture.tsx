@@ -6,6 +6,8 @@ import { TextAreaCustom } from "../../ui/TextArea";
 import { Card as CardType } from "./types/types";
 import { useLectureStore } from "../../../store/useLectureStore";
 
+import noImage from '../../../../public/images/noImage.png'
+
 interface FormLectureProps {
   lecture: CardType;
   onClose: () => void;
@@ -88,10 +90,13 @@ export const FormLecture: React.FC<FormLectureProps> = ({
               />
             </div>
           </div>
-  
+
           {/* Image URL */}
           <div className="mb-4">
-            <label htmlFor="img" className="text-white flex justify-between mb-1">
+            <label
+              htmlFor="img"
+              className="text-white flex justify-between mb-1"
+            >
               Image URL
               <button
                 type="button"
@@ -113,19 +118,25 @@ export const FormLecture: React.FC<FormLectureProps> = ({
               disabled={isDisabled}
             />
           </div>
-  
+
           {/* Image Preview */}
-          {lecture.img && (
-            <div className="w-full h-full bg-gray-800 rounded-lg overflow-hidden">
+          <div className="w-full h-full bg-gray-800 rounded-lg overflow-hidden">
+            {lecture.img ? (
               <img
                 src={lecture.img}
                 alt="Lecture"
                 className="w-full h-full object-cover"
               />
-            </div>
-          )}
+            ) : (
+              <img
+                src={noImage}
+                alt="Lecture"
+                className="w-full h-full object-cover"
+              />
+            )}
+          </div>
         </div>
-  
+
         {/* Right Section */}
         <div className="flex-1 flex flex-col gap-4">
           <div className="flex-1">
@@ -142,7 +153,7 @@ export const FormLecture: React.FC<FormLectureProps> = ({
           </div>
 
           <div className="h-1"></div>
-  
+
           {/* Save Button Aligned Bottom */}
           <div className="mt-auto flex justify-center items-center">
             <button
@@ -161,5 +172,4 @@ export const FormLecture: React.FC<FormLectureProps> = ({
       </form>
     </div>
   );
-  
 };
