@@ -56,10 +56,10 @@ const EditWordModal: React.FC<EditWordModalProps> = ({
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
-      <div className="p-6 rounded-lg shadow-lg w-full max-w-4xl bg-gray-900 max-h-[80vh] overflow-y-auto">
+      <div className="p-6 rounded-lg shadow-lg w-full max-w-4xl bg-gray-900 max-h-[100vh] md:max-h-[80vh] overflow-y-auto md:rounded-xl">
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="grid grid-cols-3 gap-4"
+          className="grid grid-cols-1 md:grid-cols-3 gap-4"
         >
           <div>
             <label className="text-white" htmlFor="_id">
@@ -102,7 +102,7 @@ const EditWordModal: React.FC<EditWordModalProps> = ({
             />
           </div>
 
-          <div className="col-span-3">
+          <div className="col-span-1 md:col-span-3">
             <label className="text-white" htmlFor="definition">
               Definition
             </label>
@@ -114,7 +114,7 @@ const EditWordModal: React.FC<EditWordModalProps> = ({
             />
           </div>
 
-          <div className="col-span-3">
+          <div className="col-span-1 md:col-span-3">
             <label className="text-white" htmlFor="examples">
               Examples
             </label>
@@ -158,7 +158,7 @@ const EditWordModal: React.FC<EditWordModalProps> = ({
             />
           </div>
 
-          <div className="col-span-3">
+          <div className="col-span-1 md:col-span-3">
             <label className="text-white" htmlFor="codeSwitching">
               Code Switching
             </label>
@@ -169,14 +169,14 @@ const EditWordModal: React.FC<EditWordModalProps> = ({
             />
           </div>
 
-          <div className="col-span-3">
+          <div className="col-span-1 md:col-span-3">
             <label className="text-white" htmlFor="sinonyms">
-              Sinonyms
+              Synonyms
             </label>
             <ArrayInput
               control={control}
               name="sinonyms"
-              placeholder="Add a code-switching phrase"
+              placeholder="Add a synonym"
             />
           </div>
 
@@ -193,7 +193,7 @@ const EditWordModal: React.FC<EditWordModalProps> = ({
             />
           </div>
 
-          <div className="col-span-3">
+          <div className="col-span-1 md:col-span-3">
             <label className="text-white" htmlFor="spanish.definition">
               Spanish Definition
             </label>
@@ -205,8 +205,8 @@ const EditWordModal: React.FC<EditWordModalProps> = ({
             />
           </div>
 
-          <div className="col-span-3">
-            <label className="text-white" htmlFor="spanish.definition">
+          <div className="col-span-1 md:col-span-3">
+            <label className="text-white" htmlFor="img">
               Image
             </label>
             {wordData.img && (
@@ -226,7 +226,7 @@ const EditWordModal: React.FC<EditWordModalProps> = ({
             />
           </div>
 
-          <div className="col-span-3 flex justify-end space-x-4 mt-4">
+          <div className="col-span-1 md:col-span-3 flex justify-end space-x-4 mt-4">
             <button
               type="button"
               onClick={onClose}

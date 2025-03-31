@@ -18,7 +18,7 @@ export const WordPage = () => {
   const {
     words,
     loading,
-    errors, // Assuming you kept the granular errors object; adjust if it’s a string
+    errors, 
     currentPage: page,
     totalPages,
     setPage,
