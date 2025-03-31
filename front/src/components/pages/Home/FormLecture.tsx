@@ -1,5 +1,5 @@
 import { useForm, SubmitHandler } from "react-hook-form";
-import { Loader2, RotateCcw, Sparkles } from "lucide-react";
+import { Loader2, Sparkles } from "lucide-react";
 
 import Input from "../../ui/Input";
 import { TextAreaCustom } from "../../ui/TextArea";
@@ -44,114 +44,122 @@ export const FormLecture: React.FC<FormLectureProps> = ({
   return (
     <div
       aria-labelledby="edit-lecture"
-      className="bg-customBlack-200 p-4 md:p-8 rounded-lg max-w-[720px] min-w-[520px] overflow-y-auto max-h-[90vh]"
+      className="bg-customBlack-200 p-4 md:p-8 rounded-lg w-full h-full max-w-5xl max-h-[95vh] overflow-y-auto"
     >
-      <h2
-        id="edit-lecture"
-        className="text-sm md:text-2xl font-bold text-white mb-4 md:mb-6 text-center"
-      >
-        Edit | {lecture._id}
-      </h2>
-
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="space-y-4 md:space-y-5"
+        className="flex flex-col md:flex-row gap-6 w-full h-full"
       >
-        {/* Time & Level */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label htmlFor="time" className="text-white block mb-1">
-              Duration (minutes)
+        {/* Left Section */}
+        <div className="flex-1 flex flex-col gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <label htmlFor="time" className="text-white block mb-1">
+                Duration (minutes)
+              </label>
+              <Input
+                name="time"
+                control={control}
+                placeholder="Time (min)"
+                type="number"
+                disabled
+              />
+            </div>
+            <div>
+              <label htmlFor="level" className="text-white block mb-1">
+                Difficulty Level
+              </label>
+              <Input
+                name="level"
+                control={control}
+                placeholder="Level"
+                disabled
+              />
+            </div>
+            <div>
+              <label htmlFor="language" className="text-white block mb-1">
+                Language
+              </label>
+              <Input
+                name="language"
+                control={control}
+                placeholder="Language"
+                disabled
+              />
+            </div>
+          </div>
+  
+          {/* Image URL */}
+          <div className="mb-4">
+            <label htmlFor="img" className="text-white flex justify-between mb-1">
+              Image URL
+              <button
+                type="button"
+                onClick={handleGenerateImage}
+                className="text-white p-1 m-1 rounded-full border border-white transition flex items-center gap-2"
+                disabled={isDisabled}
+              >
+                {isDisabled ? (
+                  <Sparkles size={18} className="animate-pulse" />
+                ) : (
+                  <Sparkles size={18} />
+                )}
+              </button>
             </label>
             <Input
-              name="time"
+              name="img"
               control={control}
-              placeholder="Time (min)"
-              type="number"
-              disabled
-            />
-          </div>
-
-          <div>
-            <label htmlFor="level" className="text-white block mb-1">
-              Difficulty Level
-            </label>
-            <Input
-              name="level"
-              control={control}
-              placeholder="Level"
-              disabled
-            />
-          </div>
-        </div>
-
-        {/* Language */}
-        <div>
-          <label htmlFor="language" className="text-white block mb-1">
-            Language
-          </label>
-          <Input
-            name="language"
-            control={control}
-            placeholder="Language"
-            disabled
-          />
-        </div>
-
-        {/* Image with Generate Button */}
-        <div>
-          <label
-            htmlFor="img"
-            className="text-white mb-1 flex justify-between items-center"
-          >
-            Image
-            <button
-              type="button"
-              onClick={handleGenerateImage}
-              className=" text-white p-1 m-1 rounded-full border border-white  transition flex items-center gap-2"
+              placeholder="Image URL"
               disabled={isDisabled}
+            />
+          </div>
+  
+          {/* Image Preview */}
+          {lecture.img && (
+            <div className="w-full h-full bg-gray-800 rounded-lg overflow-hidden">
+              <img
+                src={lecture.img}
+                alt="Lecture"
+                className="w-full h-full object-cover"
+              />
+            </div>
+          )}
+        </div>
+  
+        {/* Right Section */}
+        <div className="flex-1 flex flex-col gap-4">
+          <div className="flex-1">
+            <label htmlFor="content" className="text-white block mb-1">
+              Lecture Content
+            </label>
+            <TextAreaCustom
+              name="content"
+              control={control}
+              placeholder="Lecture Content"
+              className="min-h-[300px] md:min-h-full mb-2"
+              disabled={isDisabled}
+            />
+          </div>
+
+          <div className="h-1"></div>
+  
+          {/* Save Button Aligned Bottom */}
+          <div className="mt-auto flex justify-center items-center">
+            <button
+              type="submit"
+              className="w-full bg-green-800 text-white font-semibold py-3 rounded-md hover:bg-green-600 transition flex justify-center items-center"
+              disabled={actionLoading.put || isDisabled}
             >
-              {isDisabled ? (
-                <Sparkles className="animate-pulse" />
+              {actionLoading.put ? (
+                <Loader2 className="animate-spin" />
               ) : (
-                <Sparkles />
+                "Save Changes"
               )}
             </button>
-          </label>
-          <Input
-            name="img"
-            control={control}
-            placeholder="Image URL"
-            disabled={isDisabled}
-          />
+          </div>
         </div>
-
-        {/* Content */}
-        <div>
-          <label htmlFor="content" className="text-white block mb-1">
-            Lecture Content
-          </label>
-          <TextAreaCustom
-            name="content"
-            control={control}
-            placeholder="Lecture Content"
-            disabled={isDisabled}
-          />
-        </div>
-
-        {/* Submit Button */}
-        <button
-          type="submit"
-          className="w-full bg-green-700 text-white py-3 rounded-md hover:bg-green-600 transition flex justify-center items-center"
-          disabled={actionLoading.put || isDisabled}
-        >
-          {actionLoading.put ? (
-            <Loader2 className="animate-spin" />
-          ) : (
-            "Save Changes"
-          )}
-        </button>
       </form>
     </div>
   );
+  
 };
