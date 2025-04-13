@@ -1,5 +1,5 @@
-import { BACKURL } from "../../api/backConf";
-import { Lecture } from "../../models/Lecture";
+import { BACKURL } from "../api/backConf";
+import { Lecture } from "../models/Lecture";
 
 const handleResponse = async (response: Response) => {
   const data = await response.json();
