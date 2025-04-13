@@ -1,6 +1,6 @@
 import { create } from "zustand";
-import { BACKURL } from "../api/backConf";
 import { Lecture } from "../models/Lecture";
+import { lectureService } from "../services/lectureServie";
 
 interface LectureStore {
   lectures: Lecture[];
@@ -24,13 +24,6 @@ interface LectureStore {
   clearErrors: () => void;
 }
 
-const handleResponse = async (response: Response) => {
-  const data = await response.json();
-  if (!response.ok || !data.success)
-    throw new Error(data.error || `Error: ${response.statusText}`);
-  return data;
-};
-
 export const useLectureStore = create<LectureStore>((set, get) => ({
   lectures: [],
   activeLecture: null,
@@ -45,14 +38,10 @@ export const useLectureStore = create<LectureStore>((set, get) => ({
       loading: true,
       errors: { ...get().errors, get: null },
       currentPage: page,
-      ...(page === 1 ? { lectures: [] } : {}), // Clean just in the first page
+      ...(page === 1 ? { lectures: [] } : {}),
     });
     try {
-      const response = await fetch(
-        `${BACKURL}/api/lectures?page=${page}&limit=${limit}`
-      );
-      const { data } = await handleResponse(response);
-
+      const { data } = await lectureService.getLectures(page, limit);
       set((state) => ({
         lectures: [...state.lectures, ...data.data],
         totalPages: data.pages,
@@ -66,9 +55,8 @@ export const useLectureStore = create<LectureStore>((set, get) => ({
   getLectureById: async (id: string) => {
     set({ loading: true, errors: { ...get().errors, getById: null } });
     try {
-      const response = await fetch(`${BACKURL}/api/lectures/${id}`);
-      const data = await handleResponse(response);
-      set({ activeLecture: data.data, loading: false });
+      const { data } = await lectureService.getLectureById(id);
+      set({ activeLecture: data, loading: false });
     } catch (error: any) {
       set({
         errors: { ...get().errors, getById: error.message },
@@ -83,20 +71,37 @@ export const useLectureStore = create<LectureStore>((set, get) => ({
       errors: { ...get().errors, post: null },
     });
     try {
-      const response = await fetch(`${BACKURL}/api/lectures`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(lectureData),
-      });
-      const data = await handleResponse(response);
+      const { data } = await lectureService.postLecture(lectureData);
       set((state) => ({
-        lectures: [...state.lectures, data.data],
+        lectures: [...state.lectures, data],
         actionLoading: { ...state.actionLoading, post: false },
       }));
     } catch (error: any) {
       set({
         errors: { ...get().errors, post: error.message },
         actionLoading: { ...get().actionLoading, post: false },
+      });
+    }
+  },
+
+  putLecture: async (id: string, lectureData: Lecture) => {
+    set({
+      actionLoading: { ...get().actionLoading, put: true },
+      errors: { ...get().errors, put: null },
+    });
+    try {
+      const { data } = await lectureService.putLecture(id, lectureData);
+      set((state) => ({
+        lectures: state.lectures.map((lecture) =>
+          lecture._id === id ? data : lecture
+        ),
+        activeLecture: data,
+        actionLoading: { ...state.actionLoading, put: false },
+      }));
+    } catch (error: any) {
+      set({
+        errors: { ...get().errors, put: error.message },
+        actionLoading: { ...get().actionLoading, put: false },
       });
     }
   },
@@ -110,34 +115,24 @@ export const useLectureStore = create<LectureStore>((set, get) => ({
       actionLoading: { ...get().actionLoading, putImage: true },
       errors: { ...get().errors, putImage: null },
     });
-
     try {
-      // Limitar el contenido a 3500 caracteres para evitar el error
-      const trimmedLectureString = lectureString.slice(0, 3500);
-
-      const response = await fetch(
-        `${BACKURL}/api/ai/generate-image-lecture/${id}`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ lectureString: trimmedLectureString, imgOld }),
-        }
+      const { data } = await lectureService.putLectureImage(
+        id,
+        lectureString,
+        imgOld
       );
-
-      const data = await handleResponse(response);
-
       set((state) => ({
         lectures: state.lectures.map((lecture) =>
           lecture._id === id
-            ? { ...lecture, img: data.data.img, updatedAt: data.data.updatedAt }
+            ? { ...lecture, img: data.img, updatedAt: data.updatedAt }
             : lecture
         ),
         activeLecture:
           state.activeLecture?._id === id
             ? {
                 ...state.activeLecture,
-                img: data.data.img,
-                updatedAt: data.data.updatedAt,
+                img: data.img,
+                updatedAt: data.updatedAt,
               }
             : state.activeLecture,
         actionLoading: { ...state.actionLoading, putImage: false },
@@ -150,43 +145,13 @@ export const useLectureStore = create<LectureStore>((set, get) => ({
     }
   },
 
-  putLecture: async (id: string, lectureData: Lecture) => {
-    set({
-      actionLoading: { ...get().actionLoading, put: true },
-      errors: { ...get().errors, put: null },
-    });
-    try {
-      const response = await fetch(`${BACKURL}/api/lectures/${id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(lectureData),
-      });
-      const data = await handleResponse(response);
-      set((state) => ({
-        lectures: state.lectures.map((lecture) =>
-          lecture._id === id ? data.data : lecture
-        ),
-        activeLecture: data.data,
-        actionLoading: { ...state.actionLoading, put: false },
-      }));
-    } catch (error: any) {
-      set({
-        errors: { ...get().errors, put: error.message },
-        actionLoading: { ...get().actionLoading, put: false },
-      });
-    }
-  },
-
   deleteLecture: async (id: string | number) => {
     set({
       actionLoading: { ...get().actionLoading, delete: true },
       errors: { ...get().errors, delete: null },
     });
     try {
-      const response = await fetch(`${BACKURL}/api/lectures/${id}`, {
-        method: "DELETE",
-      });
-      await handleResponse(response);
+      await lectureService.deleteLecture(id);
       set((state) => ({
         lectures: state.lectures.filter((lecture) => lecture._id !== id),
         activeLecture:

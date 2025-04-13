@@ -1,6 +1,6 @@
 import { create } from "zustand";
-import { BACKURL } from "../api/backConf";
 import { Word } from "../models/Word";
+import { wordService } from "../services/wordService";
 
 interface WordStore {
   words: Word[];
@@ -28,14 +28,6 @@ interface WordStore {
   setActiveWord: (word: Word | null) => void;
 }
 
-const handleResponse = async (response: Response) => {
-  const data = await response.json();
-  if (!response.ok || !data.success) {
-    throw new Error(data.error || `Error: ${response.statusText}`);
-  }
-  return data;
-};
-
 export const useWordStore = create<WordStore>((set, get) => ({
   words: [],
   activeWord: null,
@@ -55,20 +47,11 @@ export const useWordStore = create<WordStore>((set, get) => ({
       loading: true,
       errors: null,
       currentPage: page,
-      ...(page === 1 ? { words: [] } : {}), // Reset on first page
+      ...(page === 1 ? { words: [] } : {}),
     });
     try {
-      const url = `${BACKURL}/api/words?page=${page}&limit=${limit}${
-        wordUser ? `&wordUser=${wordUser}` : ""
-      }`;
-      const response = await fetch(url);
-      const { data } = await handleResponse(response);
-
-      set({
-        words: data.data,
-        totalPages: data.pages,
-        loading: false,
-      });
+      const { data } = await wordService.getWords(page, limit, wordUser);
+      set({ words: data.data, totalPages: data.pages, loading: false });
     } catch (error: any) {
       set({ errors: error.message, loading: false });
     }
@@ -80,13 +63,16 @@ export const useWordStore = create<WordStore>((set, get) => ({
   },
 
   setSearchQuery: (query: string) => {
-    set({ searchQuery: query, currentPage: 1 }); // Reset to page 1 on new search
-    get().getWords(1, 7, query); // Trigger fetch with new query
+    set({ searchQuery: query, currentPage: 1 });
+    get().getWords(1, 7, query);
+  },
+
+  retry: () => {
+    get().getWords();
   },
 
   setActiveWord: (word: Word | null) => {
     const currentActive = get().activeWord;
-    // Si es la misma palabra, no hace nada
     if (currentActive?._id === word?._id) return;
 
     set({ activeWord: word });
@@ -96,17 +82,11 @@ export const useWordStore = create<WordStore>((set, get) => ({
     }
   },
 
-  retry: () => {
-    get().getWords(); // Re-fetch with current page and searchQuery
-  },
-
-  // Rest of the methods remain unchanged
   getWordById: async (id: string) => {
     set({ loading: true, errors: null });
     try {
-      const response = await fetch(`${BACKURL}/api/words/${id}`);
-      const data = await handleResponse(response);
-      set({ activeWord: data.data, loading: false });
+      const { data } = await wordService.getWordById(id);
+      set({ activeWord: data, loading: false });
     } catch (error: any) {
       set({ errors: error.message, loading: false });
     }
@@ -115,9 +95,8 @@ export const useWordStore = create<WordStore>((set, get) => ({
   getWordByName: async (word: string) => {
     set({ loading: true, errors: null });
     try {
-      const response = await fetch(`${BACKURL}/api/words/word/${word}`);
-      const data = await handleResponse(response);
-      set({ activeWord: data.data, loading: false });
+      const { data } = await wordService.getWordByName(word);
+      set({ activeWord: data, loading: false });
     } catch (error: any) {
       set({ errors: error.message, loading: false });
     }
@@ -129,14 +108,9 @@ export const useWordStore = create<WordStore>((set, get) => ({
       errors: null,
     });
     try {
-      const response = await fetch(`${BACKURL}/api/words`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(wordData),
-      });
-      const data = await handleResponse(response);
+      const { data } = await wordService.createWord(wordData);
       set((state) => ({
-        words: [...state.words, data.data],
+        words: [...state.words, data],
         actionLoading: { ...state.actionLoading, create: false },
       }));
     } catch (error: any) {
@@ -153,15 +127,10 @@ export const useWordStore = create<WordStore>((set, get) => ({
       errors: null,
     });
     try {
-      const response = await fetch(`${BACKURL}/api/words/${id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(wordData),
-      });
-      const data = await handleResponse(response);
+      const { data } = await wordService.updateWord(id, wordData);
       set((state) => ({
-        words: state.words.map((word) => (word._id === id ? data.data : word)),
-        activeWord: data.data,
+        words: state.words.map((word) => (word._id === id ? data : word)),
+        activeWord: data,
         actionLoading: { ...state.actionLoading, update: false },
       }));
     } catch (error: any) {
@@ -178,15 +147,10 @@ export const useWordStore = create<WordStore>((set, get) => ({
       errors: null,
     });
     try {
-      const response = await fetch(`${BACKURL}/api/words/${id}/level`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ level }),
-      });
-      const data = await handleResponse(response);
+      const { data } = await wordService.updateWordLevel(id, level);
       set((state) => ({
-        words: state.words.map((word) => (word._id === id ? data.data : word)),
-        activeWord: data.data,
+        words: state.words.map((word) => (word._id === id ? data : word)),
+        activeWord: data,
         actionLoading: { ...state.actionLoading, updateLevel: false },
       }));
     } catch (error: any) {
@@ -202,20 +166,8 @@ export const useWordStore = create<WordStore>((set, get) => ({
       actionLoading: { ...get().actionLoading, incrementSeen: true },
       errors: null,
     });
-
     try {
-      const response = await fetch(
-        `${BACKURL}/api/words/${id}/increment-seen`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      await handleResponse(response);
-
+      await wordService.incrementWordSeen(id);
       set((state) => ({
         words: state.words.map((word) =>
           word._id === id ? { ...word, seen: (word.seen || 0) + 1 } : word
@@ -240,10 +192,7 @@ export const useWordStore = create<WordStore>((set, get) => ({
       errors: null,
     });
     try {
-      const response = await fetch(`${BACKURL}/api/words/${id}`, {
-        method: "DELETE",
-      });
-      await handleResponse(response);
+      await wordService.deleteWord(id);
       set((state) => ({
         words: state.words.filter((word) => word._id !== id),
         activeWord: state.activeWord?._id === id ? null : state.activeWord,
@@ -260,9 +209,8 @@ export const useWordStore = create<WordStore>((set, get) => ({
   getRecentHardOrMediumWords: async () => {
     set({ loading: true, errors: null });
     try {
-      const response = await fetch(`${BACKURL}/api/words/get-cards-anki`);
-      const data = await handleResponse(response);
-      set({ words: data.data, loading: false });
+      const { data } = await wordService.getRecentHardOrMediumWords();
+      set({ words: data, loading: false });
     } catch (error: any) {
       set({ errors: error.message, loading: false });
     }
