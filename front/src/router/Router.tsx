@@ -6,11 +6,13 @@ import {
 } from "react-router-dom";
 import HomePage from "../components/pages/Home/HomePage";
 import { WordPage } from "../components/pages/Words/WordPage";
-import { ProfilePage } from "../components/pages/Profile/ProfilePage";
 import { GeneratorPage } from "../components/pages/Generator/GeneratorPage";
 import { LecturaPage } from "../components/pages/Lecture/LecturaPage";
-import { AnkiGamePage } from "../components/pages/AnkiGame/AnkiGamePage";
 import { Statistics } from "../components/pages/Statistics/Statistics";
+import { ProfilePage } from "../components/pages/Profile/ProfilePage";
+import { AnkiGamePage } from "../components/pages/Exercices/AnkiGame/AnkiGamePage";
+import { IrregularVerbsGame } from "../components/pages/Exercices/IrregularVerbs/IrregularVerbsGame";
+import { ExercisesLayout } from "../components/pages/Exercices/ExercisesLayout";
 
 const RouterP = () => {
   return (
@@ -20,11 +22,15 @@ const RouterP = () => {
         <Route path="/words" element={<WordPage />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/generator" element={<GeneratorPage />} />
-        <Route path="/ankigame" element={<AnkiGamePage />} />
         <Route path="/statistics" element={<Statistics />} />
         <Route path="/lecture/:id" element={<LecturaPage />} />
 
-        <Route path="*" element={<Navigate to="/?sequovs=true" replace />} />
+        <Route path="/exercises" element={<ExercisesLayout />}>
+          <Route path="anki" element={<AnkiGamePage />} />
+          <Route path="irregular-verbs" element={<IrregularVerbsGame />} />
+        </Route>
+
+        <Route path="*" element={<Navigate to="/?sequo vs=true" replace />} />
       </Routes>
     </Router>
   );

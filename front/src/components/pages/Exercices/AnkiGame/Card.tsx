@@ -1,8 +1,8 @@
 import React, { useCallback } from "react";
 import { FlipHorizontal, Turtle, Volume2 } from "lucide-react";
-import { Word } from "../../../models/Word";
-import { useWordStore } from "../../../store/useWordStore";
-import { getLevelColor } from "../../../utils/getLevelColor";
+import { useWordStore } from "../../../../store/useWordStore";
+import { getLevelColor } from "../../../../utils/getLevelColor";
+import { Word } from "../../../../models/Word";
 
 interface CardProps {
   card: Word;
@@ -60,7 +60,6 @@ export const Card: React.FC<CardProps> = ({ card, flipped, onFlip }) => {
         <span className="font-bold text-gray-300">Flip</span>
       </button>
 
- 
       {/* Card Container */}
       <div
         className="w-full h-full border border-green-800 rounded-lg shadow-lg transition-transform duration-500 ease-in-out"
